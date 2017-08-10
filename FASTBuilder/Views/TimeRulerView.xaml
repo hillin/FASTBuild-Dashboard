@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="FastBuilder.Views.TimeRulerView"
+             Height="24"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FastBuilder.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="24" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Style TargetType="ItemsControl">
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <Grid />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type ContentPresenter}">
+                        <Setter Property="Margin" Value="{Binding UIMargin}" />
+                        <Setter Property="Width" Value="{Binding UIWidth}" />
+                        <Setter Property="VerticalAlignment" Value="Bottom" />
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <!-- leave 200px blank for header zone -->
+        <ItemsControl Margin="200,0,0,0" x:Name="MajorTicks" />
+        <ItemsControl Margin="200,0,0,0" x:Name="MinorTicks" />
+    </Grid>
+</UserControl>
