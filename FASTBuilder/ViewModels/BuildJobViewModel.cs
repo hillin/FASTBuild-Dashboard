@@ -27,6 +27,7 @@ namespace FastBuilder.ViewModels
 		private DateTime _endTime;
 		private BuildJobStatus _status;
 		private TimeSpan _duration;
+		private double _uiWidth;
 		public DateTime StartTime { get; }
 
 		public DateTime EndTime
@@ -54,15 +55,27 @@ namespace FastBuilder.ViewModels
 				if (value.Equals(_duration)) return;
 				_duration = value;
 				this.NotifyOfPropertyChange();
-				this.NotifyOfPropertyChange(nameof(this.UIWidth));
+				this.UpdateUIWidth();
 				this.NotifyOfPropertyChange(nameof(this.ToolTipText));
 			}
 		}
 
-		public double UIWidth => Math.Max(0.0, Math.Min(this.Duration.TotalSeconds, 60 * 60 * 24)) * BuildJobViewModel.GetUIScaling();
+		public double UIWidth
+		{
+			get => _uiWidth;
+			set
+			{
+				if (value.Equals(_uiWidth)) return;
+				_uiWidth = value;
+				this.NotifyOfPropertyChange();
+				this.NotifyOfPropertyChange(nameof(this.ShouldShowText));
+			}
+		}
 
 		public Thickness UIMargin => new Thickness(
 			Math.Max(0.0, (this.StartTime - this._sessionStartTime).TotalSeconds) * BuildJobViewModel.GetUIScaling(), 0, 0, 0);
+
+		public bool ShouldShowText => this.UIWidth >= 48;
 
 		public Brush UIForeground
 		{
@@ -141,7 +154,7 @@ namespace FastBuilder.ViewModels
 						builder.Append("Successfully built");
 						break;
 					case BuildJobStatus.SuccessCached:
-						builder.Append("Successfully cached");
+						builder.Append("Successfully built (cache hit)");
 						break;
 					case BuildJobStatus.SuccessPreprocessed:
 						builder.Append("Successfully preprocessed");
@@ -200,7 +213,7 @@ namespace FastBuilder.ViewModels
 		private void OnScalingChanged(object sender, EventArgs e)
 		{
 			this.NotifyOfPropertyChange(nameof(this.UIMargin));
-			this.NotifyOfPropertyChange(nameof(this.UIWidth));
+			this.UpdateUIWidth();
 		}
 
 		public void OnFinished(FinishJobEventArgs e)
@@ -220,6 +233,11 @@ namespace FastBuilder.ViewModels
 		private void UpdateDuration(DateTime endTime)
 		{
 			this.Duration = endTime - this.StartTime;
+		}
+		
+		private void UpdateUIWidth()
+		{
+			this.UIWidth = Math.Max(0.0, Math.Min(this.Duration.TotalSeconds, 60 * 60 * 24)) * BuildJobViewModel.GetUIScaling();
 		}
 
 		public void OnSessionStopped(DateTime time)

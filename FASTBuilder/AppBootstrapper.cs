@@ -26,6 +26,7 @@ namespace FastBuilder
 			_container.Singleton<IEventAggregator, EventAggregator>();
 			_container.Singleton<MainWindowViewModel>();
 			_container.Singleton<IScaleService, ScaleService>();
+			_container.Singleton<IWorkerPoolService, WorkerPoolService>();
 		}
 
 		protected override void OnStartup(object sender, StartupEventArgs e)

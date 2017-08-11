@@ -11,6 +11,8 @@ namespace FastBuilder.ViewModels
 		public string HostName { get; }
 		public BindableCollection <BuildCoreViewModel> Cores { get; } = new BindableCollection <BuildCoreViewModel>();
 
+		public int ActiveCoreCount { get; private set; }
+
 		public BuildWorkerViewModel(string hostName)
 		{
 			this.HostName = hostName;
@@ -20,6 +22,8 @@ namespace FastBuilder.ViewModels
 		{
 			var core = this.Cores.FirstOrDefault(c => c.CurrentJob != null && c.CurrentJob.EventName == e.EventName);
 			core?.OnJobFinished(e);
+
+			this.UpdateActiveCoreCount();
 		}
 
 		public void OnJobStarted(StartJobEventArgs e, DateTime sessionStartTime)
@@ -37,6 +41,13 @@ namespace FastBuilder.ViewModels
 			}
 
 			core.OnJobStarted(e, sessionStartTime);
+
+			this.UpdateActiveCoreCount();
+		}
+
+		private void UpdateActiveCoreCount()
+		{
+			this.ActiveCoreCount = this.Cores.Count(c => c.IsBusy);
 		}
 
 		public void OnSessionStopped(DateTime time)
@@ -45,6 +56,8 @@ namespace FastBuilder.ViewModels
 			{
 				core.OnSessionStopped(time);
 			}
+
+			this.ActiveCoreCount = 0;
 		}
 
 		public void Tick(DateTime now)

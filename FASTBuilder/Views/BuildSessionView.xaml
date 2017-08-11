@@ -4,11 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FastBuilder.Views"
+             MinWidth="600"
              xmlns:support="clr-namespace:FastBuilder.Support"
              xmlns:services="clr-namespace:FastBuilder.Services"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              PreviewMouseWheel="UserControl_PreviewMouseWheel"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="600">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -17,52 +19,213 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    
-    <Grid>
-        
-        <Border x:Name="IsSessionViewVisible">
-            <Grid>
-                <ScrollViewer HorizontalScrollBarVisibility="Visible"
-                                VerticalScrollBarVisibility="Visible"
-                                ScrollChanged="ScrollViewer_ScrollChanged">
-                    <ItemsControl x:Name="Workers"/>
-                </ScrollViewer>
-                <ScrollViewer x:Name="HeaderScrollViewer" 
-                                IsEnabled="False"
-                                IsHitTestVisible="False"
-                                Margin="0,0,17,17"
-                                HorizontalScrollBarVisibility="Hidden"
-                                VerticalScrollBarVisibility="Hidden">
-                    <local:WorkersHeaderView x:Name="WorkersHeader"
-                                             HorizontalAlignment="Left" />
-                </ScrollViewer>
 
-                <ScrollViewer x:Name="TimeRulerScrollViewer" 
-                              IsEnabled="False"
-                              IsHitTestVisible="False"
-                              Margin="0,0,17,17"
-                              HorizontalScrollBarVisibility="Hidden"
-                              VerticalScrollBarVisibility="Hidden">
-                    <ContentControl x:Name="TimeRuler"
-                                    VerticalAlignment="Bottom" />
-                </ScrollViewer>
+    <DockPanel>
+
+        <materialDesign:Card DockPanel.Dock="Bottom">
+            <Grid Margin="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock x:Name="StatusText"
+                           Margin="0,0,8,0"
+                           VerticalAlignment="Center"
+                           Text="Status" />
+
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right">
+                    <Border CornerRadius="2"
+                            BorderThickness="1"
+                            BorderBrush="DarkGreen"
+                            Background="White"
+                            TextElement.Foreground="Black"
+                            Padding="8,2">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="10"
+                                       VerticalAlignment="Center"
+                                       Text="In Progress" />
+                            <TextBlock x:Name="InProgressJobCount"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                                       Margin="6,0,0,0"
+                                       Text="2" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border CornerRadius="2"
+                            BorderThickness="1"
+                            BorderBrush="DarkGreen"
+                            Background="DarkGreen"
+                            TextElement.Foreground="White"
+                            Padding="8,2"
+                            Margin="8,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="10"
+                                       VerticalAlignment="Center"
+                                       Text="Successful" />
+                            <TextBlock x:Name="SuccessfulJobCount"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                                       Margin="6,0,0,0"
+                                       Text="2" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border CornerRadius="2"
+                            BorderThickness="1"
+                            BorderBrush="DarkCyan"
+                            Background="DarkCyan"
+                            TextElement.Foreground="White"
+                            Padding="8,2"
+                            Margin="8,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="10"
+                                       VerticalAlignment="Center"
+                                       Text="Cache Hit" />
+                            <TextBlock x:Name="CacheHitCount"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                                       Margin="6,0,0,0"
+                                       Text="2" />
+                        </StackPanel>
+                        
+                    </Border>
+
+                    <Border CornerRadius="2"
+                            BorderThickness="1"
+                            BorderBrush="Crimson"
+                            Background="Crimson"
+                            TextElement.Foreground="White"
+                            Padding="8,2"
+                            Margin="8,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="10"
+                                       VerticalAlignment="Center"
+                                       Text="Failed" />
+                            <TextBlock x:Name="FailedJobCount"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                                       Margin="6,0,0,0"
+                                       Text="2" />
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+
+                <StackPanel Grid.Column="2"
+                            Margin="24,0,0,0"
+                            Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Clock"
+                                             VerticalAlignment="Center" />
+                    <TextBlock x:Name="DisplayElapsedTime"
+                               Margin="4,0,0,0"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"
+                               Text="0:00:00" />
+                </StackPanel>
                 
             </Grid>
-        </Border>
+        </materialDesign:Card>
+        
+        <Grid>
 
-        <Border Background="#E0FFFFFF"
-                x:Name="IsRestoringHistory">
-            <StackPanel VerticalAlignment="Center">
-                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
-                             HorizontalAlignment="Center"
-                             Value="0"
-                             Width="48"
-                             Height="48"
-                             IsIndeterminate="True" />
-                <TextBlock Text="Restoring history..."
-                           Margin="0,8,0,0"
-                           HorizontalAlignment="Center" />
-            </StackPanel>
-        </Border>
-    </Grid>
+            <Border x:Name="IsSessionViewVisible">
+                <Grid>
+                    <ScrollViewer x:Name="ContentScrollViewer" 
+                                  HorizontalScrollBarVisibility="Visible"
+                                  VerticalScrollBarVisibility="Visible"
+                                  ScrollChanged="ContentScrollViewer_ScrollChanged">
+                        <DockPanel>
+                            <Grid Height="24" 
+                                  DockPanel.Dock="Bottom" />   <!-- leave 24px blank for time ruler -->
+                            <ItemsControl x:Name="Workers"/>
+                        </DockPanel>
+                    </ScrollViewer>
+                    <ScrollViewer x:Name="HeaderScrollViewer" 
+                                    IsEnabled="False"
+                                    IsHitTestVisible="False"
+                                    Margin="0,0,17,17"
+                                    HorizontalScrollBarVisibility="Hidden"
+                                    VerticalScrollBarVisibility="Hidden">
+                        <DockPanel>
+                            <Grid Height="24" 
+                                  DockPanel.Dock="Bottom" /> <!-- leave 24px blank for time ruler -->
+                            <local:WorkersHeaderView x:Name="WorkersHeader"
+                                                     HorizontalAlignment="Left" />
+                        </DockPanel>
+                    </ScrollViewer>
+
+                    <ScrollViewer x:Name="TimeRulerScrollViewer" 
+                                  IsEnabled="False"
+                                  IsHitTestVisible="False"
+                                  Margin="0,0,17,17"
+                                  HorizontalScrollBarVisibility="Hidden"
+                                  VerticalScrollBarVisibility="Hidden">
+                        <ContentControl x:Name="TimeRuler"
+                                        Height="24"
+                                        VerticalAlignment="Bottom" />
+                    </ScrollViewer>
+
+                    <Grid HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom"
+                          Margin="0,0,0,17"
+                          Height="24"
+                          Width="184"
+                          Background="{DynamicResource MaterialDesignBackground}">
+
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="ServerNetwork"
+                                                     VerticalAlignment="Center" />
+                            <TextBlock x:Name="ActiveWorkerCount"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                                       Foreground="{DynamicResource SecondaryAccentBrush}"
+                                       Margin="4,0,0,0"
+                                       Text="2" />
+                            <TextBlock VerticalAlignment="Center"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                                       Text="/" />
+                            <TextBlock x:Name="PoolWorkerCount"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                                       Text="2" />
+                            <materialDesign:PackIcon Kind="Chip" 
+                                                     VerticalAlignment="Center"
+                                                     Margin="12,0,0,0"/>
+                            <TextBlock x:Name="ActiveCoreCount"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                                       Foreground="{DynamicResource SecondaryAccentBrush}"
+                                       Margin="4,0,0,0"
+                                       Text="2" />
+                        </StackPanel>
+
+                        <GridSplitter HorizontalAlignment="Right"
+                                      Width="1" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border Background="#E0FFFFFF"
+                    x:Name="IsRestoringHistory">
+                <StackPanel VerticalAlignment="Center">
+                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
+                                 HorizontalAlignment="Center"
+                                 Value="0"
+                                 Width="48"
+                                 Height="48"
+                                 IsIndeterminate="True" />
+                    <TextBlock Text="Restoring history..."
+                               Margin="0,8,0,0"
+                               HorizontalAlignment="Center" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </DockPanel>
 </UserControl>

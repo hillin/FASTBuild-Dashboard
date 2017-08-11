@@ -6,8 +6,18 @@
              xmlns:local="clr-namespace:FastBuilder.Views"
              xmlns:viewModels="clr-namespace:FastBuilder.ViewModels"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:support="clr-namespace:FastBuilder.Support"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <DockPanel>
 
         <materialDesign:ColorZone DockPanel.Dock="Top"
@@ -19,9 +29,24 @@
                                   Margin="0,0,0,2">
             <Grid>
 
-                <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" 
-                           VerticalAlignment="Center"
-                           Text="{Binding ActiveItem.StatusText}" />
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center">
+
+                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
+                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                                 Width="28"
+                                 Height="28"
+                                 Visibility="{Binding ActiveItem.IsRunning, Converter={support:BoolToVisibilityConverter}}"
+                                 VerticalAlignment="Center"
+                                 Value="{Binding ActiveItem.Progress, Mode=OneWay}"
+                                 Maximum="100"
+                                 Margin="0,0,8,0"
+                                 IsIndeterminate="True" />
+
+                    <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" 
+                               VerticalAlignment="Center"
+                               Text="{Binding ActiveItem.StatusText, Mode=OneWay}" />
+                </StackPanel>
 
                 <ComboBox x:Name="Items"
                           HorizontalAlignment="Right"

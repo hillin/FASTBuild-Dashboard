@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,39 +18,61 @@ using FastBuilder.Services;
 
 namespace FastBuilder.Views
 {
-	/// <summary>
-	/// Interaction logic for BuildSessionView.xaml
-	/// </summary>
-	public partial class BuildSessionView : UserControl
+
+	public partial class BuildSessionView
 	{
+		private bool _isAutoScrollingContent;
+		private double _previousHorizontalScrollOffset;
+
 		public BuildSessionView()
 		{
 			InitializeComponent();
+			_isAutoScrollingContent = true;
+			_previousHorizontalScrollOffset = this.ContentScrollViewer.ScrollableWidth;
 		}
 
-		private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+		private void ContentScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
 		{
-			var workerScrollViewer = (ScrollViewer) sender;
-			if (workerScrollViewer.ScrollableWidth <= 0)
+			var horizontalOffset = e.HorizontalOffset;
+			if (_isAutoScrollingContent)
+			{
+				// ReSharper disable once CompareOfFloatsByEqualityOperator
+				if (horizontalOffset == _previousHorizontalScrollOffset)    // which means the scroll is not actually changed, but content size is changed
+				{
+					this.ContentScrollViewer.ScrollToHorizontalOffset(this.ContentScrollViewer.ScrollableWidth);
+					horizontalOffset = this.ContentScrollViewer.ScrollableWidth;
+				}
+			}
+
+			// if we are scrolled to the right end, turn on auto scrolling
+			_isAutoScrollingContent = Math.Abs(horizontalOffset - this.ContentScrollViewer.ScrollableWidth) < 1;
+
+			_previousHorizontalScrollOffset = horizontalOffset;
+
+			if (this.ContentScrollViewer.ScrollableWidth <= 0)
 				return;
 
 			if (this.HeaderScrollViewer.ScrollableHeight > 0)
 			{
 				this.HeaderScrollViewer.ScrollToVerticalOffset(
-					e.VerticalOffset * this.HeaderScrollViewer.ScrollableHeight /workerScrollViewer.ScrollableHeight);
+					e.VerticalOffset * this.HeaderScrollViewer.ScrollableHeight / this.ContentScrollViewer.ScrollableHeight);
 			}
 
-			if (this.TimeRulerScrollViewer.ScrollableWidth > 0 )
+			if (this.TimeRulerScrollViewer.ScrollableWidth > 0)
 			{
 				this.TimeRulerScrollViewer.ScrollToHorizontalOffset(
-					e.HorizontalOffset * this.TimeRulerScrollViewer.ScrollableWidth / workerScrollViewer.ScrollableWidth);
+					horizontalOffset * this.TimeRulerScrollViewer.ScrollableWidth / this.ContentScrollViewer.ScrollableWidth);
 			}
 		}
 
 		private void UserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
 		{
+			Debug.WriteLine("mousewheel");
 			var scaleService = IoC.Get<IScaleService>();
 			scaleService.Scaling = scaleService.Scaling * (1 + e.Delta / 1200.0);
+
+			e.Handled = true;
 		}
+
 	}
 }

@@ -9,11 +9,13 @@ using FastBuilder.Services;
 
 namespace FastBuilder.ViewModels
 {
+
+	// todo: this component should be optimized in performance
 	internal class TimeRulerViewModel : PropertyChangedBase
 	{
 		private readonly BuildSessionViewModel _ownerSession;
 
-		struct GrainStop
+		private struct GrainStop
 		{
 			public double Scaling { get; }
 			public double MajorInterval { get; }
@@ -39,8 +41,7 @@ namespace FastBuilder.ViewModels
 			new GrainStop(88.89, 1, 0.5),
 			new GrainStop(177.7, 0.5, 0.1),
 			new GrainStop(320, 0.2, 0.1),
-			new GrainStop(640, 0.1, 0.05),
-			new GrainStop(1280, 0.05, 0.01)
+			new GrainStop(640, 0.1, 0.05)
 		};
 
 		private static void EnsureTickCount<T>(IList<T> ticks, int count)
@@ -93,10 +94,10 @@ namespace FastBuilder.ViewModels
 		public TimeRulerViewModel(BuildSessionViewModel ownerSession)
 		{
 			_ownerSession = ownerSession;
-			IoC.Get<IScaleService>().ScalingChanged += this.OnScalingChanged;
+			IoC.Get<IScaleService>().PreScalingChanging += this.OnPreScalingChanging;
 		}
 
-		private void OnScalingChanged(object sender, EventArgs e)
+		private void OnPreScalingChanging(object sender, EventArgs e)
 		{
 			this.UpdateTicks();
 		}
@@ -117,9 +118,7 @@ namespace FastBuilder.ViewModels
 			TimeRulerViewModel.EnsureTickCount(this.MajorTicks, majorTickCount);
 			TimeRulerViewModel.EnsureTickCount(this.MinorTicks, minorTickCount);
 
-			// double the size of each tick, this can cause ticks overlap with their neighbors, but gives
-			// major ticks more space to show their time labels
-			var tickWidth = grain.MinorInterval * scaling * 2;
+			var tickWidth = grain.MajorInterval * scaling;
 
 			var labelTextFormat = TimeRulerViewModel.GetLabelTextFormat(seconds, grain.MajorInterval);
 
@@ -134,6 +133,8 @@ namespace FastBuilder.ViewModels
 			}
 
 			var majorToMinorRatio = (int)(grain.MajorInterval / grain.MinorInterval);
+
+			tickWidth = grain.MinorInterval * scaling;
 
 			var steps = 0;
 			for (var i = 0; i < this.MinorTicks.Count; ++i, ++steps)

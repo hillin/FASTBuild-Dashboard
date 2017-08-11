@@ -13,7 +13,9 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        MinWidth="600"
+        MinHeight="400"
+        Title="FASTBuild" Height="400" Width="800">
     <Grid>
         <ContentControl x:Name="Watcher" />
     </Grid>

@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using Caliburn.Micro;
+using FastBuilder.Communication;
 using FastBuilder.Communication.Events;
+using FastBuilder.Services;
 
 namespace FastBuilder.ViewModels
 {
-	internal class BuildSessionViewModel : Screen
+	internal partial class BuildSessionViewModel : Screen
 	{
-		private bool _isRunning;
-		private double _progress;
+
 		public DateTime StartTime { get; }
 
 		// current time, this could be a historical time if we are restoring history, otherwise should be 
@@ -29,62 +30,12 @@ namespace FastBuilder.ViewModels
 		public int? ProcessId { get; }
 		public int? LogVersion { get; }
 
-		public bool IsRestoringHistory
-		{
-			get => _isRestoringHistory;
-			set
-			{
-				if (value == _isRestoringHistory) return;
-				_isRestoringHistory = value;
-				this.NotifyOfPropertyChange();
-				this.NotifyOfPropertyChange(nameof(this.IsSessionViewVisible));
-				this.NotifyOfPropertyChange(nameof(this.StatusText));
-			}
-		}
-
-		public bool IsSessionViewVisible => !this.IsRestoringHistory;
-
-		public bool IsRunning
-		{
-			get => _isRunning;
-			private set
-			{
-				if (value == _isRunning) return;
-				_isRunning = value;
-				this.NotifyOfPropertyChange();
-				this.NotifyOfPropertyChange(nameof(this.StatusText));
-			}
-		}
-
-		public double Progress
-		{
-			get => _progress;
-			private set
-			{
-				if (value.Equals(_progress)) return;
-				_progress = value;
-				this.NotifyOfPropertyChange();
-			}
-		}
-
-		public string StatusText
-		{
-			get
-			{
-				if (_isRestoringHistory)
-					return "Loading";
-
-				if (this.IsRunning)
-					return "Building";
-
-				return "Ended";
-			}
-		}
-
-
 		private readonly Dictionary<string, BuildWorkerViewModel> _workerMap = new Dictionary<string, BuildWorkerViewModel>();
-		private bool _isRestoringHistory;
 		private DateTime _currentTime;
+
+		public TimeSpan ElapsedTime => _currentTime - this.StartTime;
+		public string DisplayElapsedTime => this.ElapsedTime.ToString(@"hh\:mm\:ss\.f");
+
 		public BindableCollection<BuildWorkerViewModel> Workers { get; } = new BindableCollection<BuildWorkerViewModel>();
 		public TimeRulerViewModel TimeRuler { get; }
 
@@ -100,7 +51,11 @@ namespace FastBuilder.ViewModels
 			this.DisplayName = startTime.ToString(CultureInfo.CurrentCulture);
 
 			this.TimeRuler = new TimeRulerViewModel(this);
+
+			this.PoolWorkerNames = new string[0];
+			IoC.Get<IWorkerPoolService>().WorkerCountChanged += this.IWorkerPoolService_WorkerCountChanged;
 		}
+
 
 		public BuildSessionViewModel()
 			: this(DateTime.Now, null, null)
@@ -127,6 +82,8 @@ namespace FastBuilder.ViewModels
 			{
 				worker.OnSessionStopped(time);
 			}
+
+			this.UpdateActiveWorkerAndCoreCount();
 		}
 
 		public void ReportProgress(ReportProgressEventArgs e)
@@ -159,11 +116,32 @@ namespace FastBuilder.ViewModels
 		public void OnJobFinished(FinishJobEventArgs e)
 		{
 			this.EnsureWorker(e.HostName).OnJobFinished(e);
+			switch (e.Result)
+			{
+				case BuildJobStatus.Success:
+					++this.SuccessfulJobCount;
+					break;
+				case BuildJobStatus.SuccessCached:
+					++this.SuccessfulJobCount;
+					++this.CacheHitCount;
+					break;
+				case BuildJobStatus.Failed:
+				case BuildJobStatus.Error:
+					++this.FailedJobCount;
+					break;
+			}
+
+			--this.InProgressJobCount;
+
+			this.UpdateActiveWorkerAndCoreCount();
 		}
 
 		public void OnJobStarted(StartJobEventArgs e)
 		{
 			this.EnsureWorker(e.HostName).OnJobStarted(e, this.StartTime);
+			++this.InProgressJobCount;
+
+			this.UpdateActiveWorkerAndCoreCount();
 		}
 
 		public void Tick(DateTime now)
@@ -172,6 +150,8 @@ namespace FastBuilder.ViewModels
 				return;
 
 			this.CurrentTime = now;
+			this.NotifyOfPropertyChange(nameof(this.ElapsedTime));
+			this.NotifyOfPropertyChange(nameof(this.DisplayElapsedTime));
 
 			// called from tick thread
 			lock (this.Workers)

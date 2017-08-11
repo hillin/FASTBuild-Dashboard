@@ -58,7 +58,8 @@ namespace FastBuilder.Communication
 				if (File.Exists(_logPath))
 				{
 					var fileTime = File.GetLastWriteTime(_logPath);
-					if (fileTime != _currentFileTime)
+					if (fileTime != _currentFileTime		// the log file has been reset or saved (closed)
+						&& new FileInfo(_logPath).Length < _fileStreamPosition)	// this guarantees it is a reset
 					{
 						_fileStreamPosition = 0;
 						this.LogReset?.Invoke(this, EventArgs.Empty);

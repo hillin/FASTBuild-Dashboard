@@ -17,16 +17,18 @@
     </UserControl.Resources>
 
     <Border Height="24"
-                         Margin="1"
-                         Padding="8,2"
-                         BorderThickness="1"
-                         CornerRadius="2"
-                         BorderBrush="{Binding UIBorderBrush}"
-                         Background="{Binding UIBackground}"
-                         ToolTip="{Binding ToolTipText}">
-        <TextBlock x:Name="DisplayName"
-                   Foreground="{Binding UIForeground}"
-                   VerticalAlignment="Center"
-                   Text="DisplayName" />
+            Margin="1"
+            Padding="8,2"
+            BorderThickness="1"
+            CornerRadius="2"
+            BorderBrush="{Binding UIBorderBrush}"
+            Background="{Binding UIBackground}"
+            ToolTip="{Binding ToolTipText}">
+        <Border x:Name="ShouldShowText">
+            <TextBlock x:Name="DisplayName"
+                       Foreground="{Binding UIForeground}"
+                       VerticalAlignment="Center"
+                       Text="DisplayName" />
+        </Border>
     </Border>
 </UserControl>
