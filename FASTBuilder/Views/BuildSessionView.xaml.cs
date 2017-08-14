@@ -49,25 +49,24 @@ namespace FastBuilder.Views
 
 			_previousHorizontalScrollOffset = horizontalOffset;
 
-			if (this.ContentScrollViewer.ScrollableWidth <= 0)
-				return;
-
-			if (this.HeaderScrollViewer.ScrollableHeight > 0)
+			if (this.ContentScrollViewer.ScrollableHeight > 0)
 			{
 				this.HeaderScrollViewer.ScrollToVerticalOffset(
 					e.VerticalOffset * this.HeaderScrollViewer.ScrollableHeight / this.ContentScrollViewer.ScrollableHeight);
 			}
 
-			if (this.TimeRulerScrollViewer.ScrollableWidth > 0)
+			if (this.ContentScrollViewer.ScrollableWidth > 0)
 			{
-				this.TimeRulerScrollViewer.ScrollToHorizontalOffset(
-					horizontalOffset * this.TimeRulerScrollViewer.ScrollableWidth / this.ContentScrollViewer.ScrollableWidth);
+				this.TimeRuler.SetScrollPosition(horizontalOffset / this.ContentScrollViewer.ScrollableWidth);
+			}
+			else
+			{
+				this.TimeRuler.SetScrollPosition(0);
 			}
 		}
 
 		private void UserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
 		{
-			Debug.WriteLine("mousewheel");
 			var scaleService = IoC.Get<IScaleService>();
 			scaleService.Scaling = scaleService.Scaling * (1 + e.Delta / 1200.0);
 

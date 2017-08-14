@@ -15,14 +15,16 @@ using System.Windows.Shapes;
 
 namespace FastBuilder.Views
 {
-    /// <summary>
-    /// Interaction logic for TimeRulerMajorTickView.xaml
-    /// </summary>
-    public partial class TimeRulerMajorTickView : UserControl
+    public partial class TimeRulerMajorTickView 
     {
         public TimeRulerMajorTickView()
         {
             InitializeComponent();
         }
+
+	    public void SetTime(TimeSpan time, string labelTextFormat)
+	    {
+		    this.LabelText.Text = time.ToString(labelTextFormat);
+	    }
     }
 }

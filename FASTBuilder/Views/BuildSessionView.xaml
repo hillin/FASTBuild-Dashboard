@@ -159,16 +159,10 @@
                         </DockPanel>
                     </ScrollViewer>
 
-                    <ScrollViewer x:Name="TimeRulerScrollViewer" 
-                                  IsEnabled="False"
-                                  IsHitTestVisible="False"
-                                  Margin="0,0,17,17"
-                                  HorizontalScrollBarVisibility="Hidden"
-                                  VerticalScrollBarVisibility="Hidden">
-                        <ContentControl x:Name="TimeRuler"
-                                        Height="24"
-                                        VerticalAlignment="Bottom" />
-                    </ScrollViewer>
+                    <local:TimeRulerView x:Name="TimeRuler" 
+                                         Margin="0,0,17,17"
+                                         VerticalAlignment="Bottom"
+                                         Height="24" />
 
                     <Grid HorizontalAlignment="Left"
                           VerticalAlignment="Bottom"

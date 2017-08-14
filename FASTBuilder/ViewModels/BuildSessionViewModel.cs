@@ -37,7 +37,6 @@ namespace FastBuilder.ViewModels
 		public string DisplayElapsedTime => this.ElapsedTime.ToString(@"hh\:mm\:ss\.f");
 
 		public BindableCollection<BuildWorkerViewModel> Workers { get; } = new BindableCollection<BuildWorkerViewModel>();
-		public TimeRulerViewModel TimeRuler { get; }
 
 		private BuildSessionViewModel(DateTime startTime, int? processId, int? logVersion)
 		{
@@ -49,9 +48,7 @@ namespace FastBuilder.ViewModels
 
 			// ReSharper disable once VirtualMemberCallInConstructor
 			this.DisplayName = startTime.ToString(CultureInfo.CurrentCulture);
-
-			this.TimeRuler = new TimeRulerViewModel(this);
-
+			
 			this.PoolWorkerNames = new string[0];
 			IoC.Get<IWorkerPoolService>().WorkerCountChanged += this.IWorkerPoolService_WorkerCountChanged;
 		}
@@ -161,8 +158,6 @@ namespace FastBuilder.ViewModels
 					worker.Tick(now);
 				}
 			}
-
-			this.TimeRuler.Tick(now);
 		}
 	}
 }
