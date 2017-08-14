@@ -8,19 +8,17 @@
              d:DesignHeight="48" d:DesignWidth="300">
 
     <ItemsControl x:Name="Jobs"
-                    VerticalAlignment="Center">
+                  VerticalAlignment="Center">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <Grid Height="28" />
+                <Canvas Height="28" />
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemContainerStyle>
             <Style TargetType="{x:Type ContentPresenter}">
                 <Setter Property="MinWidth" Value="10" />
-                <Setter Property="HorizontalAlignment" Value="Left" />
-                <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Width" Value="{Binding UIWidth}" />
-                <Setter Property="Margin" Value="{Binding UIMargin}" />
+                <Setter Property="Canvas.Left" Value="{Binding UILeft}" />
             </Style>
         </ItemsControl.ItemContainerStyle>
     </ItemsControl>

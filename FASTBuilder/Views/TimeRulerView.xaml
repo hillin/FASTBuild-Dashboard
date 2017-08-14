@@ -9,21 +9,21 @@
              mc:Ignorable="d" 
              d:DesignHeight="24" d:DesignWidth="300">
     <UserControl.Resources>
+        
         <Style TargetType="ItemsControl">
             <Setter Property="ItemsPanel">
                 <Setter.Value>
                     <ItemsPanelTemplate>
-                        <Grid />
+                        <Canvas Height="24" />
                     </ItemsPanelTemplate>
                 </Setter.Value>
             </Setter>
             <Setter Property="ItemContainerStyle">
                 <Setter.Value>
                     <Style TargetType="{x:Type ContentPresenter}">
-                        <Setter Property="Margin" Value="{Binding UIMargin}" />
+                        <Setter Property="Canvas.Left" Value="{Binding UILeft}" />
                         <Setter Property="Width" Value="{Binding UIWidth}" />
-                        <Setter Property="VerticalAlignment" Value="Bottom" />
-                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="Height" Value="24" />
                     </Style>
                 </Setter.Value>
             </Setter>

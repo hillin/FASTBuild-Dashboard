@@ -72,8 +72,8 @@ namespace FastBuilder.ViewModels
 			}
 		}
 
-		public Thickness UIMargin => new Thickness(
-			Math.Max(0.0, (this.StartTime - this._sessionStartTime).TotalSeconds) * BuildJobViewModel.GetUIScaling(), 0, 0, 0);
+		public double UILeft => Math.Max(0.0, (this.StartTime - this._sessionStartTime).TotalSeconds) *
+		                        BuildJobViewModel.GetUIScaling();
 
 		public bool ShouldShowText => this.UIWidth >= 48;
 
@@ -212,7 +212,7 @@ namespace FastBuilder.ViewModels
 
 		private void OnScalingChanged(object sender, EventArgs e)
 		{
-			this.NotifyOfPropertyChange(nameof(this.UIMargin));
+			this.NotifyOfPropertyChange(nameof(this.UILeft));
 			this.UpdateUIWidth();
 		}
 

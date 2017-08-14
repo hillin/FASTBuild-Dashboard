@@ -128,7 +128,7 @@ namespace FastBuilder.ViewModels
 				var tickSeconds = i * grain.MajorInterval;
 				tick.Time = TimeSpan.FromSeconds(tickSeconds);
 				tick.LabelText = tick.Time.ToString(labelTextFormat);
-				tick.UIMargin = new Thickness(tickSeconds * scaling - tickWidth / 2.0, 0, 0, 0);
+				tick.UILeft = tickSeconds * scaling - tickWidth / 2.0;
 				tick.UIWidth = tickWidth;
 			}
 
@@ -145,7 +145,7 @@ namespace FastBuilder.ViewModels
 				var tick = this.MinorTicks[i];
 				var tickSeconds = steps * grain.MinorInterval;
 				tick.Time = TimeSpan.FromSeconds(tickSeconds);
-				tick.UIMargin = new Thickness(tickSeconds * scaling - tickWidth / 2.0, 0, 0, 0);
+				tick.UILeft = tickSeconds * scaling - tickWidth / 2.0;
 				tick.UIWidth = tickWidth;
 			}
 		}

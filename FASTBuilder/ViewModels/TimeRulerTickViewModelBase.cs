@@ -14,6 +14,7 @@ namespace FastBuilder.ViewModels
 		private TimeSpan _time;
 		private Thickness _uiMargin;
 		private double _uiWidth;
+		private double _uiLeft;
 
 		public TimeSpan Time
 		{
@@ -26,13 +27,13 @@ namespace FastBuilder.ViewModels
 			}
 		}
 
-		public Thickness UIMargin
+		public double UILeft
 		{
-			get => _uiMargin;
+			get => _uiLeft;
 			set
 			{
-				if (value.Equals(_uiMargin)) return;
-				_uiMargin = value;
+				if (value.Equals(_uiLeft)) return;
+				_uiLeft = value;
 				this.NotifyOfPropertyChange();
 			}
 		}
