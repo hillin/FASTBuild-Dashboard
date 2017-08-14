@@ -10,6 +10,6 @@ namespace FastBuilder.ViewModels
 {
 	internal class MainWindowViewModel : PropertyChangedBase
 	{
-		public BuildWatcherViewModel Watcher { get; } = new BuildWatcherViewModel();
+		public BuildWatcherViewModel BuildWatcher { get; } = new BuildWatcherViewModel();
 	}
 }

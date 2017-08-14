@@ -103,6 +103,7 @@ namespace FastBuilder.Communication
 			if (tokens.Length < 2)
 			{
 				this.IgnoreLog(message);
+				return;
 			}
 
 			try

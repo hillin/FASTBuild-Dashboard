@@ -16,7 +16,11 @@
         MinWidth="600"
         MinHeight="400"
         Title="FASTBuild" Height="400" Width="800">
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo ProgressState="{Binding BuildWatcher.TaskbarProgressState}"
+                         ProgressValue="{Binding BuildWatcher.TaskbarProgressValue}" />
+    </Window.TaskbarItemInfo>
     <Grid>
-        <ContentControl x:Name="Watcher" />
+        <ContentControl x:Name="BuildWatcher" />
     </Grid>
 </Window>

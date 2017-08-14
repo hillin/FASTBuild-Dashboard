@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Timers;
+using System.Windows.Shell;
 using Caliburn.Micro;
 using FastBuilder.Communication;
 using FastBuilder.Communication.Events;
@@ -11,6 +12,8 @@ namespace FastBuilder.ViewModels
 	{
 		private BuildSessionViewModel _currentSession;
 		private readonly BuildWatcher _watcher;
+		private TaskbarItemProgressState _taskbarProgressState;
+		private double _taskbarProgressValue;
 
 		public BuildSessionViewModel CurrentSession
 		{
@@ -19,6 +22,28 @@ namespace FastBuilder.ViewModels
 			{
 				if (object.Equals(value, _currentSession)) return;
 				_currentSession = value;
+				this.NotifyOfPropertyChange();
+			}
+		}
+
+		public TaskbarItemProgressState TaskbarProgressState
+		{
+			get => _taskbarProgressState;
+			private set
+			{
+				if (value == _taskbarProgressState) return;
+				_taskbarProgressState = value;
+				this.NotifyOfPropertyChange();
+			}
+		}
+
+		public double TaskbarProgressValue
+		{
+			get => _taskbarProgressValue;
+			private set
+			{
+				if (value.Equals(_taskbarProgressValue)) return;
+				_taskbarProgressValue = value;
 				this.NotifyOfPropertyChange();
 			}
 		}
@@ -97,17 +122,22 @@ namespace FastBuilder.ViewModels
 
 			this.Items.Add(this.CurrentSession);
 			this.ActivateItem(this.CurrentSession);
+
+			this.TaskbarProgressState = TaskbarItemProgressState.Indeterminate;
 		}
 
 		private void Watcher_SessionStopped(object sender, StopBuildEventArgs e)
 		{
 			this.CurrentSession?.OnStopped(e);
+			this.TaskbarProgressState = TaskbarItemProgressState.None;
 		}
 
 		private void Watcher_ReportProgress(object sender, ReportProgressEventArgs e)
 		{
 			this.EnsureCurrentSession();
 			this.CurrentSession.ReportProgress(e);
+			this.TaskbarProgressState = TaskbarItemProgressState.Normal;
+			this.TaskbarProgressValue = e.Progress / 100;
 		}
 
 		private void Watcher_ReportCounter(object sender, ReportCounterEventArgs e)
