@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -160,9 +161,12 @@ namespace FastBuilder.Views
 
 		private void UpdateTicks(double startTime)
 		{
+			if (DesignerProperties.GetIsInDesignMode(this))
+				return;
+
 			_startTime = startTime;
 
-			var headerViewWidth = (double)this.FindResource("HeaderViewWidth");
+			var headerViewWidth =(double) this.FindResource("HeaderViewWidth");
 
 			var duration = (this.ActualWidth - headerViewWidth) / IoC.Get<IScaleService>().Scaling;
 
