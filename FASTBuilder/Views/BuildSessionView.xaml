@@ -168,7 +168,7 @@
                           VerticalAlignment="Bottom"
                           Margin="0,0,0,17"
                           Height="24"
-                          Width="184"
+                          Width="{StaticResource HeaderViewWidth}"
                           Background="{DynamicResource MaterialDesignBackground}">
 
                         <StackPanel Orientation="Horizontal"
