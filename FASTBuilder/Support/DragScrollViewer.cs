@@ -37,14 +37,14 @@ namespace FastBuilder.Support
 			this.CancelDrag(PreviousVelocity);
 		}
 
-		protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+		protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
 		{
 			_beginPoint = _currentPoint = _previousPoint = _previousPreviousPoint = e.GetPosition(this);
 			this.Momentum = new Vector(0, 0);
 			_mouseDown = true;
 		}
 
-		protected override void OnPreviewMouseMove(MouseEventArgs e)
+		protected override void OnMouseMove(MouseEventArgs e)
 		{
 			_currentPoint = e.GetPosition(this);
 			if (_mouseDown && !_isDragging)
@@ -60,7 +60,7 @@ namespace FastBuilder.Support
 			}
 		}
 
-		protected override void OnPreviewMouseUp(MouseButtonEventArgs e)
+		protected override void OnMouseUp(MouseButtonEventArgs e)
 		{
 			if (_isDragging)
 				e.Handled = true;
