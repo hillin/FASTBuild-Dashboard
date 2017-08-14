@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Caliburn.Micro;
 using FastBuilder.Services;
+using FastBuilder.ViewModels;
 
 namespace FastBuilder.Views
 {
@@ -23,6 +24,8 @@ namespace FastBuilder.Views
 	{
 		private bool _isAutoScrollingContent;
 		private double _previousHorizontalScrollOffset;
+
+		private BuildSessionViewModel ViewModel => (BuildSessionViewModel)this.DataContext;
 
 		public BuildSessionView()
 		{
@@ -55,20 +58,33 @@ namespace FastBuilder.Views
 					e.VerticalOffset * this.HeaderScrollViewer.ScrollableHeight / this.ContentScrollViewer.ScrollableHeight);
 			}
 
+			this.UpdateViewTimeRange(ViewTimeRangeChangeReason.Scroll);
+		}
+
+		private void UpdateViewTimeRange(ViewTimeRangeChangeReason reason)
+		{
+			var viewTransformService = IoC.Get<IViewTransformService>();
+
 			if (this.ContentScrollViewer.ScrollableWidth > 0)
 			{
-				this.TimeRuler.SetScrollPosition(horizontalOffset / this.ContentScrollViewer.ScrollableWidth);
+				var headerViewWidth = (double)this.FindResource("HeaderViewWidth");
+				var startTime = (this.ContentScrollViewer.HorizontalOffset - headerViewWidth) / viewTransformService.Scaling;
+				var duration = this.ContentScrollViewer.ActualWidth / viewTransformService.Scaling;
+				var endTime = startTime + duration;
+				viewTransformService.SetViewTimeRange(startTime, endTime, reason);
 			}
 			else
 			{
-				this.TimeRuler.SetScrollPosition(0);
+				viewTransformService.SetViewTimeRange(0, this.ViewModel.ElapsedTime.TotalSeconds, reason);
 			}
 		}
 
 		private void UserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
 		{
-			var scaleService = IoC.Get<IScaleService>();
+			var scaleService = IoC.Get<IViewTransformService>();
 			scaleService.Scaling = scaleService.Scaling * (1 + e.Delta / 1200.0);
+
+			this.UpdateViewTimeRange(ViewTimeRangeChangeReason.Zoom);
 
 			e.Handled = true;
 		}

@@ -94,9 +94,10 @@
     <Compile Include="Communication\Events\StopBuildEventArgs.cs" />
     <Compile Include="Communication\Events\StartBuildEventArgs.cs" />
     <Compile Include="Communication\LogWatcher.cs" />
-    <Compile Include="Services\IScaleService.cs" />
+    <Compile Include="Services\IViewTransformService.cs" />
     <Compile Include="Services\IWorkerPoolService.cs" />
-    <Compile Include="Services\ScaleService.cs" />
+    <Compile Include="Services\ViewTimeRangeChangeReason.cs" />
+    <Compile Include="Services\ViewTransformService.cs" />
     <Compile Include="Services\WorkerPoolService.cs" />
     <Compile Include="Support\BoolToVisibilityConverter.cs" />
     <Compile Include="Support\DragScrollViewer.cs" />

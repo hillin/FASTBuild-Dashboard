@@ -25,7 +25,7 @@ namespace FastBuilder
 			_container.Singleton<IWindowManager, WindowManager>();
 			_container.Singleton<IEventAggregator, EventAggregator>();
 			_container.Singleton<MainWindowViewModel>();
-			_container.Singleton<IScaleService, ScaleService>();
+			_container.Singleton<IViewTransformService, ViewTransformService>();
 			_container.Singleton<IWorkerPoolService, WorkerPoolService>();
 		}
 

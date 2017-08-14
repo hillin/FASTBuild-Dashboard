@@ -142,7 +142,12 @@
                         <DockPanel>
                             <Grid Height="24" 
                                   DockPanel.Dock="Bottom" />   <!-- leave 24px blank for time ruler -->
-                            <ItemsControl x:Name="Workers" />
+                            <ItemsControl x:Name="Workers">
+                                <!-- using BitmapCache could improve performance, but reduces visual quality too much -->
+                                <!--<ItemsControl.CacheMode>    
+                                    <BitmapCache SnapsToDevicePixels="True" />
+                                </ItemsControl.CacheMode>-->
+                            </ItemsControl>
                         </DockPanel>
                     </support:DragScrollViewer>
                     <ScrollViewer x:Name="HeaderScrollViewer" 

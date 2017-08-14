@@ -12,7 +12,7 @@ namespace FastBuilder.ViewModels
 {
 	internal class BuildJobViewModel : PropertyChangedBase
 	{
-		private readonly DateTime _sessionStartTime;
+		private readonly double _startTimeOffset;
 
 		private static string GenerateDisplayName(string eventName)
 		{
@@ -21,7 +21,7 @@ namespace FastBuilder.ViewModels
 
 		private static double GetUIScaling()
 		{
-			return IoC.Get<IScaleService>().Scaling;
+			return IoC.Get<IViewTransformService>().Scaling;
 		}
 
 		private DateTime _endTime;
@@ -72,8 +72,8 @@ namespace FastBuilder.ViewModels
 			}
 		}
 
-		public double UILeft => Math.Max(0.0, (this.StartTime - this._sessionStartTime).TotalSeconds) *
-		                        BuildJobViewModel.GetUIScaling();
+		public double UILeft => Math.Max(0.0, _startTimeOffset) *
+								BuildJobViewModel.GetUIScaling();
 
 		public bool ShouldShowText => this.UIWidth >= 48;
 
@@ -201,13 +201,14 @@ namespace FastBuilder.ViewModels
 
 		public BuildJobViewModel(StartJobEventArgs e, DateTime sessionStartTime)
 		{
-			_sessionStartTime = sessionStartTime;
 			this.EventName = e.EventName;
 			this.DisplayName = BuildJobViewModel.GenerateDisplayName(this.EventName);
 			this.StartTime = e.Time;
+			_startTimeOffset = (e.Time - sessionStartTime).TotalSeconds;
 			this.Status = BuildJobStatus.Building;
 
-			IoC.Get<IScaleService>().ScalingChanged += this.OnScalingChanged;
+			var viewTransformService = IoC.Get<IViewTransformService>();
+			viewTransformService.ScalingChanged += this.OnScalingChanged;
 		}
 
 		private void OnScalingChanged(object sender, EventArgs e)
@@ -234,7 +235,7 @@ namespace FastBuilder.ViewModels
 		{
 			this.Duration = endTime - this.StartTime;
 		}
-		
+
 		private void UpdateUIWidth()
 		{
 			this.UIWidth = Math.Max(0.0, Math.Min(this.Duration.TotalSeconds, 60 * 60 * 24)) * BuildJobViewModel.GetUIScaling();

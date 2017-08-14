@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,9 @@ using FastBuilder.Support;
 
 namespace FastBuilder.Services
 {
-	internal class ScaleService : IScaleService
+	internal class ViewTransformService : IViewTransformService
 	{
-		private const double ScalingChangedEventDelay = 100;
+		private const double ScalingChangedEventDelay = 50;
 		private const double StandardScaling = 50;
 		private const double MinimumScaling = 0.4;
 		private const double MaximumScaling = 1024;
@@ -36,11 +37,16 @@ namespace FastBuilder.Services
 			}
 		}
 
+		public double ViewStartTimeOffsetSeconds { get; private set; }
+
+		public double ViewEndTimeOffsetSeconds { get; private set; }
+
 		public event EventHandler PreScalingChanging;
 		public event EventHandler ScalingChanged;
 
+		public event EventHandler<ViewTimeRangeChangeReason> ViewTimeRangeChanged;
 
-		public ScaleService()
+		public ViewTransformService()
 		{
 			_scalingChangedEventDelayTimer = new Timer(ScalingChangedEventDelay)
 			{
@@ -52,6 +58,17 @@ namespace FastBuilder.Services
 		private void ScalingChangedEventDelayTimer_Elapsed(object sender, ElapsedEventArgs e)
 		{
 			this.ScalingChanged?.Invoke(this, EventArgs.Empty);
+		}
+
+		[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
+		public void SetViewTimeRange(double startTime, double endTime, ViewTimeRangeChangeReason reason)
+		{
+			if (this.ViewStartTimeOffsetSeconds == startTime && this.ViewEndTimeOffsetSeconds == endTime)
+				return;
+
+			this.ViewStartTimeOffsetSeconds = startTime;
+			this.ViewEndTimeOffsetSeconds = endTime;
+			this.ViewTimeRangeChanged?.Invoke(this, reason);
 		}
 	}
 }

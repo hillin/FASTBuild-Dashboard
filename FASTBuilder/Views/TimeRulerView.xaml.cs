@@ -86,35 +86,31 @@ namespace FastBuilder.Views
 			= new List<TimeRulerMinorTickView>();
 
 		private int _minorTickPoolIndex;
-		private double _startTime;
 
 		public TimeRulerView()
 		{
 			InitializeComponent();
-			this.UpdateTicks(0);
-			IoC.Get<IScaleService>().PreScalingChanging += this.OnPreScalingChanging;
+			var viewTransformService = IoC.Get<IViewTransformService>();
+			viewTransformService.PreScalingChanging += this.OnPreScalingChanging;
+			viewTransformService.ViewTimeRangeChanged += ViewTransformService_ViewTimeRangeChanged;
+		}
+
+		private void ViewTransformService_ViewTimeRangeChanged(object sender, ViewTimeRangeChangeReason viewTimeRangeChangeReason)
+		{
+			this.UpdateTicks();
 		}
 
 		protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
 		{
 			base.OnRenderSizeChanged(sizeInfo);
-			this.UpdateTicks(_startTime);
+			this.UpdateTicks();
 		}
 
 		private void OnPreScalingChanging(object sender, EventArgs e)
 		{
-			this.UpdateTicks(_startTime);
+			this.UpdateTicks();
 		}
 
-		public void SetScrollPosition(double position)
-		{
-			var vm = this.DataContext as BuildSessionViewModel;
-			if (vm == null)
-				return;
-
-			var startTime = vm.ElapsedTime.TotalSeconds * position;
-			this.UpdateTicks(startTime);
-		}
 		private GrainStop CalculateGrain(double scaling)
 		{
 			foreach (var grainStop in GrainStops)
@@ -159,18 +155,18 @@ namespace FastBuilder.Views
 		}
 
 
-		private void UpdateTicks(double startTime)
+		private void UpdateTicks()
 		{
 			if (DesignerProperties.GetIsInDesignMode(this))
 				return;
+			
+			var viewTransformService = IoC.Get<IViewTransformService>();
 
-			_startTime = startTime;
-
-			var headerViewWidth =(double) this.FindResource("HeaderViewWidth");
-
-			var duration = (this.ActualWidth - headerViewWidth) / IoC.Get<IScaleService>().Scaling;
-
-			var scaling = IoC.Get<IScaleService>().Scaling;
+			var startTime = viewTransformService.ViewStartTimeOffsetSeconds;
+			var endTime = viewTransformService.ViewEndTimeOffsetSeconds;
+			var duration = endTime - startTime;
+			
+			var scaling = viewTransformService.Scaling;
 			var grain = this.CalculateGrain(scaling);
 
 			_majorTickPoolIndex = 0;
@@ -181,8 +177,6 @@ namespace FastBuilder.Views
 			var firstMajorTickTime = positiveStartTime - positiveStartTime % grain.MajorInterval;
 			var firstMinorTickTime = positiveStartTime - positiveStartTime % grain.MinorInterval;
 			
-			var endTime = startTime + duration;
-
 			var lastMajorTickTime = endTime + grain.MajorInterval - endTime % grain.MajorInterval;
 			var lastMinorTickTime = endTime + grain.MinorInterval - endTime % grain.MajorInterval;
 
@@ -192,12 +186,12 @@ namespace FastBuilder.Views
 			var labelTextFormat = TimeRulerView.GetLabelTextFormat(duration, grain.MajorInterval);
 			var tickWidth = grain.MajorInterval * scaling;
 
-			for (var time = realStartTime;  time <= realEndTime; time += grain.MajorInterval)
+			for (var time = realStartTime; time <= realEndTime; time += grain.MajorInterval)
 			{
 				var tick = this.PoolGetMajorTick();
 				tick.Width = tickWidth;
 				tick.SetTime(TimeSpan.FromSeconds(time), labelTextFormat);
-				Canvas.SetLeft(tick, (time - startTime) * scaling - tickWidth / 2.0 + headerViewWidth);
+				Canvas.SetLeft(tick, (time - startTime) * scaling - tickWidth / 2.0 );
 			}
 
 			tickWidth = grain.MinorInterval * scaling;
@@ -210,7 +204,7 @@ namespace FastBuilder.Views
 
 				var tick = this.PoolGetMinorTick();
 				tick.Width = tickWidth;
-				Canvas.SetLeft(tick, (time - startTime) * scaling - tickWidth / 2.0 + headerViewWidth);
+				Canvas.SetLeft(tick, (time - startTime) * scaling - tickWidth / 2.0 );
 			}
 
 			for (var i = _majorTickPoolIndex; i < _majorTickPool.Count; ++i)
