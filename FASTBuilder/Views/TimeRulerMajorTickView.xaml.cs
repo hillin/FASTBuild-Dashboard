@@ -24,7 +24,8 @@ namespace FastBuilder.Views
 
 	    public void SetTime(TimeSpan time, string labelTextFormat)
 	    {
-		    this.LabelText.Text = time.ToString(labelTextFormat);
+		    // ReSharper disable once CompareOfFloatsByEqualityOperator
+		    this.LabelText.Text = time.TotalSeconds == 0 ? string.Empty : time.ToString(labelTextFormat);
 	    }
     }
 }

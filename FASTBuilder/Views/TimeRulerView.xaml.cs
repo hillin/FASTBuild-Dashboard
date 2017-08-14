@@ -161,7 +161,10 @@ namespace FastBuilder.Views
 		private void UpdateTicks(double startTime)
 		{
 			_startTime = startTime;
-			var duration = (this.ActualWidth - 200) / IoC.Get<IScaleService>().Scaling;
+
+			var headerViewWidth = (double)this.FindResource("HeaderViewWidth");
+
+			var duration = (this.ActualWidth - headerViewWidth) / IoC.Get<IScaleService>().Scaling;
 
 			var scaling = IoC.Get<IScaleService>().Scaling;
 			var grain = this.CalculateGrain(scaling);
@@ -190,7 +193,7 @@ namespace FastBuilder.Views
 				var tick = this.PoolGetMajorTick();
 				tick.Width = tickWidth;
 				tick.SetTime(TimeSpan.FromSeconds(time), labelTextFormat);
-				Canvas.SetLeft(tick, (time - startTime) * scaling - tickWidth / 2.0 + 200);
+				Canvas.SetLeft(tick, (time - startTime) * scaling - tickWidth / 2.0 + headerViewWidth);
 			}
 
 			tickWidth = grain.MinorInterval * scaling;
@@ -203,7 +206,7 @@ namespace FastBuilder.Views
 
 				var tick = this.PoolGetMinorTick();
 				tick.Width = tickWidth;
-				Canvas.SetLeft(tick, (time - startTime) * scaling - tickWidth / 2.0 + 200);
+				Canvas.SetLeft(tick, (time - startTime) * scaling - tickWidth / 2.0 + headerViewWidth);
 			}
 
 			for (var i = _majorTickPoolIndex; i < _majorTickPool.Count; ++i)

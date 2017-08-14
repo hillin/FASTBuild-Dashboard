@@ -12,7 +12,7 @@
                          UniformCornerRadius="0">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />    <!-- left blank for header -->
+                <ColumnDefinition Width="{StaticResource HeaderViewColumnSize}" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
