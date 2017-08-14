@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using FastBuilder.Communication;
 using FastBuilder.Communication.Events;
+using FastBuilder.Services;
 
 namespace FastBuilder.ViewModels
 {
@@ -10,7 +11,9 @@ namespace FastBuilder.ViewModels
 	{
 		private bool _isBusy;
 		private BuildJobViewModel _currentJob;
+		private double _uiJobsTotalWidth;
 		public int Id { get; }
+		public BuildWorkerViewModel OwnerWorker { get; }
 
 		public BindableCollection <BuildJobViewModel> Jobs { get; } = new BindableCollection <BuildJobViewModel>();
 
@@ -36,9 +39,21 @@ namespace FastBuilder.ViewModels
 			}
 		}
 
-		public BuildCoreViewModel(int id)
+		public double UIJobsTotalWidth
+		{
+			get => _uiJobsTotalWidth;
+			private set
+			{
+				if (value.Equals(_uiJobsTotalWidth)) return;
+				_uiJobsTotalWidth = value;
+				this.NotifyOfPropertyChange();
+			}
+		}
+
+		public BuildCoreViewModel(int id, BuildWorkerViewModel ownerWorker)
 		{
 			this.Id = id;
+			this.OwnerWorker = ownerWorker;
 		}
 
 		public void OnJobFinished(FinishJobEventArgs e)
@@ -79,6 +94,8 @@ namespace FastBuilder.ViewModels
 					job.Tick(now);
 				}
 			}
+
+			this.UIJobsTotalWidth = IoC.Get<IScaleService>().Scaling * this.OwnerWorker.OwnerSession.ElapsedTime.TotalSeconds;
 		}
 	}
 }

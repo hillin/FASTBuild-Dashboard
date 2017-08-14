@@ -9,13 +9,15 @@ namespace FastBuilder.ViewModels
 	internal class BuildWorkerViewModel : PropertyChangedBase
 	{
 		public string HostName { get; }
+		public BuildSessionViewModel OwnerSession { get; }
 		public BindableCollection <BuildCoreViewModel> Cores { get; } = new BindableCollection <BuildCoreViewModel>();
 
 		public int ActiveCoreCount { get; private set; }
 
-		public BuildWorkerViewModel(string hostName)
+		public BuildWorkerViewModel(string hostName, BuildSessionViewModel ownerSession)
 		{
 			this.HostName = hostName;
+			this.OwnerSession = ownerSession;
 		}
 
 		public void OnJobFinished(FinishJobEventArgs e)
@@ -31,7 +33,7 @@ namespace FastBuilder.ViewModels
 			var core = this.Cores.FirstOrDefault(c => !c.IsBusy);
 			if (core == null)
 			{
-				core = new BuildCoreViewModel(this.Cores.Count);
+				core = new BuildCoreViewModel(this.Cores.Count, this);
 
 				// called from log watcher thread
 				lock (this.Cores)

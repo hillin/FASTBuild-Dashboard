@@ -135,16 +135,16 @@
 
             <Border x:Name="IsSessionViewVisible">
                 <Grid>
-                    <ScrollViewer x:Name="ContentScrollViewer" 
+                    <support:DragScrollViewer x:Name="ContentScrollViewer" 
                                   HorizontalScrollBarVisibility="Visible"
                                   VerticalScrollBarVisibility="Visible"
                                   ScrollChanged="ContentScrollViewer_ScrollChanged">
                         <DockPanel>
                             <Grid Height="24" 
                                   DockPanel.Dock="Bottom" />   <!-- leave 24px blank for time ruler -->
-                            <ItemsControl x:Name="Workers"/>
+                            <ItemsControl x:Name="Workers" />
                         </DockPanel>
-                    </ScrollViewer>
+                    </support:DragScrollViewer>
                     <ScrollViewer x:Name="HeaderScrollViewer" 
                                     IsEnabled="False"
                                     IsHitTestVisible="False"

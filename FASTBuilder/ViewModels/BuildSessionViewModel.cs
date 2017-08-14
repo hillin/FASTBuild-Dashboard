@@ -100,7 +100,7 @@ namespace FastBuilder.ViewModels
 		{
 			if (!_workerMap.TryGetValue(hostName, out var worker))
 			{
-				worker = new BuildWorkerViewModel(hostName);
+				worker = new BuildWorkerViewModel(hostName, this);
 				_workerMap.Add(hostName, worker);
 
 				// called from log watcher thread

@@ -99,6 +99,7 @@
     <Compile Include="Services\ScaleService.cs" />
     <Compile Include="Services\WorkerPoolService.cs" />
     <Compile Include="Support\BoolToVisibilityConverter.cs" />
+    <Compile Include="Support\DragScrollViewer.cs" />
     <Compile Include="Support\MouseWheelGesture.cs" />
     <Compile Include="Support\SimpleCommand.cs" />
     <Compile Include="ViewModels\BuildSessionViewModel.Status.cs" />

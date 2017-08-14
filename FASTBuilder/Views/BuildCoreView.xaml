@@ -8,7 +8,8 @@
              d:DesignHeight="48" d:DesignWidth="300">
 
     <ItemsControl x:Name="Jobs"
-                  VerticalAlignment="Center">
+                  VerticalAlignment="Center"
+                  Width="{Binding UIJobsTotalWidth}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <Canvas Height="28" />
