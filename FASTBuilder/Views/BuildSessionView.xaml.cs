@@ -65,18 +65,12 @@ namespace FastBuilder.Views
 		{
 			var viewTransformService = IoC.Get<IViewTransformService>();
 
-			if (this.ContentScrollViewer.ScrollableWidth > 0)
-			{
-				var headerViewWidth = (double)this.FindResource("HeaderViewWidth");
-				var startTime = (this.ContentScrollViewer.HorizontalOffset - headerViewWidth) / viewTransformService.Scaling;
-				var duration = this.ContentScrollViewer.ActualWidth / viewTransformService.Scaling;
-				var endTime = startTime + duration;
-				viewTransformService.SetViewTimeRange(startTime, endTime, reason);
-			}
-			else
-			{
-				viewTransformService.SetViewTimeRange(0, this.ViewModel.ElapsedTime.TotalSeconds, reason);
-			}
+			var headerViewWidth = (double)this.FindResource("HeaderViewWidth");
+
+			var startTime = (this.ContentScrollViewer.HorizontalOffset - headerViewWidth) / viewTransformService.Scaling;
+			var duration = this.ContentScrollViewer.ActualWidth / viewTransformService.Scaling;
+			var endTime = startTime + duration;
+			viewTransformService.SetViewTimeRange(startTime, endTime, reason);
 		}
 
 		private void UserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
