@@ -139,7 +139,7 @@ namespace FastBuilder.ViewModels
 			this.EnsureCurrentSession();
 			this.CurrentSession.ReportProgress(e);
 			this.TaskbarProgressState = TaskbarItemProgressState.Normal;
-			this.TaskbarProgressValue = e.Progress / 100;
+			this.TaskbarProgressValue = e.Progress;
 		}
 
 		private void Watcher_ReportCounter(object sender, ReportCounterEventArgs e)
