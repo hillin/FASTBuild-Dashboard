@@ -92,10 +92,10 @@ namespace FastBuilder.Views
 			InitializeComponent();
 			var viewTransformService = IoC.Get<IViewTransformService>();
 			viewTransformService.PreScalingChanging += this.OnPreScalingChanging;
-			viewTransformService.ViewTimeRangeChanged += ViewTransformService_ViewTimeRangeChanged;
+			viewTransformService.ViewTimeRangeChanged += this.OnViewTimeRangeChanged;
 		}
 
-		private void ViewTransformService_ViewTimeRangeChanged(object sender, ViewTimeRangeChangeReason viewTimeRangeChangeReason)
+		private void OnViewTimeRangeChanged(object sender, ViewTimeRangeChangeReason viewTimeRangeChangeReason)
 		{
 			this.UpdateTicks();
 		}

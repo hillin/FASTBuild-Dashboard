@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FastBuilder.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:support="clr-namespace:FastBuilder.Support"
              mc:Ignorable="d" 
              d:DesignHeight="28" d:DesignWidth="120">
 
@@ -24,11 +25,9 @@
             BorderBrush="{Binding UIBorderBrush}"
             Background="{Binding UIBackground}"
             ToolTip="{Binding ToolTipText}">
-        <Border x:Name="ShouldShowText">
-            <TextBlock x:Name="DisplayName"
-                       Foreground="{Binding UIForeground}"
-                       VerticalAlignment="Center"
-                       Text="DisplayName" />
-        </Border>
+        <TextBlock Foreground="{Binding UIForeground}"
+                    VerticalAlignment="Center"
+                    Text="{Binding DisplayName}" 
+                    Visibility="{Binding ShouldShowText, Converter={support:BoolToVisibilityConverter}}" />
     </Border>
 </UserControl>

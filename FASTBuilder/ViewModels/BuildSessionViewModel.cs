@@ -36,7 +36,11 @@ namespace FastBuilder.ViewModels
 		public TimeSpan ElapsedTime => _currentTime - this.StartTime;
 		public string DisplayElapsedTime => this.ElapsedTime.ToString(@"hh\:mm\:ss\.f");
 
+		public event EventHandler<double> Ticked;
+
 		public BindableCollection<BuildWorkerViewModel> Workers { get; } = new BindableCollection<BuildWorkerViewModel>();
+
+		public SessionJobManager JobManager { get; } = new SessionJobManager();
 
 		private BuildSessionViewModel(DateTime startTime, int? processId, int? logVersion)
 		{
@@ -75,9 +79,12 @@ namespace FastBuilder.ViewModels
 			// give components a last chance to tick
 			this.Tick(time);
 			this.IsRunning = false;
+
+			var currentTimeOffset = this.ElapsedTime.TotalSeconds;
+
 			foreach (var worker in this.Workers)
 			{
-				worker.OnSessionStopped(time);
+				worker.OnSessionStopped(currentTimeOffset);
 			}
 
 			this.UpdateActiveWorkerAndCoreCount();
@@ -112,7 +119,13 @@ namespace FastBuilder.ViewModels
 
 		public void OnJobFinished(FinishJobEventArgs e)
 		{
-			this.EnsureWorker(e.HostName).OnJobFinished(e);
+			var job = this.EnsureWorker(e.HostName).OnJobFinished(e);
+
+			if (job != null)
+			{
+				this.JobManager.NotifyJobFinished(job);
+			}
+
 			switch (e.Result)
 			{
 				case BuildJobStatus.Success:
@@ -135,7 +148,8 @@ namespace FastBuilder.ViewModels
 
 		public void OnJobStarted(StartJobEventArgs e)
 		{
-			this.EnsureWorker(e.HostName).OnJobStarted(e, this.StartTime);
+			var job = this.EnsureWorker(e.HostName).OnJobStarted(e, this.StartTime);
+			this.JobManager.Add(job);
 			++this.InProgressJobCount;
 
 			this.UpdateActiveWorkerAndCoreCount();
@@ -150,14 +164,20 @@ namespace FastBuilder.ViewModels
 			this.NotifyOfPropertyChange(nameof(this.ElapsedTime));
 			this.NotifyOfPropertyChange(nameof(this.DisplayElapsedTime));
 
+			var timeOffset = this.ElapsedTime.TotalSeconds;
+
+			this.JobManager.Tick(timeOffset);
+
 			// called from tick thread
 			lock (this.Workers)
 			{
 				foreach (var worker in this.Workers)
 				{
-					worker.Tick(now);
+					worker.Tick(timeOffset);
 				}
 			}
+
+			this.Ticked?.Invoke(this, timeOffset);
 		}
 	}
 }

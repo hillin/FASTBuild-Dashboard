@@ -12,7 +12,7 @@ namespace FastBuilder.ViewModels
 {
 	internal class BuildJobViewModel : PropertyChangedBase
 	{
-		private readonly double _startTimeOffset;
+		public BuildCoreViewModel OwnerCore { get; }
 
 		private static string GenerateDisplayName(string eventName)
 		{
@@ -23,39 +23,28 @@ namespace FastBuilder.ViewModels
 		{
 			return IoC.Get<IViewTransformService>().Scaling;
 		}
-
-		private DateTime _endTime;
+		
 		private BuildJobStatus _status;
-		private TimeSpan _duration;
+		private double _elapsedSeconds;
 		private double _uiWidth;
 		public DateTime StartTime { get; }
+		public double StartTimeOffset { get; }
 
-		public DateTime EndTime
+		public DateTime EndTime => this.StartTime.AddSeconds(this.ElapsedSeconds);
+
+		public double EndTimeOffset => this.StartTimeOffset + this.ElapsedSeconds;
+		
+		public double ElapsedSeconds
 		{
-			get => _endTime;
+			get => _elapsedSeconds;
 			private set
 			{
-				if (value.Equals(_endTime)) return;
-				_endTime = value;
-				this.NotifyOfPropertyChange();
-				this.UpdateDuration(value);
-				this.NotifyOfPropertyChange(nameof(this.UIForeground));
-				this.NotifyOfPropertyChange(nameof(this.UIBackground));
-				this.NotifyOfPropertyChange(nameof(this.UIBorderBrush));
-			}
-		}
-
-		//public TimeSpan Duration => this.IsFinished ? this.EndTime - this.StartTime : DateTime.Now - this.StartTime;
-
-		public TimeSpan Duration
-		{
-			get => _duration;
-			private set
-			{
-				if (value.Equals(_duration)) return;
-				_duration = value;
+				if (value.Equals(_elapsedSeconds)) return;
+				_elapsedSeconds = value;
 				this.NotifyOfPropertyChange();
 				this.UpdateUIWidth();
+				this.NotifyOfPropertyChange(nameof(this.EndTime));
+				this.NotifyOfPropertyChange(nameof(this.EndTimeOffset));
 				this.NotifyOfPropertyChange(nameof(this.ToolTipText));
 			}
 		}
@@ -72,7 +61,7 @@ namespace FastBuilder.ViewModels
 			}
 		}
 
-		public double UILeft => Math.Max(0.0, _startTimeOffset) *
+		public double UILeft => Math.Max(0.0, this.StartTimeOffset) *
 								BuildJobViewModel.GetUIScaling();
 
 		public bool ShouldShowText => this.UIWidth >= 48;
@@ -175,7 +164,7 @@ namespace FastBuilder.ViewModels
 						throw new ArgumentOutOfRangeException();
 				}
 
-				builder.AppendLine($" ({this.Duration.TotalSeconds:0.#} seconds elapsed)");
+				builder.AppendLine($" ({this.ElapsedSeconds:0.#} seconds elapsed)");
 
 				if (!string.IsNullOrWhiteSpace(this.Message))
 					builder.AppendLine(this.Message);
@@ -196,7 +185,7 @@ namespace FastBuilder.ViewModels
 				_status = value;
 				this.NotifyOfPropertyChange();
 				this.NotifyOfPropertyChange(nameof(this.IsFinished));
-				this.NotifyOfPropertyChange(nameof(this.Duration));
+				this.NotifyOfPropertyChange(nameof(this.ElapsedSeconds));
 				this.NotifyOfPropertyChange(nameof(this.UIWidth));
 				this.NotifyOfPropertyChange(nameof(this.ToolTipText));
 				this.NotifyOfPropertyChange(nameof(this.UIForeground));
@@ -205,12 +194,13 @@ namespace FastBuilder.ViewModels
 			}
 		}
 
-		public BuildJobViewModel(StartJobEventArgs e, DateTime sessionStartTime)
+		public BuildJobViewModel(BuildCoreViewModel ownerCore, StartJobEventArgs e, DateTime sessionStartTime)
 		{
+			this.OwnerCore = ownerCore;
 			this.EventName = e.EventName;
 			this.DisplayName = BuildJobViewModel.GenerateDisplayName(this.EventName);
 			this.StartTime = e.Time;
-			_startTimeOffset = (e.Time - sessionStartTime).TotalSeconds;
+			this.StartTimeOffset = (e.Time - sessionStartTime).TotalSeconds;
 			this.Status = BuildJobStatus.Building;
 
 			var viewTransformService = IoC.Get<IViewTransformService>();
@@ -226,41 +216,41 @@ namespace FastBuilder.ViewModels
 		public void OnFinished(FinishJobEventArgs e)
 		{
 			this.Message = e.Message;
+			this.ElapsedSeconds = (e.Time - this.StartTime).TotalSeconds;
 			this.Status = e.Result;
-			this.EndTime = e.Time;
 		}
 
 
-		public void InvalidateCurrentTime(DateTime now)
+		public void InvalidateCurrentTime(double currentTimeOffset)
 		{
 			if (this.IsFinished)
 				return;
 
-			this.UpdateDuration(now);
+			this.UpdateDuration(currentTimeOffset);
 		}
 
-		private void UpdateDuration(DateTime endTime)
+		private void UpdateDuration(double currentTimeOffset)
 		{
-			this.Duration = endTime - this.StartTime;
+			this.ElapsedSeconds = currentTimeOffset - this.StartTimeOffset;
 		}
 
 		private void UpdateUIWidth()
 		{
-			this.UIWidth = Math.Max(0.0, Math.Min(this.Duration.TotalSeconds, 60 * 60 * 24)) * BuildJobViewModel.GetUIScaling();
+			this.UIWidth = Math.Max(0.0, Math.Min(this.ElapsedSeconds, 60 * 60 * 24)) * BuildJobViewModel.GetUIScaling();
 		}
 
-		public void OnSessionStopped(DateTime time)
+		public void OnSessionStopped(double currentTimeOffset)
 		{
 			if (!this.IsFinished)
 			{
 				this.Status = BuildJobStatus.Stopped;
-				this.EndTime = time;
+				this.ElapsedSeconds = currentTimeOffset - this.StartTimeOffset;
 			}
 		}
 
-		public void Tick(DateTime now)
+		public void Tick(double currentTimeOffset)
 		{
-			this.InvalidateCurrentTime(now);
+			this.InvalidateCurrentTime(currentTimeOffset);
 		}
 	}
 }

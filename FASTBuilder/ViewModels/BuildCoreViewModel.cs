@@ -63,42 +63,51 @@ namespace FastBuilder.ViewModels
 			this.UpdateUIJobsTotalWidth();
 		}
 
-		public void OnJobFinished(FinishJobEventArgs e)
+		public BuildJobViewModel OnJobFinished(FinishJobEventArgs e)
 		{
-			this.CurrentJob?.OnFinished(e);
-			this.CurrentJob = null;
 			this.IsBusy = false;
+			if (this.CurrentJob != null)
+			{
+				var job = this.CurrentJob;
+				this.CurrentJob.OnFinished(e);
+				this.CurrentJob = null;
+				return job;
+			}
+
+			return null;
 		}
 
-		public void OnJobStarted(StartJobEventArgs e, DateTime sessionStartTime)
+		public BuildJobViewModel OnJobStarted(StartJobEventArgs e, DateTime sessionStartTime)
 		{
 			this.IsBusy = true;
 
-			this.CurrentJob = new BuildJobViewModel(e, sessionStartTime);
+			this.CurrentJob = new BuildJobViewModel(this, e, sessionStartTime);
 
 			// called from log watcher thread
 			lock (this.Jobs)
 			{
 				this.Jobs.Add(this.CurrentJob);
 			}
+
+			return this.CurrentJob;
 		}
 
-		public void OnSessionStopped(DateTime time)
+		public void OnSessionStopped(double currentTimeOffset)
 		{
 			foreach (var job in this.Jobs)
 			{
-				job.OnSessionStopped(time);
+				job.OnSessionStopped(currentTimeOffset);
 			}
 		}
 
-		public void Tick(DateTime now)
+		public void Tick(double currentTimeOffset)
 		{
 			// called from tick thread
 			lock (this.Jobs)
 			{
 				foreach (var job in this.Jobs)
 				{
-					job.Tick(now);
+					job.Tick(currentTimeOffset);
 				}
 			}
 

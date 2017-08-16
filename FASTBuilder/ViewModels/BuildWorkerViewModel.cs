@@ -20,15 +20,17 @@ namespace FastBuilder.ViewModels
 			this.OwnerSession = ownerSession;
 		}
 
-		public void OnJobFinished(FinishJobEventArgs e)
+		public BuildJobViewModel OnJobFinished(FinishJobEventArgs e)
 		{
 			var core = this.Cores.FirstOrDefault(c => c.CurrentJob != null && c.CurrentJob.EventName == e.EventName);
-			core?.OnJobFinished(e);
+			var job = core?.OnJobFinished(e);
 
 			this.UpdateActiveCoreCount();
+
+			return job;
 		}
 
-		public void OnJobStarted(StartJobEventArgs e, DateTime sessionStartTime)
+		public BuildJobViewModel OnJobStarted(StartJobEventArgs e, DateTime sessionStartTime)
 		{
 			var core = this.Cores.FirstOrDefault(c => !c.IsBusy);
 			if (core == null)
@@ -42,9 +44,11 @@ namespace FastBuilder.ViewModels
 				}
 			}
 
-			core.OnJobStarted(e, sessionStartTime);
+			var job = core.OnJobStarted(e, sessionStartTime);
 
 			this.UpdateActiveCoreCount();
+
+			return job;
 		}
 
 		private void UpdateActiveCoreCount()
@@ -52,24 +56,24 @@ namespace FastBuilder.ViewModels
 			this.ActiveCoreCount = this.Cores.Count(c => c.IsBusy);
 		}
 
-		public void OnSessionStopped(DateTime time)
+		public void OnSessionStopped(double currentTimeOffset)
 		{
 			foreach (var core in this.Cores)
 			{
-				core.OnSessionStopped(time);
+				core.OnSessionStopped(currentTimeOffset);
 			}
 
 			this.ActiveCoreCount = 0;
 		}
 
-		public void Tick(DateTime now)
+		public void Tick(double currentTimeOffset)
 		{
 			// called from tick thread
 			lock (this.Cores)
 			{
 				foreach (var core in this.Cores)
 				{
-					core.Tick(now);
+					core.Tick(currentTimeOffset);
 				}
 			}
 		}

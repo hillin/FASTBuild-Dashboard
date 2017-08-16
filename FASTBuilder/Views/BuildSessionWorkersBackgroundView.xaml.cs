@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace FastBuilder.Views
 {
     /// <summary>
-    /// Interaction logic for WorkersHeaderView.xaml
+    /// Interaction logic for BuildWorkerBackgroundView.xaml
     /// </summary>
-    public partial class WorkersHeaderView : UserControl
+    public partial class BuildSessionWorkersBackgroundView : UserControl
     {
-        public WorkersHeaderView()
+        public BuildSessionWorkersBackgroundView()
         {
             InitializeComponent();
         }

@@ -52,8 +52,9 @@ namespace FastBuilder.Views
 
 			if (this.ContentScrollViewer.ScrollableHeight > 0)
 			{
-				this.HeaderScrollViewer.ScrollToVerticalOffset(
-					e.VerticalOffset * this.HeaderScrollViewer.ScrollableHeight / this.ContentScrollViewer.ScrollableHeight);
+				var offset = e.VerticalOffset * this.HeaderScrollViewer.ScrollableHeight / this.ContentScrollViewer.ScrollableHeight;
+				this.HeaderScrollViewer.ScrollToVerticalOffset(offset);
+				this.BackgroundScrollViewer.ScrollToVerticalOffset(offset);
 			}
 
 			this.UpdateViewTimeRange(ViewTimeRangeChangeReason.Scroll);

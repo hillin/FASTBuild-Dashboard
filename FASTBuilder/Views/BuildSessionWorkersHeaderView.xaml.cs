@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 
 namespace FastBuilder.Views
 {
-	/// <summary>
-	/// Interaction logic for BuildCoreView.xaml
-	/// </summary>
-	public partial class BuildCoreView : UserControl
-	{
-		public BuildCoreView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for WorkersHeaderView.xaml
+    /// </summary>
+    public partial class BuildSessionWorkersHeaderView : UserControl
+    {
+        public BuildSessionWorkersHeaderView()
+        {
+            InitializeComponent();
+        }
+    }
 }
