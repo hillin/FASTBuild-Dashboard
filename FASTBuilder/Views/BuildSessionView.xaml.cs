@@ -24,9 +24,7 @@ namespace FastBuilder.Views
 	{
 		private bool _isAutoScrollingContent;
 		private double _previousHorizontalScrollOffset;
-
-		private BuildSessionViewModel ViewModel => (BuildSessionViewModel)this.DataContext;
-
+		
 		public BuildSessionView()
 		{
 			InitializeComponent();
