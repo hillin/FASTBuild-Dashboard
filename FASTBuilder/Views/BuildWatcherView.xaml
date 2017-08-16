@@ -20,33 +20,17 @@
 
     <DockPanel>
 
-        <materialDesign:ColorZone DockPanel.Dock="Top"
-                                  Mode="PrimaryDark" 
-                                  Padding="16" 
-                                  Height="64"
-                                  CornerRadius="0" 
-                                  materialDesign:ShadowAssist.ShadowDepth="Depth3" 
-                                  Margin="0,0,0,2">
-            <Grid>
+        <Border Height="{StaticResource TitleColorZoneHeight}"
+                Margin="{StaticResource MainPageTitleMargin}"
+                Padding="16"
+                DockPanel.Dock="Top">
 
-                <StackPanel Orientation="Horizontal"
-                            VerticalAlignment="Center">
+            <Grid TextElement.Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                  VerticalAlignment="Center">
 
-                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
-                                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                                 Width="28"
-                                 Height="28"
-                                 Visibility="{Binding ActiveItem.IsRunning, Converter={support:BoolToVisibilityConverter}}"
-                                 VerticalAlignment="Center"
-                                 Value="{Binding ActiveItem.Progress, Mode=OneWay}"
-                                 Maximum="100"
-                                 Margin="0,0,8,0"
-                                 IsIndeterminate="True" />
-
-                    <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}" 
-                               VerticalAlignment="Center"
-                               Text="{Binding ActiveItem.StatusText, Mode=OneWay}" />
-                </StackPanel>
+                <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                           VerticalAlignment="Center"
+                           Text="{Binding ActiveItem.StatusText, Mode=OneWay}" />
 
                 <ComboBox x:Name="Items"
                           HorizontalAlignment="Right"
@@ -60,7 +44,7 @@
 
             </Grid>
 
-        </materialDesign:ColorZone>
+        </Border>
 
         <ContentControl x:Name="ActiveItem" />
     </DockPanel>

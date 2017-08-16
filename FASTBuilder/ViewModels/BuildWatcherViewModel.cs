@@ -8,7 +8,7 @@ using FastBuilder.Communication.Events;
 
 namespace FastBuilder.ViewModels
 {
-	internal class BuildWatcherViewModel : Conductor<BuildSessionViewModel>.Collection.OneActive
+	internal class BuildWatcherViewModel : Conductor<BuildSessionViewModel>.Collection.OneActive, IMainPage
 	{
 		private BuildSessionViewModel _currentSession;
 		private readonly BuildWatcher _watcher;
@@ -50,6 +50,8 @@ namespace FastBuilder.ViewModels
 
 		public BuildWatcherViewModel()
 		{
+			this.DisplayName = "Build";
+
 			_watcher = new BuildWatcher();
 			_watcher.HistoryRestorationStarted += this.Watcher_HistoryRestorationStarted;
 			_watcher.HistoryRestorationEnded += this.Watcher_HistoryRestorationEnded;

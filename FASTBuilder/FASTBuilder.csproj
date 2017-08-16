@@ -104,6 +104,7 @@
     <Compile Include="Support\MouseWheelGesture.cs" />
     <Compile Include="Support\SimpleCommand.cs" />
     <Compile Include="ViewModels\BuildSessionViewModel.Status.cs" />
+    <Compile Include="ViewModels\IMainPage.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\TimeRulerView.xaml.cs">
       <DependentUpon>TimeRulerView.xaml</DependentUpon>

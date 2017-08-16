@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:views="clr-namespace:FastBuilder.Views"
+        xmlns:viewModels="clr-namespace:FastBuilder.ViewModels"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -16,11 +17,63 @@
         MinWidth="600"
         MinHeight="400"
         Title="FASTBuild" Height="400" Width="800">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="{Binding BuildWatcher.TaskbarProgressState}"
                          ProgressValue="{Binding BuildWatcher.TaskbarProgressValue}" />
     </Window.TaskbarItemInfo>
-    <Grid>
-        <ContentControl x:Name="BuildWatcher" />
-    </Grid>
+
+    <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"
+                               materialDesign:TransitionAssist.DisableTransitions="True">
+
+        <materialDesign:DrawerHost.LeftDrawerContent>
+            <DockPanel MinWidth="212">
+                <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                              DockPanel.Dock="Top"
+                              HorizontalAlignment="Right" Margin="16"
+                              IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+                <ListBox ItemsSource="{Binding Items}"
+                         SelectedItem="{Binding CurrentPage}"
+                         Margin="0 16">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="viewModels:IMainPage">
+                            <TextBlock Text="{Binding DisplayName}" Margin="32 0" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </materialDesign:DrawerHost.LeftDrawerContent>
+
+        <Grid>
+            <materialDesign:ColorZone Padding="16" 
+                                      Height="{StaticResource TitleColorZoneHeight}"
+                                      materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                      VerticalAlignment="Top"
+                                      Mode="PrimaryDark">
+                <Grid>
+                    <ToggleButton x:Name="MenuToggleButton"
+                                  Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                                  HorizontalAlignment="Left"
+                                  IsChecked="False" />
+                </Grid>
+            </materialDesign:ColorZone>
+
+            <Grid>
+                <ContentControl x:Name="CurrentPage" />
+            </Grid>
+
+        </Grid>
+
+
+    </materialDesign:DrawerHost>
+    
 </Window>
