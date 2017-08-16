@@ -177,9 +177,15 @@ namespace FastBuilder.ViewModels
 
 				builder.AppendLine($" ({this.Duration.TotalSeconds:0.#} seconds elapsed)");
 
+				if (!string.IsNullOrWhiteSpace(this.Message))
+					builder.AppendLine(this.Message);
+
 				return builder.ToString();
 			}
 		}
+
+
+		public string Message { get; private set; }
 
 		public BuildJobStatus Status
 		{
@@ -219,9 +225,11 @@ namespace FastBuilder.ViewModels
 
 		public void OnFinished(FinishJobEventArgs e)
 		{
+			this.Message = e.Message;
 			this.Status = e.Result;
 			this.EndTime = e.Time;
 		}
+
 
 		public void InvalidateCurrentTime(DateTime now)
 		{

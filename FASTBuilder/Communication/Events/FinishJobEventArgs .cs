@@ -15,6 +15,10 @@ namespace FastBuilder.Communication.Events
 			args.Result = FinishJobEventArgs.ParseBuildJobResult(tokens[EventArgStartIndex]);
 			args.HostName = tokens[EventArgStartIndex + 1];
 			args.EventName = tokens[EventArgStartIndex + 2];
+			if (tokens.Length > EventArgStartIndex + 3)
+			{
+				args.Message = tokens[EventArgStartIndex + 3];
+			}
 			return args;
 		}
 
@@ -43,6 +47,6 @@ namespace FastBuilder.Communication.Events
 		public BuildJobStatus Result { get; private set; }
 		public string HostName { get; private set; }
 		public string EventName { get; private set; }
-
+		public string Message { get; private set; }
 	}
 }
