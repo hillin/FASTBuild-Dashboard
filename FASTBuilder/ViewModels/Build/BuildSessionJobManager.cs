@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FastBuilder.ViewModels
+namespace FastBuilder.ViewModels.Build
 {
-	internal class SessionJobManager
+	internal class BuildSessionJobManager
 	{
 		private class JobStartTimeComparer : IComparer<BuildJobViewModel>
 		{

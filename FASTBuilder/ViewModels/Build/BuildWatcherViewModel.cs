@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Timers;
 using System.Windows.Shell;
 using Caliburn.Micro;
 using FastBuilder.Communication;
 using FastBuilder.Communication.Events;
 
-namespace FastBuilder.ViewModels
+namespace FastBuilder.ViewModels.Build
 {
 	internal class BuildWatcherViewModel : Conductor<BuildSessionViewModel>.Collection.OneActive, IMainPage
 	{
@@ -55,16 +54,16 @@ namespace FastBuilder.ViewModels
 			_watcher = new BuildWatcher();
 			_watcher.HistoryRestorationStarted += this.Watcher_HistoryRestorationStarted;
 			_watcher.HistoryRestorationEnded += this.Watcher_HistoryRestorationEnded;
-			_watcher.JobStarted += Watcher_JobStarted;
-			_watcher.JobFinished += Watcher_JobFinished;
-			_watcher.ReportCounter += Watcher_ReportCounter;
-			_watcher.ReportProgress += Watcher_ReportProgress;
+			_watcher.JobStarted += this.Watcher_JobStarted;
+			_watcher.JobFinished += this.Watcher_JobFinished;
+			_watcher.ReportCounter += this.Watcher_ReportCounter;
+			_watcher.ReportProgress += this.Watcher_ReportProgress;
 			_watcher.SessionStopped += this.Watcher_SessionStopped;
-			_watcher.SessionStarted += Watcher_SessionStarted;
+			_watcher.SessionStarted += this.Watcher_SessionStarted;
 			_watcher.Start();
 
 			var tickTimer = new Timer(100);
-			tickTimer.Elapsed += TickTimer_Elapsed;
+			tickTimer.Elapsed += this.TickTimer_Elapsed;
 			tickTimer.Start();
 		}
 

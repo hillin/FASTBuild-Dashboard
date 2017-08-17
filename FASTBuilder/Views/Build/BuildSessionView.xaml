@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FastBuilder.Views.BuildSessionView"
+﻿<UserControl x:Class="FastBuilder.Views.Build.BuildSessionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,6 +8,7 @@
              xmlns:support="clr-namespace:FastBuilder.Support"
              xmlns:services="clr-namespace:FastBuilder.Services"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:build="clr-namespace:FastBuilder.Views.Build"
              PreviewMouseWheel="UserControl_PreviewMouseWheel"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
@@ -146,7 +147,7 @@
                             <Grid Height="{Binding ElementName=TimeRuler, Path=ActualHeight}" 
                                   DockPanel.Dock="Bottom" /> <!-- leave blank for time ruler -->
                             
-                            <local:BuildSessionWorkersBackgroundView x:Name="WorkersBackground"
+                            <build:BuildSessionWorkersBackgroundView x:Name="WorkersBackground"
                                                                      HorizontalAlignment="Stretch" />
                         </DockPanel>
                     </ScrollViewer>
@@ -159,7 +160,7 @@
                             <Grid Height="{Binding ElementName=TimeRuler, Path=ActualHeight}" 
                                   DockPanel.Dock="Bottom" />   <!-- leave blank for time ruler -->
 
-                            <local:BuildJobsView Height="{Binding ElementName=WorkersHeader, Path=ActualHeight}"
+                            <build:BuildJobsView Height="{Binding ElementName=WorkersHeader, Path=ActualHeight}"
                                                      HorizontalAlignment="Left"
                                                      VerticalAlignment="Top" />
                         </DockPanel>
@@ -175,13 +176,13 @@
                             <Grid Height="{Binding ElementName=TimeRuler, Path=ActualHeight}" 
                                   DockPanel.Dock="Bottom" /> <!-- leave blank for time ruler -->
                             
-                            <local:BuildSessionWorkersHeaderView x:Name="WorkersHeader"
+                            <build:BuildSessionWorkersHeaderView x:Name="WorkersHeader"
                                                                  Height="{Binding ElementName=WorkersBackground, Path=ActualHeight}"
                                                                  HorizontalAlignment="Left" />
                         </DockPanel>
                     </ScrollViewer>
 
-                    <local:TimeRulerView x:Name="TimeRuler" 
+                    <build:TimeRulerView x:Name="TimeRuler" 
                                          Margin="0,0,17,17"
                                          VerticalAlignment="Bottom"
                                          Height="24" />

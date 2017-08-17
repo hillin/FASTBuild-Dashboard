@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using Caliburn.Micro;
 using FastBuilder.Communication;
 using FastBuilder.Communication.Events;
 using FastBuilder.Services;
 
-namespace FastBuilder.ViewModels
+namespace FastBuilder.ViewModels.Build
 {
 	internal partial class BuildSessionViewModel : Screen
 	{
@@ -40,7 +39,7 @@ namespace FastBuilder.ViewModels
 
 		public BindableCollection<BuildWorkerViewModel> Workers { get; } = new BindableCollection<BuildWorkerViewModel>();
 
-		public SessionJobManager JobManager { get; } = new SessionJobManager();
+		public BuildSessionJobManager JobManager { get; } = new BuildSessionJobManager();
 
 		private BuildSessionViewModel(DateTime startTime, int? processId, int? logVersion)
 		{

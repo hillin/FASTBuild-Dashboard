@@ -1,14 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Windows;
 using System.Windows.Media;
 using Caliburn.Micro;
 using FastBuilder.Communication;
 using FastBuilder.Communication.Events;
 using FastBuilder.Services;
 
-namespace FastBuilder.ViewModels
+namespace FastBuilder.ViewModels.Build
 {
 	internal class BuildJobViewModel : PropertyChangedBase
 	{

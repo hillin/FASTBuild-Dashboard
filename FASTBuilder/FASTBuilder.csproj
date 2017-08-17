@@ -103,53 +103,53 @@
     <Compile Include="Support\DragScrollViewer.cs" />
     <Compile Include="Support\MouseWheelGesture.cs" />
     <Compile Include="Support\SimpleCommand.cs" />
-    <Compile Include="ViewModels\BuildSessionViewModel.Status.cs" />
+    <Compile Include="ViewModels\Build\BuildSessionViewModel.Status.cs" />
     <Compile Include="ViewModels\IMainPage.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\SessionJobManager.cs" />
-    <Compile Include="Views\BuildSessionWorkersBackgroundView.xaml.cs">
+    <Compile Include="ViewModels\Build\BuildSessionJobManager.cs" />
+    <Compile Include="Views\Build\BuildSessionWorkersBackgroundView.xaml.cs">
       <DependentUpon>BuildSessionWorkersBackgroundView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BuildJobsView.xaml.cs">
+    <Compile Include="Views\Build\BuildJobsView.xaml.cs">
       <DependentUpon>BuildJobsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TimeRulerView.xaml.cs">
+    <Compile Include="Views\Build\TimeRulerView.xaml.cs">
       <DependentUpon>TimeRulerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TimeRulerMajorTickView.xaml.cs">
+    <Compile Include="Views\Build\TimeRulerMajorTickView.xaml.cs">
       <DependentUpon>TimeRulerMajorTickView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TimeRulerMinorTickView.xaml.cs">
+    <Compile Include="Views\Build\TimeRulerMinorTickView.xaml.cs">
       <DependentUpon>TimeRulerMinorTickView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BuildSessionWorkersHeaderView.xaml.cs">
+    <Compile Include="Views\Build\BuildSessionWorkersHeaderView.xaml.cs">
       <DependentUpon>BuildSessionWorkersHeaderView.xaml</DependentUpon>
     </Compile>
     <Page Include="Themes\Layout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BuildJobView.xaml">
+    <Page Include="Views\Build\BuildJobView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BuildSessionView.xaml">
+    <Page Include="Views\Build\BuildSessionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BuildWatcherView.xaml">
+    <Page Include="Views\Build\BuildWatcherView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BuildSessionWorkersBackgroundView.xaml">
+    <Page Include="Views\Build\BuildSessionWorkersBackgroundView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BuildJobsView.xaml">
+    <Page Include="Views\Build\BuildJobsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TimeRulerView.xaml">
+    <Page Include="Views\Build\TimeRulerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -161,33 +161,33 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\BuildCoreViewModel.cs" />
-    <Compile Include="ViewModels\BuildWorkerViewModel.cs" />
-    <Compile Include="ViewModels\BuildSessionViewModel.cs" />
-    <Compile Include="ViewModels\BuildJobViewModel.cs" />
-    <Compile Include="ViewModels\BuildWatcherViewModel.cs" />
-    <Compile Include="Views\BuildJobView.xaml.cs">
+    <Compile Include="ViewModels\Build\BuildCoreViewModel.cs" />
+    <Compile Include="ViewModels\Build\BuildWorkerViewModel.cs" />
+    <Compile Include="ViewModels\Build\BuildSessionViewModel.cs" />
+    <Compile Include="ViewModels\Build\BuildJobViewModel.cs" />
+    <Compile Include="ViewModels\Build\BuildWatcherViewModel.cs" />
+    <Compile Include="Views\Build\BuildJobView.xaml.cs">
       <DependentUpon>BuildJobView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BuildSessionView.xaml.cs">
+    <Compile Include="Views\Build\BuildSessionView.xaml.cs">
       <DependentUpon>BuildSessionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BuildWatcherView.xaml.cs">
+    <Compile Include="Views\Build\BuildWatcherView.xaml.cs">
       <DependentUpon>BuildWatcherView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindowView.xaml.cs">
       <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\TimeRulerMajorTickView.xaml">
+    <Page Include="Views\Build\TimeRulerMajorTickView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TimeRulerMinorTickView.xaml">
+    <Page Include="Views\Build\TimeRulerMinorTickView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BuildSessionWorkersHeaderView.xaml">
+    <Page Include="Views\Build\BuildSessionWorkersHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

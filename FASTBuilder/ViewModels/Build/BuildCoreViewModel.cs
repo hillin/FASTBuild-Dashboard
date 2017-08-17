@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using Caliburn.Micro;
-using FastBuilder.Communication;
 using FastBuilder.Communication.Events;
 using FastBuilder.Services;
 
-namespace FastBuilder.ViewModels
+namespace FastBuilder.ViewModels.Build
 {
 	internal class BuildCoreViewModel : PropertyChangedBase
 	{

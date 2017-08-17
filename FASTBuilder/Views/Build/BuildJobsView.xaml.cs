@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Caliburn.Micro;
 using FastBuilder.Services;
-using FastBuilder.ViewModels;
+using FastBuilder.ViewModels.Build;
 
-namespace FastBuilder.Views
+namespace FastBuilder.Views.Build
 {
 	public partial class BuildJobsView
 	{
@@ -25,7 +17,7 @@ namespace FastBuilder.Views
 		private double _currentTimeOffset;
 		private bool _wasNowInTimeFrame;
 
-		private SessionJobManager _jobManager;
+		private BuildSessionJobManager _jobManager;
 
 		private readonly Dictionary<BuildJobViewModel, BuildJobView> _activeJobViewMap
 			= new Dictionary<BuildJobViewModel, BuildJobView>();
@@ -43,7 +35,7 @@ namespace FastBuilder.Views
 			_viewTransformService.PreScalingChanging += this.OnPreScalingChanging;
 			_viewTransformService.ViewTimeRangeChanged += this.OnViewTimeRangeChanged;
 
-			this.DataContextChanged += FastBuildJobsView_DataContextChanged;
+			this.DataContextChanged += this.FastBuildJobsView_DataContextChanged;
 		}
 
 		private void FastBuildJobsView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -58,7 +50,7 @@ namespace FastBuilder.Views
 
 			_jobManager = vm.JobManager;
 
-			_jobManager.OnJobStarted += JobManager_OnJobStarted;
+			_jobManager.OnJobStarted += this.JobManager_OnJobStarted;
 		}
 
 		private void JobManager_OnJobStarted(object sender, BuildJobViewModel job)

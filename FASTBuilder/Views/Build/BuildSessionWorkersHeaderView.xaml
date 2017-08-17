@@ -1,17 +1,18 @@
-﻿<UserControl x:Class="FastBuilder.Views.BuildSessionWorkersHeaderView"
+﻿<UserControl x:Class="FastBuilder.Views.Build.BuildSessionWorkersHeaderView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FastBuilder.Views"
              xmlns:viewModels="clr-namespace:FastBuilder.ViewModels"
+             xmlns:build="clr-namespace:FastBuilder.ViewModels.Build"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
     <ItemsControl ItemsSource="{Binding Workers}"
                   VerticalAlignment="Top">
         <ItemsControl.ItemTemplate>
-            <DataTemplate DataType="{x:Type viewModels:BuildWorkerViewModel}">
+            <DataTemplate DataType="{x:Type build:BuildWorkerViewModel}">
 
                 <Grid Margin="0,4" 
                       Width="{StaticResource HeaderViewWidth}"
@@ -33,7 +34,7 @@
                                       Grid.Column="1"
                                       VerticalAlignment="Top">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="{x:Type viewModels:BuildCoreViewModel}">
+                                <DataTemplate DataType="{x:Type build:BuildCoreViewModel}">
 
                                     <Grid Width="28" Height="28">
                                         <Ellipse Fill="{DynamicResource PrimaryHueLightBrush}"
