@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using FastBuilder.Services;
+using FastBuilder.Services.Worker;
 using FastBuilder.ViewModels;
 
 namespace FastBuilder
@@ -27,6 +28,7 @@ namespace FastBuilder
 			_container.Singleton<MainWindowViewModel>();
 			_container.Singleton<IViewTransformService, ViewTransformService>();
 			_container.Singleton<IWorkerPoolService, WorkerPoolService>();
+			_container.Singleton<IWorkerAgentService, WorkerAgentService>();
 		}
 
 		protected override void OnStartup(object sender, StartupEventArgs e)

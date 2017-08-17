@@ -83,6 +83,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppBootstrapper.cs" />
+    <Compile Include="AppSettings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>AppSettings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Communication\BuildJobStatus.cs" />
     <Compile Include="Communication\Events\BuildEventArgs.cs" />
     <Compile Include="Communication\BuildWatcher.cs" />
@@ -95,10 +100,20 @@
     <Compile Include="Communication\Events\StartBuildEventArgs.cs" />
     <Compile Include="Communication\LogWatcher.cs" />
     <Compile Include="Services\IViewTransformService.cs" />
+    <Compile Include="Services\Worker\ExternalWorkerAgent.cs" />
+    <Compile Include="Services\Worker\ExternalWorkerAgent.interop.cs" />
+    <Compile Include="Services\Worker\ExternalWorkerAgent.win32.cs" />
+    <Compile Include="Services\Worker\IWorkerAgent.cs" />
+    <Compile Include="Services\Worker\IWorkerAgentService.cs" />
     <Compile Include="Services\IWorkerPoolService.cs" />
     <Compile Include="Services\ViewTimeRangeChangeReason.cs" />
     <Compile Include="Services\ViewTransformService.cs" />
+    <Compile Include="Services\Worker\WorkerAgentService.cs" />
+    <Compile Include="Services\Worker\WorkerCoreState.cs" />
+    <Compile Include="Services\Worker\WorkerCoreStatus.cs" />
+    <Compile Include="Services\Worker\WorkerMode.cs" />
     <Compile Include="Services\WorkerPoolService.cs" />
+    <Compile Include="Services\Worker\WorkerRunStateChangedEventArgs.cs" />
     <Compile Include="Support\BoolToVisibilityConverter.cs" />
     <Compile Include="Support\DragScrollViewer.cs" />
     <Compile Include="Support\MouseWheelGesture.cs" />
@@ -107,6 +122,7 @@
     <Compile Include="ViewModels\IMainPage.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Build\BuildSessionJobManager.cs" />
+    <Compile Include="ViewModels\Worker\WorkerViewModel.cs" />
     <Compile Include="Views\Build\BuildSessionWorkersBackgroundView.xaml.cs">
       <DependentUpon>BuildSessionWorkersBackgroundView.xaml</DependentUpon>
     </Compile>
@@ -124,6 +140,9 @@
     </Compile>
     <Compile Include="Views\Build\BuildSessionWorkersHeaderView.xaml.cs">
       <DependentUpon>BuildSessionWorkersHeaderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Worker\WorkerView.xaml.cs">
+      <DependentUpon>WorkerView.xaml</DependentUpon>
     </Compile>
     <Page Include="Themes\Layout.xaml">
       <SubType>Designer</SubType>
@@ -191,6 +210,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Worker\WorkerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -211,6 +234,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="AppSettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>AppSettings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
