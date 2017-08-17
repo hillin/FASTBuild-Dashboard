@@ -52,11 +52,14 @@ namespace FastBuilder.Services.Worker
 
 		public WorkerCoreStatus[] GetStatus()
 		{
+			// here we have to walk into another process's (fbuildworker) territory to get some text from a list view control
+
 			var listViewPtr = this.GetChildWindow(0, "SysListView32");
 			var itemCount = WinAPI.SendMessage(listViewPtr, (int)WinAPI.ListViewMessages.LVM_GETITEMCOUNT, 0, IntPtr.Zero).ToInt32();
 
 			var result = new WorkerCoreStatus[itemCount];
 
+			// open fbuildworker process
 			var processId = 0u;
 			WinAPI.GetWindowThreadProcessId(listViewPtr, ref processId);
 
@@ -67,6 +70,7 @@ namespace FastBuilder.Services.Worker
 				false,
 				processId);
 
+			// allocate memory for text to read
 			var textBufferPtr = WinAPI.VirtualAllocEx(
 				processHandle,
 				IntPtr.Zero,
@@ -81,6 +85,7 @@ namespace FastBuilder.Services.Worker
 				pszText = textBufferPtr
 			};
 
+			// marshal the LVITEM structure into unmanaged memory so it can be written into textBufferPtr
 			var lvItemSize = Marshal.SizeOf(lvItem);
 			var lvItemBufferPtr = WinAPI.VirtualAllocEx(
 				processHandle,
@@ -97,6 +102,7 @@ namespace FastBuilder.Services.Worker
 				lvItem.iItem = itemId;
 				lvItem.iSubItem = subItemId;
 
+				// write the LVITEM structure to target process's memory
 				Marshal.StructureToPtr(lvItem, lvItemLocalPtr, false);
 
 				WinAPI.WriteProcessMemory(
@@ -108,6 +114,7 @@ namespace FastBuilder.Services.Worker
 
 				WinAPI.SendMessage(listViewPtr, (int)WinAPI.ListViewMessages.LVM_GETITEMTEXT, itemId, lvItemBufferPtr);
 
+				// read the text
 				WinAPI.ReadProcessMemory(
 					processHandle,
 					textBufferPtr,
@@ -116,7 +123,7 @@ namespace FastBuilder.Services.Worker
 					out var _);
 
 				var text = Encoding.Unicode.GetString(localTextBuffer);
-				return text.Substring(0, text.IndexOf('\0'));
+				return text.Substring(0, text.IndexOf('\0'));	// the trailing zeros are not cleared automatically
 			}
 
 			for (var i = 0; i < itemCount; ++i)
