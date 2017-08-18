@@ -40,53 +40,74 @@ namespace FastBuilder.Views.Build
 
 		private void FastBuildJobsView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
+			if (_sessionViewModel != null)
+			{
+				_sessionViewModel.Ticked -= this.OnTicked;
+				_sessionViewModel = null;
+
+				_jobManager.OnJobStarted -= this.JobManager_OnJobStarted;
+				_jobManager = null;
+
+				this.ClearJobs();
+			}
+
 			var vm = this.DataContext as BuildSessionViewModel;
 			if (vm == null)
 				return;
 
 			_sessionViewModel = vm;
-
 			_sessionViewModel.Ticked += this.OnTicked;
 
 			_jobManager = vm.JobManager;
-
 			_jobManager.OnJobStarted += this.JobManager_OnJobStarted;
+		}
+
+		private void ClearJobs()
+		{
+			foreach (var view in _activeJobViewMap.Values)
+			{
+				this.RecycleView(view);
+			}
+
+			_activeJobViewMap.Clear();
 		}
 
 		private void JobManager_OnJobStarted(object sender, BuildJobViewModel job)
 		{
-			if (job.StartTimeOffset <= _endTimeOffset && job.EndTimeOffset >= _startTimeOffset)
+			this.Dispatcher.BeginInvoke(new System.Action(() =>
 			{
-				this.AddJob(job);
-			}
+				if (job.StartTimeOffset <= _endTimeOffset && job.EndTimeOffset >= _startTimeOffset)
+				{
+					this.AddJob(job);
+				}
+
+				this.UpdateAllViewTopPositions();
+			}));
 		}
 
 		private void AddJob(BuildJobViewModel job)
 		{
-			this.Dispatcher.BeginInvoke(new System.Action(() =>
+
+			BuildJobView view;
+			if (_jobViewPool.Count == 0)
 			{
-				BuildJobView view;
-				if (_jobViewPool.Count == 0)
-				{
-					view = new BuildJobView();
-					view.SetBinding(BuildJobView.WidthProperty, new Binding("UIWidth"));
-					view.SetBinding(Canvas.LeftProperty, new Binding("UILeft"));
-					this.Canvas.Children.Add(view);
-				}
-				else
-				{
-					view = _jobViewPool.Dequeue();
-					view.Visibility = Visibility.Visible;
-				}
+				view = new BuildJobView();
+				view.SetBinding(BuildJobView.WidthProperty, new Binding("UIWidth"));
+				view.SetBinding(Canvas.LeftProperty, new Binding("UILeft"));
+				this.Canvas.Children.Add(view);
+			}
+			else
+			{
+				view = _jobViewPool.Dequeue();
+				view.Visibility = Visibility.Visible;
+			}
 
-				view.DataContext = job;
-				_activeJobViewMap[job] = view;
+			view.DataContext = job;
+			_activeJobViewMap[job] = view;
 
-				this.UpdateViewTopPosition(job);
-			}));
 		}
 
-		private void UpdateViewTopPosition(BuildJobViewModel job)
+		private void UpdateViewTopPosition(BuildJobViewModel job, BuildJobView view)
 		{
 			const double coreRowHeight = 28;
 			const double coreVerticalMargin = 0;
@@ -108,38 +129,40 @@ namespace FastBuilder.Views.Build
 			top += job.OwnerCore.Id * (coreRowHeight + coreVerticalMargin * 2);
 			top += coreVerticalMargin;
 
-			var view = _activeJobViewMap[job];
 			Canvas.SetTop(view, top);
 		}
-		
+
 		private void OnTicked(object sender, double timeOffset)
 		{
-			_currentTimeOffset = timeOffset;
-
-			var isNowInTimeFrame = _endTimeOffset >= _currentTimeOffset && _startTimeOffset <= _currentTimeOffset;
-			if (!_wasNowInTimeFrame && isNowInTimeFrame)
+			this.Dispatcher.BeginInvoke(new System.Action(() =>
 			{
-				// "now" has come into current time frame, add all active jobs
-				foreach (var job in _jobManager.GetAllJobs().Where(j => !j.IsFinished))
+				_currentTimeOffset = timeOffset;
+
+				var isNowInTimeFrame = _endTimeOffset >= _currentTimeOffset && _startTimeOffset <= _currentTimeOffset;
+				if (!_wasNowInTimeFrame && isNowInTimeFrame)
 				{
-					if (!_activeJobViewMap.ContainsKey(job))
+					// "now" has come into current time frame, add all active jobs
+					foreach (var job in _jobManager.GetAllJobs().Where(j => !j.IsFinished))
 					{
-						this.AddJob(job);
+						if (!_activeJobViewMap.ContainsKey(job))
+						{
+							this.AddJob(job);
+						}
 					}
+
+					this.UpdateAllViewTopPositions();
 				}
-			}
 
-			_wasNowInTimeFrame = isNowInTimeFrame;
+				_wasNowInTimeFrame = isNowInTimeFrame;
 
-			this.UpdateCanvasSize();
+				this.UpdateCanvasSize();
+
+			}));
 		}
 
 		private void UpdateCanvasSize()
 		{
-			this.Dispatcher.BeginInvoke(new System.Action(() =>
-			{
-				this.Canvas.Width = _sessionViewModel.ElapsedTime.TotalSeconds * _viewTransformService.Scaling;
-			}));
+			this.Canvas.Width = _sessionViewModel.ElapsedTime.TotalSeconds * _viewTransformService.Scaling;
 		}
 
 		private void OnViewTimeRangeChanged(object sender, ViewTimeRangeChangeReason e)
@@ -161,9 +184,7 @@ namespace FastBuilder.Views.Build
 			foreach (var key in keysToRemove)
 			{
 				var view = _activeJobViewMap[key];
-				view.Visibility = Visibility.Hidden;
-				view.DataContext = null;
-				_jobViewPool.Enqueue(view);
+				this.RecycleView(view);
 				_activeJobViewMap.Remove(key);
 			}
 
@@ -174,11 +195,24 @@ namespace FastBuilder.Views.Build
 				{
 					this.AddJob(job);
 				}
-				else
-				{
-					this.UpdateViewTopPosition(job);
-				}
 			}
+
+			this.UpdateAllViewTopPositions();
+		}
+
+		private void UpdateAllViewTopPositions()
+		{
+			foreach (var pair in _activeJobViewMap)
+			{
+				this.UpdateViewTopPosition(pair.Key, pair.Value);
+			}
+		}
+
+		private void RecycleView(BuildJobView view)
+		{
+			view.Visibility = Visibility.Hidden;
+			view.DataContext = null;
+			_jobViewPool.Enqueue(view);
 		}
 
 		private void OnPreScalingChanging(object sender, EventArgs e)
