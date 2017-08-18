@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:build="clr-namespace:FastBuilder.ViewModels.Build"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
 
@@ -29,15 +30,25 @@
                            VerticalAlignment="Center"
                            Text="{Binding ActiveItem.StatusText, Mode=OneWay}" />
 
-                <ComboBox x:Name="Items"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Center">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate DataType="{x:Type build:BuildSessionViewModel}">
-                            <TextBlock Text="{Binding DisplayName}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                <materialDesign:ColorZone Mode="Standard" 
+                                          Padding="8 4 8 4" 
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Center"
+                                          CornerRadius="2" 
+                                          Panel.ZIndex="1"
+                                          Margin="16 0 0 0"
+                                          materialDesign:ShadowAssist.ShadowDepth="Depth1">
+
+                    <ComboBox x:Name="Items"
+                              materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                              materialDesign:ComboBoxAssist.ShowSelectedItem="false">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type build:BuildSessionViewModel}">
+                                <TextBlock Text="{Binding DisplayName}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </materialDesign:ColorZone>
 
             </Grid>
 
