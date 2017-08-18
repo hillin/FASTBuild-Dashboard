@@ -174,6 +174,10 @@ namespace FastBuilder.Views.Build
 				{
 					this.AddJob(job);
 				}
+				else
+				{
+					this.UpdateViewTopPosition(job);
+				}
 			}
 		}
 
