@@ -32,8 +32,7 @@
                          ProgressValue="{Binding BuildWatcher.TaskbarProgressValue}" />
     </Window.TaskbarItemInfo>
 
-    <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"
-                               materialDesign:TransitionAssist.DisableTransitions="True">
+    <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
 
         <materialDesign:DrawerHost.LeftDrawerContent>
             <DockPanel MinWidth="212">
@@ -43,6 +42,7 @@
                               IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
                 <ListBox ItemsSource="{Binding Items}"
                          SelectedItem="{Binding CurrentPage}"
+                         SelectionChanged="ListBox_SelectionChanged"
                          Margin="0 16">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="viewModels:IMainPage">

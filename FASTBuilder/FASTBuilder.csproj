@@ -122,6 +122,7 @@
     <Compile Include="ViewModels\IMainPage.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Build\BuildSessionJobManager.cs" />
+    <Compile Include="ViewModels\Worker\WorkerCoreStatusViewModel.cs" />
     <Compile Include="ViewModels\Worker\WorkerViewModel.cs" />
     <Compile Include="Views\Build\BuildSessionWorkersBackgroundView.xaml.cs">
       <DependentUpon>BuildSessionWorkersBackgroundView.xaml</DependentUpon>
@@ -140,6 +141,12 @@
     </Compile>
     <Compile Include="Views\Build\BuildSessionWorkersHeaderView.xaml.cs">
       <DependentUpon>BuildSessionWorkersHeaderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Settings\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Worker\WorkerCoreStatusView.xaml.cs">
+      <DependentUpon>WorkerCoreStatusView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Worker\WorkerView.xaml.cs">
       <DependentUpon>WorkerView.xaml</DependentUpon>
@@ -207,6 +214,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Build\BuildSessionWorkersHeaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Settings\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Worker\WorkerCoreStatusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

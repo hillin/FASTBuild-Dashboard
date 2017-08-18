@@ -8,5 +8,10 @@ namespace FastBuilder.Views
 		{
 			this.InitializeComponent();
 		}
+
+		private void ListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			this.MenuToggleButton.IsChecked = false;
+		}
 	}
 }
