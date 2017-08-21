@@ -20,7 +20,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _currentTime;
 			private set
 			{
-				if (value.Equals(_currentTime)) return;
+				if (value.Equals(_currentTime))
+				{
+					return;
+				}
+
 				_currentTime = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -157,7 +161,9 @@ namespace FastBuilder.ViewModels.Build
 		public void Tick(DateTime now)
 		{
 			if (!this.IsRunning)
+			{
 				return;
+			}
 
 			this.CurrentTime = now;
 			this.NotifyOfPropertyChange(nameof(this.ElapsedTime));

@@ -18,10 +18,14 @@ namespace FastBuilder.Services.Worker
 			WinAPI.EnumWindows((hWnd, lParam) =>
 			{
 				if (!WinAPIUtils.GetWindowText(hWnd).StartsWith("FBuildWorker"))
+				{
 					return true;
+				}
 
 				if (!WinAPIUtils.GetWindowClass(hWnd).StartsWith("windowClass_"))
+				{
 					return true;
+				}
 
 				existingWindowPtr = hWnd;
 				return false;
@@ -37,7 +41,9 @@ namespace FastBuilder.Services.Worker
 			WinAPI.EnumChildWindows(_workerWindowPtr, (hWnd, lParam) =>
 			{
 				if (!recursive && WinAPI.GetParent(hWnd) != _workerWindowPtr)
+				{
 					return true;
+				}
 
 				if (currentIndex == index)
 				{

@@ -47,7 +47,9 @@ namespace FastBuilder.Views.Build
 		{
 			var formatBuilder = new StringBuilder();
 			if (totalSeconds >= 3600)
+			{
 				formatBuilder.Append(@"h\:m");
+			}
 
 			formatBuilder.Append(@"m\:ss");
 
@@ -148,8 +150,10 @@ namespace FastBuilder.Views.Build
 		private void UpdateTicks()
 		{
 			if (DesignerProperties.GetIsInDesignMode(this))
+			{
 				return;
-			
+			}
+
 			var viewTransformService = IoC.Get<IViewTransformService>();
 
 			var startTime = viewTransformService.ViewStartTimeOffsetSeconds;
@@ -190,7 +194,9 @@ namespace FastBuilder.Views.Build
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
 				if (time % grain.MajorInterval == 0)
+				{
 					continue;
+				}
 
 				var tick = this.PoolGetMinorTick();
 				tick.Width = tickWidth;

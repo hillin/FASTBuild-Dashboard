@@ -53,13 +53,19 @@ namespace FastBuilder.ViewModels.Build
 			foreach (var job in _startTimeSortedJobs)
 			{
 				if (job.StartTimeOffset > endTimeOffset)
-					break;	// after time frame; because we are sorted by StartTimeOffset in ascending order, the following jobs can all be skipped
+				{
+					break;  // after time frame; because we are sorted by StartTimeOffset in ascending order, the following jobs can all be skipped
+				}
 
 				if (job.IsFinished && job.EndTimeOffset < startTimeOffset)
-					continue;	// before time frame
+				{
+					continue;   // before time frame
+				}
 
 				if (!job.IsFinished && isTimeFrameAfterNow)
+				{
 					continue;   // before time frame
+				}
 
 				yield return job;
 			}

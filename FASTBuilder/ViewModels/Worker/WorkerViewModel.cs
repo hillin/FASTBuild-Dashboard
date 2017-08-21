@@ -27,7 +27,10 @@ namespace FastBuilder.ViewModels.Worker
 			private set
 			{
 				if (value == _workerErrorMessage)
+				{
 					return;
+				}
+
 				_workerErrorMessage = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -38,7 +41,11 @@ namespace FastBuilder.ViewModels.Worker
 			get => _statusTitle;
 			private set
 			{
-				if (value == _statusTitle) return;
+				if (value == _statusTitle)
+				{
+					return;
+				}
+
 				_statusTitle = value;
 				this.NotifyOfPropertyChange();
 			}

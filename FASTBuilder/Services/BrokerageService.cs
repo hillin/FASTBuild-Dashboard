@@ -23,7 +23,9 @@ namespace FastBuilder.Services
 				_workerNames = value;
 
 				if (oldCount != _workerNames.Length)
+				{
 					this.WorkerCountChanged?.Invoke(this, EventArgs.Empty);
+				}
 			}
 		}
 

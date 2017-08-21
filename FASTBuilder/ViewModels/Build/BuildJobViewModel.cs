@@ -29,7 +29,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _elapsedSeconds;
 			private set
 			{
-				if (value.Equals(_elapsedSeconds)) return;
+				if (value.Equals(_elapsedSeconds))
+				{
+					return;
+				}
+
 				_elapsedSeconds = value;
 				this.NotifyOfPropertyChange();
 				this.NotifyOfPropertyChange(nameof(this.EndTime));
@@ -43,7 +47,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _shouldShowText;
 			set
 			{
-				if (value == _shouldShowText) return;
+				if (value == _shouldShowText)
+				{
+					return;
+				}
+
 				_shouldShowText = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -150,7 +158,9 @@ namespace FastBuilder.ViewModels.Build
 				builder.AppendLine($" ({this.ElapsedSeconds:0.#} seconds elapsed)");
 
 				if (!string.IsNullOrWhiteSpace(this.Message))
+				{
 					builder.AppendLine(this.Message);
+				}
 
 				return builder.ToString();
 			}
@@ -164,7 +174,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _status;
 			private set
 			{
-				if (value == _status) return;
+				if (value == _status)
+				{
+					return;
+				}
+
 				_status = value;
 				this.NotifyOfPropertyChange();
 				this.NotifyOfPropertyChange(nameof(this.IsFinished));
@@ -198,7 +212,9 @@ namespace FastBuilder.ViewModels.Build
 		public void InvalidateCurrentTime(double currentTimeOffset)
 		{
 			if (this.IsFinished)
+			{
 				return;
+			}
 
 			this.UpdateDuration(currentTimeOffset);
 		}

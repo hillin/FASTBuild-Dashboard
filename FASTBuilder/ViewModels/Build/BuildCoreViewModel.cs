@@ -20,7 +20,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _currentJob;
 			private set
 			{
-				if (object.Equals(value, _currentJob)) return;
+				if (object.Equals(value, _currentJob))
+				{
+					return;
+				}
+
 				_currentJob = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -31,7 +35,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _isBusy;
 			private set
 			{
-				if (value == _isBusy) return;
+				if (value == _isBusy)
+				{
+					return;
+				}
+
 				_isBusy = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -42,7 +50,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _uiJobsTotalWidth;
 			private set
 			{
-				if (value.Equals(_uiJobsTotalWidth)) return;
+				if (value.Equals(_uiJobsTotalWidth))
+				{
+					return;
+				}
+
 				_uiJobsTotalWidth = value;
 				this.NotifyOfPropertyChange();
 			}

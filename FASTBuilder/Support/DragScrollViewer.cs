@@ -63,7 +63,10 @@ namespace FastBuilder.Support
 		protected override void OnMouseUp(MouseButtonEventArgs e)
 		{
 			if (_isDragging)
+			{
 				e.Handled = true;
+			}
+
 			CancelDrag(PreviousVelocity);
 		}
 
@@ -87,7 +90,10 @@ namespace FastBuilder.Support
 		private void CancelDrag(Vector velocityToUse)
 		{
 			if (_isDragging)
+			{
 				Momentum = velocityToUse;
+			}
+
 			_isDragging = false;
 			_mouseDown = false;
 			Cursor = Cursors.Arrow;
@@ -137,10 +143,14 @@ namespace FastBuilder.Support
 			{
 				Momentum *= (1.0 - _friction / 4.0);
 				if (!PerformScroll(Momentum))
+				{
 					this.StopSlide();
+				}
 			}
 			else
+			{
 				this.StopSlide();
+			}
 		}
 
 
@@ -165,9 +175,14 @@ namespace FastBuilder.Support
 		private static double CoerceOffset(double offset, double extent, double viewport)
 		{
 			if (offset > (extent - viewport))
+			{
 				offset = extent - viewport;
+			}
+
 			if (offset < 0.0)
+			{
 				offset = 0.0;
+			}
 
 			return offset;
 		}

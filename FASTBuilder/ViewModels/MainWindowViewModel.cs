@@ -25,7 +25,11 @@ namespace FastBuilder.ViewModels
 			get => _currentPage;
 			set
 			{
-				if (object.Equals(value, _currentPage)) return;
+				if (object.Equals(value, _currentPage))
+				{
+					return;
+				}
+
 				_currentPage = value;
 				this.NotifyOfPropertyChange();
 			}

@@ -19,7 +19,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _currentSession;
 			private set
 			{
-				if (object.Equals(value, _currentSession)) return;
+				if (object.Equals(value, _currentSession))
+				{
+					return;
+				}
+
 				_currentSession = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -30,7 +34,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _taskbarProgressState;
 			private set
 			{
-				if (value == _taskbarProgressState) return;
+				if (value == _taskbarProgressState)
+				{
+					return;
+				}
+
 				_taskbarProgressState = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -41,7 +49,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _taskbarProgressValue;
 			private set
 			{
-				if (value.Equals(_taskbarProgressValue)) return;
+				if (value.Equals(_taskbarProgressValue))
+				{
+					return;
+				}
+
 				_taskbarProgressValue = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -74,7 +86,9 @@ namespace FastBuilder.ViewModels.Build
 		{
 			// ReSharper disable once UseNullPropagation
 			if (this.CurrentSession == null)
+			{
 				return;
+			}
 
 			// note we only need to tick current session
 
@@ -101,7 +115,9 @@ namespace FastBuilder.ViewModels.Build
 		private void EnsureCurrentSession()
 		{
 			if (this.CurrentSession != null)
+			{
 				return;
+			}
 
 			this.CurrentSession = new BuildSessionViewModel
 			{

@@ -28,7 +28,9 @@ namespace FastBuilder.Services
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
 				if (_scaling == value)
+				{
 					return;
+				}
 
 				_scaling = Math.Min(Math.Max(value, MinimumScaling), MaximumScaling);
 				_scalingChangedEventDelayTimer.Stop();
@@ -64,7 +66,9 @@ namespace FastBuilder.Services
 		public void SetViewTimeRange(double startTime, double endTime, ViewTimeRangeChangeReason reason)
 		{
 			if (this.ViewStartTimeOffsetSeconds == startTime && this.ViewEndTimeOffsetSeconds == endTime)
+			{
 				return;
+			}
 
 			this.ViewStartTimeOffsetSeconds = startTime;
 			this.ViewEndTimeOffsetSeconds = endTime;

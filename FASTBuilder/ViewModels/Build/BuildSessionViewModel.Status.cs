@@ -22,7 +22,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _isRestoringHistory;
 			set
 			{
-				if (value == _isRestoringHistory) return;
+				if (value == _isRestoringHistory)
+				{
+					return;
+				}
+
 				_isRestoringHistory = value;
 				this.NotifyOfPropertyChange();
 				this.NotifyOfPropertyChange(nameof(this.IsSessionViewVisible));
@@ -37,7 +41,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _isRunning;
 			private set
 			{
-				if (value == _isRunning) return;
+				if (value == _isRunning)
+				{
+					return;
+				}
+
 				_isRunning = value;
 				this.NotifyOfPropertyChange();
 				this.NotifyOfPropertyChange(nameof(this.StatusText));
@@ -49,7 +57,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _progress;
 			private set
 			{
-				if (value.Equals(_progress)) return;
+				if (value.Equals(_progress))
+				{
+					return;
+				}
+
 				_progress = value;
 				this.NotifyOfPropertyChange();
 				if (this.IsRunning)
@@ -64,10 +76,14 @@ namespace FastBuilder.ViewModels.Build
 			get
 			{
 				if (_isRestoringHistory)
+				{
 					return $"Loading ({this.Progress:0}%)";
+				}
 
 				if (this.IsRunning)
+				{
 					return $"Building ({this.Progress:0}%)";
+				}
 
 				return "Finished";
 			}
@@ -78,7 +94,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _inProgressJobCount;
 			private set
 			{
-				if (value == _inProgressJobCount) return;
+				if (value == _inProgressJobCount)
+				{
+					return;
+				}
+
 				_inProgressJobCount = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -89,7 +109,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _successfulJobCount;
 			private set
 			{
-				if (value == _successfulJobCount) return;
+				if (value == _successfulJobCount)
+				{
+					return;
+				}
+
 				_successfulJobCount = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -100,7 +124,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _failedJobCount;
 			private set
 			{
-				if (value == _failedJobCount) return;
+				if (value == _failedJobCount)
+				{
+					return;
+				}
+
 				_failedJobCount = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -111,7 +139,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _cacheHitCount;
 			private set
 			{
-				if (value == _cacheHitCount) return;
+				if (value == _cacheHitCount)
+				{
+					return;
+				}
+
 				_cacheHitCount = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -122,7 +154,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _activeWorkerCount;
 			private set
 			{
-				if (value == _activeWorkerCount) return;
+				if (value == _activeWorkerCount)
+				{
+					return;
+				}
+
 				_activeWorkerCount = value;
 				this.NotifyOfPropertyChange();
 			}
@@ -133,7 +169,11 @@ namespace FastBuilder.ViewModels.Build
 			get => _activeCoreCount;
 			private set
 			{
-				if (value == _activeCoreCount) return;
+				if (value == _activeCoreCount)
+				{
+					return;
+				}
+
 				_activeCoreCount = value;
 				this.NotifyOfPropertyChange();
 			}

@@ -21,10 +21,14 @@ namespace FastBuilder.Support
 		public override bool Matches(object targetElement, InputEventArgs inputEventArgs)
 		{
 			if (!base.Matches(targetElement, inputEventArgs))
+			{
 				return false;
+			}
 
 			if (!(inputEventArgs is MouseWheelEventArgs))
+			{
 				return false;
+			}
 
 			var args = (MouseWheelEventArgs)inputEventArgs;
 			switch (Direction)
