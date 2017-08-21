@@ -7,7 +7,7 @@ using FastBuilder.Communication.Events;
 
 namespace FastBuilder.ViewModels.Build
 {
-	internal class BuildWatcherViewModel : Conductor<BuildSessionViewModel>.Collection.OneActive, IMainPage
+	internal sealed class BuildWatcherViewModel : Conductor<BuildSessionViewModel>.Collection.OneActive, IMainPage
 	{
 		private BuildSessionViewModel _currentSession;
 		private readonly BuildWatcher _watcher;
@@ -46,6 +46,9 @@ namespace FastBuilder.ViewModels.Build
 				this.NotifyOfPropertyChange();
 			}
 		}
+
+
+		public string Icon => "HeartPulse";
 
 		public BuildWatcherViewModel()
 		{
@@ -158,5 +161,6 @@ namespace FastBuilder.ViewModels.Build
 			this.EnsureCurrentSession();
 			this.CurrentSession.OnJobStarted(e);
 		}
+
 	}
 }

@@ -19,6 +19,8 @@ namespace FastBuilder.ViewModels.Worker
 
 		public bool IsWorkerRunning => _workerAgentService.IsRunning;
 
+		public string Icon => "Worker";
+
 		public string WorkerErrorMessage
 		{
 			get => _workerErrorMessage;

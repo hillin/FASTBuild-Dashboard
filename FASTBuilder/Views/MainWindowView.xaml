@@ -46,7 +46,10 @@
                          Margin="0 16">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="viewModels:IMainPage">
-                            <TextBlock Text="{Binding DisplayName}" Margin="32 0" />
+                            <StackPanel Orientation="Horizontal" Margin="32,0">
+                                <materialDesign:PackIcon Kind="{Binding Icon}" />
+                                <TextBlock Text="{Binding DisplayName}" Margin="8,0,0,0" />
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

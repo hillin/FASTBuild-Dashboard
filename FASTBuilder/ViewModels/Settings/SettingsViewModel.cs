@@ -68,6 +68,8 @@ namespace FastBuilder.ViewModels.Settings
 		public int MaximumCores { get; }
 		public DoubleCollection CoreTicks { get; }
 
+		public string Icon => "Settings";
+
 		public SettingsViewModel()
 		{
 			this.MaximumCores = Environment.ProcessorCount;
