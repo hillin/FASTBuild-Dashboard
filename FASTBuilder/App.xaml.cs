@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Windows;
+using Microsoft.Shell;
 
 namespace FASTBuilder
 {
-	public partial class App 
+	public partial class App : ISingleInstanceApp
 	{
-		public App()
+		public App() => this.InitializeComponent();
+		public bool SignalExternalCommandLineArgs(IList<string> args)
 		{
-			InitializeComponent();
+			Application.Current.MainWindow.Show();
+			Application.Current.MainWindow.Activate();
+			return true;
 		}
 	}
 }
