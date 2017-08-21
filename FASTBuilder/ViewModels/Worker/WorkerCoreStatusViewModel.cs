@@ -97,6 +97,7 @@ namespace FastBuilder.ViewModels.Worker
 			this.NotifyOfPropertyChange(nameof(this.WorkingItem));
 			this.NotifyOfPropertyChange(nameof(this.UIBulbBorderColor));
 			this.NotifyOfPropertyChange(nameof(this.UIBulbFillColor));
+			this.NotifyOfPropertyChange(nameof(this.UIBulbForeground));
 			this.NotifyOfPropertyChange(nameof(this.IsWorking));
 			this.NotifyOfPropertyChange(nameof(this.DisplayState));
 		}

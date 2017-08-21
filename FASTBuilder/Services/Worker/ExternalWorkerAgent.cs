@@ -224,14 +224,33 @@ namespace FastBuilder.Services.Worker
 				CreateNoWindow = true
 			};
 
+			Process process;
+
 			try
 			{
-				Process.Start(startInfo);
+				process = Process.Start(startInfo);
 			}
 			catch (Exception ex)
 			{
 				this.OnWorkerErrorOccurred($"Failed to start worker, exception occurred.\n\nMessage:{ex.Message}");
 				return;
+			}
+
+			while(true)
+			{
+				if (process == null || process.HasExited)
+				{
+					this.OnWorkerErrorOccurred($"Failed to start worker, worker window not found");
+					return;
+				}
+
+				_workerWindowPtr = this.FindExistingWorkerWindow();
+				if (_workerWindowPtr != IntPtr.Zero)
+				{
+					break;
+				}
+
+				Thread.Sleep(100);
 			}
 
 			this.InitializeWorker();
