@@ -2,7 +2,9 @@
 
 FASTBuild ([website](http://www.fastbuild.org/) or [GitHub repository](https://github.com/fastbuild/fastbuild)) is an amazing distributed building system. It can drastically shorten your build time by utilizing its distributed and cached building mechanisms.
 
-While the name could be a bit confusing, FASTBuild**er** is a GUI program for FASTBuild. For now, it acts only as a monitor to illustrate FASTBuild's build progress, but more other features are also planned.
+While the name could be a bit confusing, FASTBuild**er** is a GUI program for FASTBuild. It can watch and report FASTBuild's build progress in a friendly timeline interface; track your local worker's activities; and provide a simple setting interface to configure how FASTBuild works.
+
+![Screenshot of FASTBuilder 0.8.0](https://github.com/hillin/FASTBuilder/blob/master/Documentations/Screenshots/FASTBuilder.0.8.0.png)
 
 ## Get FASTBuilder
 You can get the latest release of FASTBuilder at https://github.com/hillin/FASTBuilder/releases. You'll need [.NET Framework 4.6](https://www.microsoft.com/en-us/download/details.aspx?id=48130) or newer version installed on your Windows system.
