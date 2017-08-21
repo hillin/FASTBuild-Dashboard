@@ -85,10 +85,15 @@
                                     VerticalAlignment="Center"
                                     Style="{StaticResource MaterialDesignFlatButton}"
                                     Content="Browse" />-->
-                            <materialDesign:PackIcon Kind="AlertOutline" 
-                                                     DockPanel.Dock="Right"
-                                                     VerticalAlignment="Center"
-                                                     ToolTip="Might not take effect until you restart your computer" />
+
+                            <Grid IsHitTestVisible="True"
+                                  Background="{DynamicResource MaterialDesignBackground}"
+                                  DockPanel.Dock="Right"
+                                  VerticalAlignment="Center"
+                                  Margin="4,0,0,0"
+                                  ToolTip="Might not take effect until you restart your computer" >
+                                <materialDesign:PackIcon Kind="AlertOutline" />
+                            </Grid>
                             <TextBox x:Name="BrokeragePath" 
                                      VerticalAlignment="Center" />
                         </DockPanel>
