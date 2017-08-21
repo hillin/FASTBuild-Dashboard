@@ -28,8 +28,8 @@
 
 
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo ProgressState="{Binding BuildWatcher.TaskbarProgressState}"
-                         ProgressValue="{Binding BuildWatcher.TaskbarProgressValue}" />
+        <TaskbarItemInfo ProgressState="{Binding BuildWatcherPage.TaskbarProgressState}"
+                         ProgressValue="{Binding BuildWatcherPage.TaskbarProgressValue}" />
     </Window.TaskbarItemInfo>
 
     <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
