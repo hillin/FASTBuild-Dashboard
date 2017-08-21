@@ -83,7 +83,7 @@ namespace FastBuilder.Views.Build
 					this.AddJob(job);
 				}
 
-				this.UpdateAllViewTopPositions();
+				this.UpdateAllViewPositions();
 			}));
 		}
 
@@ -94,8 +94,6 @@ namespace FastBuilder.Views.Build
 			if (_jobViewPool.Count == 0)
 			{
 				view = new BuildJobView();
-				view.SetBinding(BuildJobView.WidthProperty, new Binding("UIWidth"));
-				view.SetBinding(Canvas.LeftProperty, new Binding("UILeft"));
 				this.Canvas.Children.Add(view);
 			}
 			else
@@ -107,31 +105,6 @@ namespace FastBuilder.Views.Build
 			view.DataContext = job;
 			_activeJobViewMap[job] = view;
 
-		}
-
-		private void UpdateViewTopPosition(BuildJobViewModel job, BuildJobView view)
-		{
-			const double coreRowHeight = 28;
-			const double coreVerticalMargin = 0;
-			const double workerVerticalMargin = 12;
-
-			var top = 0.0;
-
-			var session = job.OwnerCore.OwnerWorker.OwnerSession;
-			var workerIndex = session.Workers.IndexOf(job.OwnerCore.OwnerWorker);
-
-			for (var i = 0; i < workerIndex; ++i)
-			{
-				var worker = session.Workers[i];
-				top += workerVerticalMargin * 2 + worker.Cores.Count * (coreRowHeight + coreVerticalMargin * 2);
-			}
-
-			top += workerVerticalMargin;
-
-			top += job.OwnerCore.Id * (coreRowHeight + coreVerticalMargin * 2);
-			top += coreVerticalMargin;
-
-			Canvas.SetTop(view, top);
 		}
 
 		private void OnTicked(object sender, double timeOffset)
@@ -152,7 +125,7 @@ namespace FastBuilder.Views.Build
 						}
 					}
 
-					this.UpdateAllViewTopPositions();
+					this.UpdateAllViewPositions();
 				}
 
 				_wasNowInTimeFrame = isNowInTimeFrame;
@@ -175,7 +148,12 @@ namespace FastBuilder.Views.Build
 		private void UpdateTimeFrame()
 		{
 			var viewTransformService = IoC.Get<IViewTransformService>();
-			_startTimeOffset = viewTransformService.ViewStartTimeOffsetSeconds;
+
+			var headerViewWidth = (double)this.FindResource("HeaderViewWidth");
+
+			_startTimeOffset = viewTransformService.ViewStartTimeOffsetSeconds 
+				+ (headerViewWidth - 8) / viewTransformService.Scaling;	// minus 8px to make the jobs looks like being covered under the header panel
+
 			_endTimeOffset = viewTransformService.ViewEndTimeOffsetSeconds;
 			_wasNowInTimeFrame = _endTimeOffset >= _currentTimeOffset && _startTimeOffset <= _currentTimeOffset;
 
@@ -199,14 +177,45 @@ namespace FastBuilder.Views.Build
 				}
 			}
 
-			this.UpdateAllViewTopPositions();
+			this.UpdateAllViewPositions();
 		}
 
-		private void UpdateAllViewTopPositions()
+		private void UpdateAllViewPositions()
 		{
+			var scaling = _viewTransformService.Scaling;
+
+			var minimumLeft = scaling * _startTimeOffset ;
+
 			foreach (var pair in _activeJobViewMap)
 			{
-				this.UpdateViewTopPosition(pair.Key, pair.Value);
+				var job = pair.Key;
+				var view = pair.Value;
+
+				const double coreRowHeight = 28;
+				const double coreVerticalMargin = 0;
+				const double workerVerticalMargin = 12;
+
+				var top = 0.0;
+
+				var session = job.OwnerCore.OwnerWorker.OwnerSession;
+				var workerIndex = session.Workers.IndexOf(job.OwnerCore.OwnerWorker);
+
+				for (var i = 0; i < workerIndex; ++i)
+				{
+					var worker = session.Workers[i];
+					top += workerVerticalMargin * 2 + worker.Cores.Count * (coreRowHeight + coreVerticalMargin * 2);
+				}
+
+				top += workerVerticalMargin;
+
+				top += job.OwnerCore.Id * (coreRowHeight + coreVerticalMargin * 2);
+				top += coreVerticalMargin;
+
+				Canvas.SetTop(view, top);
+
+				Canvas.SetLeft(view, Math.Max(minimumLeft, job.StartTimeOffset * scaling));
+				view.Width = Math.Min(job.EndTimeOffset - Math.Max(_startTimeOffset, job.StartTimeOffset), 24 * 60 * 60) * scaling;
+				job.ShouldShowText = view.Width >= 48;
 			}
 		}
 

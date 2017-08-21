@@ -5,7 +5,6 @@ using System.Windows.Media;
 using Caliburn.Micro;
 using FastBuilder.Communication;
 using FastBuilder.Communication.Events;
-using FastBuilder.Services;
 
 namespace FastBuilder.ViewModels.Build
 {
@@ -13,19 +12,11 @@ namespace FastBuilder.ViewModels.Build
 	{
 		public BuildCoreViewModel OwnerCore { get; }
 
-		private static string GenerateDisplayName(string eventName)
-		{
-			return Path.GetFileName(eventName) ?? eventName;
-		}
+		private static string GenerateDisplayName(string eventName) => Path.GetFileName(eventName) ?? eventName;
 
-		private static double GetUIScaling()
-		{
-			return IoC.Get<IViewTransformService>().Scaling;
-		}
-		
 		private BuildJobStatus _status;
 		private double _elapsedSeconds;
-		private double _uiWidth;
+		private bool _shouldShowText;
 		public DateTime StartTime { get; }
 		public double StartTimeOffset { get; }
 
@@ -41,29 +32,22 @@ namespace FastBuilder.ViewModels.Build
 				if (value.Equals(_elapsedSeconds)) return;
 				_elapsedSeconds = value;
 				this.NotifyOfPropertyChange();
-				this.UpdateUIWidth();
 				this.NotifyOfPropertyChange(nameof(this.EndTime));
 				this.NotifyOfPropertyChange(nameof(this.EndTimeOffset));
 				this.NotifyOfPropertyChange(nameof(this.ToolTipText));
 			}
 		}
 
-		public double UIWidth
+		public bool ShouldShowText
 		{
-			get => _uiWidth;
+			get => _shouldShowText;
 			set
 			{
-				if (value.Equals(_uiWidth)) return;
-				_uiWidth = value;
+				if (value == _shouldShowText) return;
+				_shouldShowText = value;
 				this.NotifyOfPropertyChange();
-				this.NotifyOfPropertyChange(nameof(this.ShouldShowText));
 			}
 		}
-
-		public double UILeft => Math.Max(0.0, this.StartTimeOffset) *
-								BuildJobViewModel.GetUIScaling();
-
-		public bool ShouldShowText => this.UIWidth >= 48;
 
 		public Brush UIForeground
 		{
@@ -185,7 +169,6 @@ namespace FastBuilder.ViewModels.Build
 				this.NotifyOfPropertyChange();
 				this.NotifyOfPropertyChange(nameof(this.IsFinished));
 				this.NotifyOfPropertyChange(nameof(this.ElapsedSeconds));
-				this.NotifyOfPropertyChange(nameof(this.UIWidth));
 				this.NotifyOfPropertyChange(nameof(this.ToolTipText));
 				this.NotifyOfPropertyChange(nameof(this.UIForeground));
 				this.NotifyOfPropertyChange(nameof(this.UIBackground));
@@ -201,16 +184,8 @@ namespace FastBuilder.ViewModels.Build
 			this.StartTime = e.Time;
 			this.StartTimeOffset = (e.Time - sessionStartTime).TotalSeconds;
 			this.Status = BuildJobStatus.Building;
-
-			var viewTransformService = IoC.Get<IViewTransformService>();
-			viewTransformService.ScalingChanged += this.OnScalingChanged;
 		}
 
-		private void OnScalingChanged(object sender, EventArgs e)
-		{
-			this.NotifyOfPropertyChange(nameof(this.UILeft));
-			this.UpdateUIWidth();
-		}
 
 		public void OnFinished(FinishJobEventArgs e)
 		{
@@ -231,11 +206,6 @@ namespace FastBuilder.ViewModels.Build
 		private void UpdateDuration(double currentTimeOffset)
 		{
 			this.ElapsedSeconds = currentTimeOffset - this.StartTimeOffset;
-		}
-
-		private void UpdateUIWidth()
-		{
-			this.UIWidth = Math.Max(0.0, Math.Min(this.ElapsedSeconds, 60 * 60 * 24)) * BuildJobViewModel.GetUIScaling();
 		}
 
 		public void OnSessionStopped(double currentTimeOffset)
