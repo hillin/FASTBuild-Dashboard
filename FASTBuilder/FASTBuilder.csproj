@@ -130,6 +130,7 @@
     <Compile Include="Support\DragScrollViewer.cs" />
     <Compile Include="Support\MouseWheelGesture.cs" />
     <Compile Include="Support\SimpleCommand.cs" />
+    <Compile Include="ViewModels\About\AboutViewModel.cs" />
     <Compile Include="ViewModels\Build\BuildSessionViewModel.Status.cs" />
     <Compile Include="ViewModels\IMainPage.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -138,6 +139,9 @@
     <Compile Include="ViewModels\Settings\SettingsViewModel.cs" />
     <Compile Include="ViewModels\Worker\WorkerCoreStatusViewModel.cs" />
     <Compile Include="ViewModels\Worker\WorkerViewModel.cs" />
+    <Compile Include="Views\About\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Build\BuildSessionWorkersBackgroundView.xaml.cs">
       <DependentUpon>BuildSessionWorkersBackgroundView.xaml</DependentUpon>
     </Compile>
@@ -166,6 +170,10 @@
       <DependentUpon>WorkerView.xaml</DependentUpon>
     </Compile>
     <Page Include="Themes\Layout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\About\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

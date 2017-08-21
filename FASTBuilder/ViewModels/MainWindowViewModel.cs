@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using FastBuilder.ViewModels.About;
 using FastBuilder.ViewModels.Build;
 using FastBuilder.ViewModels.Settings;
 using FastBuilder.ViewModels.Worker;
@@ -14,9 +15,10 @@ namespace FastBuilder.ViewModels
 	internal sealed class MainWindowViewModel : Conductor<IMainPage>.Collection.AllActive
 	{
 		private IMainPage _currentPage;
-		public BuildWatcherViewModel BuildWatcher { get; } = new BuildWatcherViewModel();
-		public WorkerViewModel Worker { get; } = new WorkerViewModel();
-		public SettingsViewModel Settings { get; } = new SettingsViewModel();
+		public BuildWatcherViewModel BuildWatcherPage { get; } = new BuildWatcherViewModel();
+		public WorkerViewModel WorkerPage { get; } = new WorkerViewModel();
+		public SettingsViewModel SettingsPage { get; } = new SettingsViewModel();
+		public AboutViewModel AboutPage { get; } = new AboutViewModel();
 
 		public IMainPage CurrentPage
 		{
@@ -31,11 +33,12 @@ namespace FastBuilder.ViewModels
 
 		public MainWindowViewModel()
 		{
-			this.Items.Add(this.BuildWatcher);
-			this.Items.Add(this.Worker);
-			this.Items.Add(this.Settings);
+			this.Items.Add(this.BuildWatcherPage);
+			this.Items.Add(this.WorkerPage);
+			this.Items.Add(this.SettingsPage);
+			this.Items.Add(this.AboutPage);
 
-			this.CurrentPage = this.BuildWatcher;
+			this.CurrentPage = this.BuildWatcherPage;
 			this.DisplayName = "FASTBuilder";
 		}
 
