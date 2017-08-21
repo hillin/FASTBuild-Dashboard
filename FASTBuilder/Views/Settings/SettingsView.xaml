@@ -1,0 +1,146 @@
+﻿<UserControl x:Class="FastBuilder.Views.Settings.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="600">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ComboBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Slider.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="TextBlock"
+                   x:Key="SectionTitle"
+                   BasedOn="{StaticResource MaterialDesignHeadlineTextBlock}">
+                <Setter Property="Margin" Value="0 0 0 24" />
+            </Style>
+
+            <Style TargetType="StackPanel"
+                   x:Key="OptionContainer">
+                <Setter Property="Orientation" Value="Horizontal" />
+                <Setter Property="Margin" Value="0,8" />
+            </Style>
+
+            <Style TargetType="TextBlock"
+                   x:Key="OptionTitle"
+                   BasedOn="{StaticResource MaterialDesignBody2TextBlock}">
+                <Setter Property="Width" Value="160" />
+                <Setter Property="Margin" Value="16,0,0,0" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+
+            <Style TargetType="{x:Type FrameworkElement}"
+                   x:Key="OptionContent">
+                <Setter Property="Width" Value="320" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+
+            <Style TargetType="Border"
+                   x:Key="Separator">
+                <Setter Property="Margin" Value="0 16 0 8" />
+                <Setter Property="BorderThickness" Value="0 1 0 0 " />
+                <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <DockPanel>
+
+            <Border Height="{StaticResource TitleColorZoneHeight}"
+                    Margin="{StaticResource MainPageTitleMargin}"
+                    Padding="16"
+                    DockPanel.Dock="Top">
+
+                <Grid TextElement.Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                      VerticalAlignment="Center">
+
+                    <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                               VerticalAlignment="Center"
+                               Text="Settings" />
+                </Grid>
+            </Border>
+
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Visible">
+                <StackPanel Margin="16">
+
+                    <TextBlock Style="{StaticResource SectionTitle}"
+                               Text="Brokerage" />
+
+                    <StackPanel Style="{StaticResource OptionContainer}">
+                        <TextBlock Style="{StaticResource OptionTitle}"
+                                   Text="Brokerage Path" />
+
+                        <DockPanel Style="{StaticResource OptionContent}">
+                            <!-- todo -->
+                            <!--<Button DockPanel.Dock="Right"
+                                    Margin="8,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource MaterialDesignFlatButton}"
+                                    Content="Browse" />-->
+                            <TextBox x:Name="BrokeragePath" 
+                                     VerticalAlignment="Center" />
+                        </DockPanel>
+                    </StackPanel>
+
+                    <StackPanel Style="{StaticResource OptionContainer}">
+                        <TextBlock Style="{StaticResource OptionTitle}"
+                                   Text="" /> <!-- placeholder -->
+                        <materialDesign:PackIcon Kind="ServerNetwork"
+                                                 VerticalAlignment="Center" />
+                        <TextBlock x:Name="DisplayWorkersInPool"
+                                   VerticalAlignment="Center"
+                                   Margin="4,0,0,0"
+                                   Text="16 workers in pool" />
+                    </StackPanel>
+
+                    <Border Style="{StaticResource Separator}" />
+
+                    <TextBlock Style="{StaticResource SectionTitle}"
+                               Text="Worker" />
+
+                    <StackPanel Style="{StaticResource OptionContainer}">
+                        <TextBlock Style="{StaticResource OptionTitle}"
+                                   Text="Mode" />
+
+                        <Grid Style="{StaticResource OptionContent}">
+                            <ComboBox SelectedIndex="{Binding WorkerMode, Mode=TwoWay}">
+                                <ComboBoxItem Content="Disabled" />
+                                <ComboBoxItem Content="Work when Idle" />
+                                <ComboBoxItem Content="Work Always" />
+                            </ComboBox>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Style="{StaticResource OptionContainer}">
+                        <TextBlock Style="{StaticResource OptionTitle}"
+                                   Text="Cores" />
+
+                        <DockPanel Style="{StaticResource OptionContent}">
+                            <TextBlock x:Name="DisplayCores"
+                                       DockPanel.Dock="Right"
+                                       Margin="8,0,0,0"
+                                       Text="up to 8 cores" />
+                            <Slider x:Name="WorkerCores"
+                                    Minimum="1"
+                                    Maximum="{Binding MaximumCores}"
+                                    Value="{Binding WorkerCores, Mode=TwoWay, Delay=500}"
+                                    TickPlacement="BottomRight"
+                                    TickFrequency="1"
+                                    IsSnapToTickEnabled="True"
+                                    Ticks="{Binding CoreTicks}"/>
+                        </DockPanel>
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</UserControl>

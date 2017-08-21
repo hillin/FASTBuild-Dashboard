@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace FastBuilder.Services
 {
-	internal interface IWorkerPoolService
+	internal interface IBrokerageService
     {
 		string[] WorkerNames { get; }
-	    event EventHandler WorkerCountChanged;
+		string BrokeragePath { get; set; }
+
+		event EventHandler WorkerCountChanged;
     }
 }

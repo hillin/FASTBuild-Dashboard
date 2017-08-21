@@ -8,7 +8,7 @@ using System.Timers;
 
 namespace FastBuilder.Services
 {
-	internal class WorkerPoolService : IWorkerPoolService
+	internal class BrokerageService : IBrokerageService
 	{
 		private const string WorkerPoolRelativePath = @"main\16";
 
@@ -27,9 +27,15 @@ namespace FastBuilder.Services
 			}
 		}
 
+		public string BrokeragePath
+		{
+			get => Environment.GetEnvironmentVariable("FASTBUILD_BROKERAGE_PATH");
+			set => Environment.SetEnvironmentVariable("FASTBUILD_BROKERAGE_PATH", value);
+		}
+
 		public event EventHandler WorkerCountChanged;
 
-		public WorkerPoolService()
+		public BrokerageService()
 		{
 			_workerNames = new string[0];
 
@@ -41,7 +47,7 @@ namespace FastBuilder.Services
 
 		private void CheckTimer_Elapsed(object sender, ElapsedEventArgs e)
 		{
-			var brokeragePath = Environment.GetEnvironmentVariable("FASTBUILD_BROKERAGE_PATH");
+			var brokeragePath = BrokeragePath;
 			if (string.IsNullOrEmpty(brokeragePath))
 			{
 				this.WorkerNames = new string[0];
@@ -57,5 +63,7 @@ namespace FastBuilder.Services
 				this.WorkerNames = new string[0];
 			}
 		}
+
+
 	}
 }

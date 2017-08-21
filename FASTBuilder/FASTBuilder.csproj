@@ -58,6 +58,7 @@
       <HintPath>..\packages\MaterialDesignThemes.2.3.0.823\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -82,6 +83,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="-\Caliburn\Micro\Validation\DirectoryExistsAttribute.cs" />
+    <Compile Include="-\Caliburn\Micro\Validation\EmailAttribute.cs" />
+    <Compile Include="-\Caliburn\Micro\Validation\FileExistsAttribute.cs" />
+    <Compile Include="-\Caliburn\Micro\Validation\MultipleEmailAttribute.cs" />
+    <Compile Include="-\Caliburn\Micro\Validation\ValidatingScreen.cs" />
+    <Compile Include="-\Caliburn\Micro\Validation\ValidationGroupAttribute.cs" />
     <Compile Include="AppBootstrapper.cs" />
     <Compile Include="AppSettings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -105,14 +112,14 @@
     <Compile Include="Services\Worker\ExternalWorkerAgent.win32.cs" />
     <Compile Include="Services\Worker\IWorkerAgent.cs" />
     <Compile Include="Services\Worker\IWorkerAgentService.cs" />
-    <Compile Include="Services\IWorkerPoolService.cs" />
+    <Compile Include="Services\IBrokerageService.cs" />
     <Compile Include="Services\ViewTimeRangeChangeReason.cs" />
     <Compile Include="Services\ViewTransformService.cs" />
     <Compile Include="Services\Worker\WorkerAgentService.cs" />
     <Compile Include="Services\Worker\WorkerCoreState.cs" />
     <Compile Include="Services\Worker\WorkerCoreStatus.cs" />
     <Compile Include="Services\Worker\WorkerMode.cs" />
-    <Compile Include="Services\WorkerPoolService.cs" />
+    <Compile Include="Services\BrokerageService.cs" />
     <Compile Include="Services\Worker\WorkerRunStateChangedEventArgs.cs" />
     <Compile Include="Support\BoolToVisibilityConverter.cs" />
     <Compile Include="Support\DragScrollViewer.cs" />
@@ -122,6 +129,8 @@
     <Compile Include="ViewModels\IMainPage.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Build\BuildSessionJobManager.cs" />
+    <Compile Include="ViewModels\Settings\SettingsValidator.cs" />
+    <Compile Include="ViewModels\Settings\SettingsViewModel.cs" />
     <Compile Include="ViewModels\Worker\WorkerCoreStatusViewModel.cs" />
     <Compile Include="ViewModels\Worker\WorkerViewModel.cs" />
     <Compile Include="Views\Build\BuildSessionWorkersBackgroundView.xaml.cs">

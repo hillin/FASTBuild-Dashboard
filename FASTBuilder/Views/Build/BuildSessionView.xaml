@@ -62,39 +62,45 @@
                             BorderBrush="DarkGreen"
                             Background="DarkGreen"
                             TextElement.Foreground="White"
-                            Padding="8,2"
-                            Margin="8,0,0,0">
+                            Margin="8,0,0,0"
+                            Padding="8,2,2,2">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="10"
-                                       VerticalAlignment="Center"
-                                       Text="Successful" />
-                            <TextBlock x:Name="SuccessfulJobCount"
-                                       VerticalAlignment="Center"
-                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
-                                       Margin="6,0,0,0"
-                                       Text="2" />
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="10"
+                                           VerticalAlignment="Center"
+                                           Text="Successful" />
+                                <TextBlock x:Name="SuccessfulJobCount"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                                           Margin="6,0,0,0"
+                                           Text="2" />
+                            </StackPanel>
+
+
+                            <Border CornerRadius="2"
+                                    BorderThickness="1"
+                                    BorderBrush="DarkCyan"
+                                    Background="DarkCyan"
+                                    TextElement.Foreground="White"
+                                    Padding="6,0"
+                                    Margin="8,0,0,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="10"
+                                               VerticalAlignment="Center"
+                                               Text="Cache Hit" />
+                                    <TextBlock x:Name="CacheHitCount"
+                                               VerticalAlignment="Center"
+                                               Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                                               Margin="6,0,0,0"
+                                               Text="2" />
+                                </StackPanel>
+
+                            </Border>
                         </StackPanel>
                     </Border>
 
-                    <Border CornerRadius="2"
-                            BorderThickness="1"
-                            BorderBrush="DarkCyan"
-                            Background="DarkCyan"
-                            TextElement.Foreground="White"
-                            Padding="8,2"
-                            Margin="8,0,0,0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="10"
-                                       VerticalAlignment="Center"
-                                       Text="Cache Hit" />
-                            <TextBlock x:Name="CacheHitCount"
-                                       VerticalAlignment="Center"
-                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
-                                       Margin="6,0,0,0"
-                                       Text="2" />
-                        </StackPanel>
-                        
-                    </Border>
+                    
 
                     <Border CornerRadius="2"
                             BorderThickness="1"

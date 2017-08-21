@@ -69,6 +69,10 @@ namespace FastBuilder.Services.Worker
 			[DllImport("user32.dll")]
 			public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
 
+			[return: MarshalAs(UnmanagedType.Bool)]
+			[DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+			public static extern bool PostMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
+
 			public enum GetWindowLongIndexes
 			{
 				GWL_HWNDPARENT = -8,
@@ -205,7 +209,7 @@ namespace FastBuilder.Services.Worker
 
 				var parentHwnd = WinAPI.GetWindowLongPtr(hWnd, (int)WinAPI.GetWindowLongIndexes.GWL_HWNDPARENT);
 				var controlId = WinAPI.GetWindowLongPtr(hWnd, (int)WinAPI.GetWindowLongIndexes.GWL_ID).ToInt32();
-				WinAPI.SendMessage(parentHwnd, (int)WinAPI.WindowsMessages.WM_COMMAND,
+				WinAPI.PostMessage(parentHwnd, (int)WinAPI.WindowsMessages.WM_COMMAND,
 					WinAPIUtils.MakeWParam(controlId, (int)WinAPI.ComboBoxNotifications.CBN_SELCHANGE), hWnd);
 			}
 

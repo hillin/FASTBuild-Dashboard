@@ -53,7 +53,9 @@ namespace FastBuilder.Views.Build
 
 			var vm = this.DataContext as BuildSessionViewModel;
 			if (vm == null)
+			{
 				return;
+			}
 
 			_sessionViewModel = vm;
 			_sessionViewModel.Ticked += this.OnTicked;

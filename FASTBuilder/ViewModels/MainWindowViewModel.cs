@@ -6,15 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using FastBuilder.ViewModels.Build;
+using FastBuilder.ViewModels.Settings;
 using FastBuilder.ViewModels.Worker;
 
 namespace FastBuilder.ViewModels
 {
-	internal class MainWindowViewModel : Conductor<IMainPage>.Collection.AllActive
+	internal sealed class MainWindowViewModel : Conductor<IMainPage>.Collection.AllActive
 	{
 		private IMainPage _currentPage;
 		public BuildWatcherViewModel BuildWatcher { get; } = new BuildWatcherViewModel();
 		public WorkerViewModel Worker { get; } = new WorkerViewModel();
+		public SettingsViewModel Settings { get; } = new SettingsViewModel();
 
 		public IMainPage CurrentPage
 		{
@@ -31,6 +33,7 @@ namespace FastBuilder.ViewModels
 		{
 			this.Items.Add(this.BuildWatcher);
 			this.Items.Add(this.Worker);
+			this.Items.Add(this.Settings);
 
 			this.CurrentPage = this.BuildWatcher;
 			this.DisplayName = "FASTBuilder";

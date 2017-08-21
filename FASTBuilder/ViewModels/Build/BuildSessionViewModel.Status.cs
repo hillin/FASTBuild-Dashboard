@@ -170,9 +170,9 @@ namespace FastBuilder.ViewModels.Build
 		}
 
 
-		private void IWorkerPoolService_WorkerCountChanged(object sender, EventArgs e)
+		private void BrokerageService_WorkerCountChanged(object sender, EventArgs e)
 		{
-			this.PoolWorkerNames = IoC.Get<IWorkerPoolService>().WorkerNames;
+			this.PoolWorkerNames = IoC.Get<IBrokerageService>().WorkerNames;
 		}
 	}
 }

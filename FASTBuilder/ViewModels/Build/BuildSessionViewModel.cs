@@ -53,7 +53,7 @@ namespace FastBuilder.ViewModels.Build
 			this.DisplayName = startTime.ToString(CultureInfo.CurrentCulture);
 			
 			this.PoolWorkerNames = new string[0];
-			IoC.Get<IWorkerPoolService>().WorkerCountChanged += this.IWorkerPoolService_WorkerCountChanged;
+			IoC.Get<IBrokerageService>().WorkerCountChanged += this.BrokerageService_WorkerCountChanged;
 		}
 
 

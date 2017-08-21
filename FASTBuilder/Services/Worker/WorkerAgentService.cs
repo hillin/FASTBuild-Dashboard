@@ -8,7 +8,16 @@ namespace FastBuilder.Services.Worker
 
 		public int WorkerCores
 		{
-			get => this.CurrentAppSettings.WorkerCores;
+			get
+			{
+				var cores = this.CurrentAppSettings.WorkerCores;
+				if (cores <= 0)
+				{
+					cores = Environment.ProcessorCount / 2;
+				}
+
+				return cores;
+			}
 			set
 			{
 				this.CurrentAppSettings.WorkerCores = value;
@@ -47,7 +56,7 @@ namespace FastBuilder.Services.Worker
 			_workerAgent.WorkerRunStateChanged += this.WorkerAgent_WorkerRunStateChanged;
 		}
 
-		private void WorkerAgent_WorkerRunStateChanged(object sender, WorkerRunStateChangedEventArgs e) 
+		private void WorkerAgent_WorkerRunStateChanged(object sender, WorkerRunStateChangedEventArgs e)
 			=> this.WorkerRunStateChanged?.Invoke(this, e);
 
 		public void Initialize()
