@@ -13,6 +13,6 @@ namespace FastBuilder.ViewModels.About
 		public string Icon => "InformationOutline";
 		public string DisplayName => "About";
 
-		public string Version => Assembly.GetCallingAssembly().GetName().Version.ToString();
+		public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 	}
 }

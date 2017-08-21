@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:FastBuilder.Views.About"
              mc:Ignorable="d"
-             d:DesignHeight="400" d:DesignWidth="600">
+             d:DesignHeight="800" d:DesignWidth="600">
 
     <UserControl.Resources>
 
@@ -20,7 +20,7 @@
             <Setter Property="Cursor" Value="Hand" />
             <EventSetter Event="Click" Handler="Hyperlink_Click" />
         </Style>
-        
+
     </UserControl.Resources>
 
     <Grid>
@@ -90,52 +90,90 @@
                                 <List>
                                     <ListItem>
                                         <Paragraph>
-                                            <TextBlock>
-                                                <Hyperlink NavigateUri="http://caliburnmicro.com/">Caliburn.Micro</Hyperlink>
-                                                , licenced under the
-                                                <Hyperlink
-                                                    NavigateUri="https://github.com/hillin/FASTBuilder/blob/master/LICENSE">
-                                                    MIT License
-                                                </Hyperlink>
-                                            </TextBlock>
+                                            <Hyperlink NavigateUri="http://caliburnmicro.com/">Caliburn.Micro</Hyperlink>
+                                            Copyright (c) 2010 Blue Spire Consulting, Inc., licenced under the
+                                            <Hyperlink
+                                                NavigateUri="https://github.com/Caliburn-Micro/Caliburn.Micro/blob/master/License.txt">
+                                                MIT License
+                                            </Hyperlink>
                                         </Paragraph>
+
                                         <Paragraph Margin="0,4,0,0">
-                                            <TextBlock>
-                                                <Hyperlink NavigateUri="https://github.com/AIexandr/Caliburn.Micro.Validation">Caliburn.Micro.Validation</Hyperlink>
-                                                , licenced under the
-                                                <Hyperlink
-                                                    NavigateUri="https://github.com/AIexandr/Caliburn.Micro.Validation/blob/master/LICENSE">
-                                                    MIT License
-                                                </Hyperlink>
-                                            </TextBlock>
+                                            <Hyperlink
+                                                NavigateUri="https://github.com/AIexandr/Caliburn.Micro.Validation">
+                                                Caliburn.Micro.Validation
+                                            </Hyperlink>
+                                            Copyright (c) 2015 AIexandr, licenced under the
+                                            <Hyperlink
+                                                NavigateUri="https://github.com/AIexandr/Caliburn.Micro.Validation/blob/master/LICENSE">
+                                                MIT License
+                                            </Hyperlink>
                                         </Paragraph>
                                     </ListItem>
 
                                     <ListItem Margin="0,4,0,0">
                                         <Paragraph>
-                                            <TextBlock>
-                                                <Hyperlink NavigateUri="https://github.com/Fody/Costura">Costura.Fody</Hyperlink>
-                                                , licenced under the
-                                                <Hyperlink
-                                                    NavigateUri="https://github.com/Fody/Costura/blob/master/LICENSE">
-                                                    MIT License
-                                                </Hyperlink>
-                                            </TextBlock>
+                                            <Hyperlink NavigateUri="https://github.com/Fody/Costura">Costura.Fody</Hyperlink>
+                                            Copyright (c) 2012 Simon Cropp and contributors, licenced under the
+                                            <Hyperlink
+                                                NavigateUri="https://github.com/Fody/Costura/blob/master/LICENSE">
+                                                MIT License
+                                            </Hyperlink>
                                         </Paragraph>
                                     </ListItem>
 
                                     <ListItem Margin="0,4,0,0">
                                         <Paragraph>
-                                            <TextBlock>
-                                                <Hyperlink
-                                                    NavigateUri="https://github.com/ButchersBoy/MaterialDesignInXamlToolkit">
-                                                    Material Design in XAML Toolkit
-                                                </Hyperlink>
-                                            </TextBlock>
+                                            <Hyperlink
+                                                NavigateUri="https://github.com/ButchersBoy/MaterialDesignInXamlToolkit">
+                                                Material Design in XAML Toolkit
+                                            </Hyperlink>
+                                            Copyright (c) James Willock,  Mulholland Software and Contributors, licenced under the
+                                            <Hyperlink
+                                                NavigateUri="https://github.com/ButchersBoy/MaterialDesignInXamlToolkit/blob/master/LICENSE">
+                                                MIT License
+                                            </Hyperlink>
                                         </Paragraph>
                                     </ListItem>
-                                   
+
                                 </List>
+
+                                <Paragraph FontFamily="Consolas"
+                                           FontSize="11">
+                                    The MIT License (MIT) <LineBreak />
+                                    <LineBreak />
+                                    Permission is hereby granted, free of charge, to any person obtaining a copy
+                                    <LineBreak />
+                                    of this software and associated documentation files (the "Software"), to deal
+                                    <LineBreak />
+                                    in the Software without restriction, including without limitation the rights
+                                    <LineBreak />
+                                    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                                    <LineBreak />
+                                    copies of the Software, and to permit persons to whom the Software is
+                                    <LineBreak />
+                                    furnished to do so, subject to the following conditions:
+                                    <LineBreak />
+                                    <LineBreak />
+                                    The above copyright notice and this permission notice shall be included in all
+                                    <LineBreak />
+                                    copies or substantial portions of the Software.
+                                    <LineBreak />
+                                    <LineBreak />
+                                    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                                    <LineBreak />
+                                    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                                    <LineBreak />
+                                    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                                    <LineBreak />
+                                    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                                    <LineBreak />
+                                    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                                    <LineBreak />
+                                    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                                    <LineBreak />
+                                    SOFTWARE.
+                                </Paragraph>
                             </FlowDocument>
                         </RichTextBox.Document>
                     </RichTextBox>
