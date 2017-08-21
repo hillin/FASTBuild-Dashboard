@@ -85,6 +85,10 @@
                                     VerticalAlignment="Center"
                                     Style="{StaticResource MaterialDesignFlatButton}"
                                     Content="Browse" />-->
+                            <materialDesign:PackIcon Kind="AlertOutline" 
+                                                     DockPanel.Dock="Right"
+                                                     VerticalAlignment="Center"
+                                                     ToolTip="Might not take effect until you restart your computer" />
                             <TextBox x:Name="BrokeragePath" 
                                      VerticalAlignment="Center" />
                         </DockPanel>
