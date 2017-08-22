@@ -20,6 +20,12 @@ namespace FastBuilder.Views
 			this.DataContextChanged += this.OnDataContextChanged;
 		}
 
+		protected override void OnClosed(EventArgs e)
+		{
+			_trayNotifier.Close();
+			base.OnClosed(e);
+		}
+
 		private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			var vm = e.NewValue as MainWindowViewModel;

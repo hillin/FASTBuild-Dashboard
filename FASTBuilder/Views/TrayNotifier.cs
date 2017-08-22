@@ -59,9 +59,15 @@ namespace FastBuilder.Views
 			{
 				using (var iconStream = iconInfo.Stream)
 				{
-					this._trayNotifier.Icon = new System.Drawing.Icon(iconStream);
+					_trayNotifier.Icon = new System.Drawing.Icon(iconStream);
 				}
 			}
+		}
+
+		public void Close()
+		{
+			_trayNotifier.Visible = false;
+			_trayNotifier.Dispose();
 		}
 	}
 }
