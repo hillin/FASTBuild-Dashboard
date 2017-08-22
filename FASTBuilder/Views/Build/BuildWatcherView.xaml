@@ -41,7 +41,7 @@
 
                     <ComboBox x:Name="Items"
                               materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                              materialDesign:ComboBoxAssist.ShowSelectedItem="false">
+                              BorderThickness="0">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type build:BuildSessionViewModel}">
                                 <TextBlock Text="{Binding DisplayName}" />
