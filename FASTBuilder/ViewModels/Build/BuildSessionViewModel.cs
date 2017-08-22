@@ -90,6 +90,8 @@ namespace FastBuilder.ViewModels.Build
 				worker.OnSessionStopped(currentTimeOffset);
 			}
 
+			this.InProgressJobCount = 0;
+
 			this.UpdateActiveWorkerAndCoreCount();
 		}
 
