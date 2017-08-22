@@ -168,6 +168,7 @@
     <Compile Include="Views\Settings\SettingsView.xaml.cs">
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TrayNotifier.cs" />
     <Compile Include="Views\Worker\WorkerCoreStatusView.xaml.cs">
       <DependentUpon>WorkerCoreStatusView.xaml</DependentUpon>
     </Compile>
@@ -293,7 +294,12 @@
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Icons\tray_normal_16.ico" />
+    <Resource Include="Resources\Icons\tray_working_1_16.ico" />
+    <Resource Include="Resources\Icons\tray_working_2_16.ico" />
+    <Resource Include="Resources\Icons\tray_working_0_16.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.2.0.0\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.2.0.0\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

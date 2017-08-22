@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Caliburn.Micro;
 using FastBuilder.Services;
@@ -39,6 +33,9 @@ namespace FastBuilder
 
 		protected override void OnStartup(object sender, StartupEventArgs e)
 		{
+			App.Current.SetStartupWithWindows(AppSettings.Default.StartWithWindows);
+			App.Current.ProcessArgs(e.Args);
+
 #if DEBUG && !DEBUG_SINGLE_INSTANCE
 			this.DisplayRootViewFor<MainWindowViewModel>();
 #else

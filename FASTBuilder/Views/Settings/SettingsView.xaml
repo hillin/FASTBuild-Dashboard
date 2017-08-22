@@ -146,6 +146,22 @@
                                     IsSnapToTickEnabled="True"
                                     Ticks="{Binding CoreTicks}"/>
                         </DockPanel>
+
+                    </StackPanel>
+
+                    <Border Style="{StaticResource Separator}" />
+
+                    <TextBlock Style="{StaticResource SectionTitle}"
+                               Text="FASTBuilder" />
+
+                    <StackPanel Style="{StaticResource OptionContainer}">
+                        <TextBlock Style="{StaticResource OptionTitle}"
+                                   Text="Start with Windows" />
+
+                        <Grid Style="{StaticResource OptionContent}">
+                            <ToggleButton x:Name="StartWithWindows"
+                                          HorizontalAlignment="Left"/>
+                        </Grid>
                     </StackPanel>
 
                 </StackPanel>

@@ -14,6 +14,8 @@ namespace FastBuilder.ViewModels.Build
 		private TaskbarItemProgressState _taskbarProgressState;
 		private double _taskbarProgressValue;
 
+		public event EventHandler<bool> WorkingStateChanged;
+
 		public BuildSessionViewModel CurrentSession
 		{
 			get => _currentSession;
@@ -144,12 +146,14 @@ namespace FastBuilder.ViewModels.Build
 			this.ActivateItem(this.CurrentSession);
 
 			this.TaskbarProgressState = TaskbarItemProgressState.Indeterminate;
+			this.WorkingStateChanged?.Invoke(this, true);
 		}
 
 		private void Watcher_SessionStopped(object sender, StopBuildEventArgs e)
 		{
 			this.CurrentSession?.OnStopped(e);
 			this.TaskbarProgressState = TaskbarItemProgressState.None;
+			this.WorkingStateChanged?.Invoke(this, false);
 		}
 
 		private void Watcher_ReportProgress(object sender, ReportProgressEventArgs e)

@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Caliburn.Micro.Validation;
 using FastBuilder.Services;
 using FastBuilder.Services.Worker;
+using FASTBuilder;
 
 namespace FastBuilder.ViewModels.Settings
 {
@@ -60,6 +58,18 @@ namespace FastBuilder.ViewModels.Settings
 				IoC.Get<IWorkerAgentService>().WorkerCores = Math.Max(1, Math.Min(this.MaximumCores, value));
 				this.NotifyOfPropertyChange();
 				this.NotifyOfPropertyChange(nameof(this.DisplayCores));
+			}
+		}
+
+		public bool StartWithWindows
+		{
+			get => AppSettings.Default.StartWithWindows;
+			set
+			{
+				AppSettings.Default.StartWithWindows = value;
+				AppSettings.Default.Save();
+				App.Current.SetStartupWithWindows(value);
+				this.NotifyOfPropertyChange();
 			}
 		}
 

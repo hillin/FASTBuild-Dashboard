@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Timers;
 using Caliburn.Micro;
 using FastBuilder.Services.Worker;
-using FASTBuilder;
 
 namespace FastBuilder.ViewModels.Worker
 {

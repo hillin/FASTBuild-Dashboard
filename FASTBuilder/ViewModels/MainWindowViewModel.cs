@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using FastBuilder.ViewModels.About;
 using FastBuilder.ViewModels.Build;
 using FastBuilder.ViewModels.Settings;
