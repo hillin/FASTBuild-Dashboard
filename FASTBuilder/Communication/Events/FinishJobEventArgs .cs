@@ -18,6 +18,17 @@ namespace FastBuilder.Communication.Events
 			return args;
 		}
 
+		public static FinishJobEventArgs MakeRacedOut(DateTime time, string hostName, string eventName)
+		{
+			return new FinishJobEventArgs
+			{
+				Time = time,
+				EventName = eventName,
+				HostName = hostName,
+				Result = BuildJobStatus.RacedOut
+			};
+		}
+
 		private static BuildJobStatus ParseBuildJobResult(string result)
 		{
 			switch (result)

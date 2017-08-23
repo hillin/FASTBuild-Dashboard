@@ -7,9 +7,13 @@ using FastBuilder.Services;
 
 namespace FastBuilder.ViewModels.Build
 {
-	[DebuggerDisplay("Core:{" + nameof(BuildWorkerViewModel.HostName) + "}-{" + nameof(BuildCoreViewModel.Id) + "}")]
+	[DebuggerDisplay("{" + nameof(BuildCoreViewModel.DebuggerDisplay) + "}")]
 	internal class BuildCoreViewModel : PropertyChangedBase
 	{
+#if DEBUG
+		private string DebuggerDisplay => $"Core:{this.OwnerWorker.HostName} #{this.Id}";
+#endif
+
 		private bool _isBusy;
 		private BuildJobViewModel _currentJob;
 		private double _uiJobsTotalWidth;

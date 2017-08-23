@@ -9,6 +9,7 @@
 		Failed,
 		Error,
 		Timeout,
+		RacedOut,
 		Stopped
 	}
 }

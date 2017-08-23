@@ -18,8 +18,17 @@ namespace FastBuilder.ViewModels.Build
 			}
 		}
 
+		// all jobs that are categorized by core, then sorted by start time
 		private readonly Dictionary<BuildCoreViewModel, SortedSet<BuildJobViewModel>> _coreMappedStartTimeSortedJobs
 			= new Dictionary<BuildCoreViewModel, SortedSet<BuildJobViewModel>>();
+
+		// all active jobs that are assigned to remote workers, used to detect local race
+		private readonly Dictionary<string, BuildJobViewModel> _activeRemoteJobMap
+			= new Dictionary<string, BuildJobViewModel>();
+
+		// local race detection should be disabled if two or more jobs of the same name are assigned to remote workers
+		// this may imply that the job are not well named, maybe many different jobs share a same name
+		private bool _isLocalRaceDetectionAvailable = true;
 
 		private double _currentTimeOffset;
 
@@ -37,6 +46,19 @@ namespace FastBuilder.ViewModels.Build
 			}
 
 			jobList.Add(job);
+
+			if (_isLocalRaceDetectionAvailable && !job.OwnerCore.OwnerWorker.IsLocal)
+			{
+				if (_activeRemoteJobMap.ContainsKey(job.EventName))
+				{
+					_isLocalRaceDetectionAvailable = false;
+				}
+				else
+				{
+					_activeRemoteJobMap.Add(job.EventName, job);
+				}
+			}
+
 			++this.JobCount;
 
 			this.OnJobStarted?.Invoke(this, job);
@@ -45,6 +67,19 @@ namespace FastBuilder.ViewModels.Build
 		public void NotifyJobFinished(BuildJobViewModel job)
 		{
 			this.OnJobFinished?.Invoke(this, job);
+			
+			_activeRemoteJobMap.Remove(job.EventName);	// simply remove, doesn't matter if not existed
+		}
+
+		public BuildJobViewModel GetJobPotentiallyWonByLocalRace(BuildJobViewModel job)
+		{
+			if (!job.OwnerCore.OwnerWorker.IsLocal)
+			{
+				return null;
+			}
+
+			_activeRemoteJobMap.TryGetValue(job.EventName, out var racedJob);
+			return racedJob;
 		}
 
 		public void Tick(double currentTimeOffset)

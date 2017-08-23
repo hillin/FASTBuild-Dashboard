@@ -10,14 +10,16 @@ namespace FastBuilder.ViewModels.Build
 	internal class BuildWorkerViewModel : PropertyChangedBase
 	{
 		public string HostName { get; }
+		public bool IsLocal { get; }
 		public BuildSessionViewModel OwnerSession { get; }
 		public BindableCollection <BuildCoreViewModel> Cores { get; } = new BindableCollection <BuildCoreViewModel>();
 
 		public int ActiveCoreCount { get; private set; }
 
-		public BuildWorkerViewModel(string hostName, BuildSessionViewModel ownerSession)
+		public BuildWorkerViewModel(string hostName, bool isLocal, BuildSessionViewModel ownerSession)
 		{
 			this.HostName = hostName;
+			this.IsLocal = isLocal;
 			this.OwnerSession = ownerSession;
 		}
 

@@ -55,7 +55,7 @@ namespace FastBuilder.ViewModels.Build
 
 			// ReSharper disable once VirtualMemberCallInConstructor
 			this.DisplayName = startTime.ToString(CultureInfo.CurrentCulture);
-			
+
 			this.PoolWorkerNames = new string[0];
 			IoC.Get<IBrokerageService>().WorkerCountChanged += this.BrokerageService_WorkerCountChanged;
 		}
@@ -109,7 +109,7 @@ namespace FastBuilder.ViewModels.Build
 		{
 			if (!_workerMap.TryGetValue(hostName, out var worker))
 			{
-				worker = new BuildWorkerViewModel(hostName, this);
+				worker = new BuildWorkerViewModel(hostName, _workerMap.Count == 0, this);
 				_workerMap.Add(hostName, worker);
 
 				// called from log watcher thread
@@ -128,6 +128,12 @@ namespace FastBuilder.ViewModels.Build
 
 			if (job != null)
 			{
+				var racedJob = this.JobManager.GetJobPotentiallyWonByLocalRace(job);
+				if (racedJob != null)
+				{
+					this.OnJobFinished(FinishJobEventArgs.MakeRacedOut(e.Time, racedJob.OwnerCore.OwnerWorker.HostName, racedJob.EventName));
+				}
+
 				this.JobManager.NotifyJobFinished(job);
 			}
 

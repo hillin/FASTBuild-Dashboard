@@ -71,15 +71,17 @@ namespace FastBuilder.ViewModels.Build
 					case BuildJobStatus.Building:
 						return Brushes.White;
 					case BuildJobStatus.Success:
-						return Brushes.DarkGreen;
+						return Brushes.ForestGreen;
 					case BuildJobStatus.SuccessCached:
-						return Brushes.DarkCyan;
+						return Brushes.MediumAquamarine;
 					case BuildJobStatus.SuccessPreprocessed:
-						return Brushes.Green;
+						return Brushes.DarkSeaGreen;
 					case BuildJobStatus.Failed:
 						return Brushes.Crimson;
 					case BuildJobStatus.Error:
 						return Brushes.Crimson;
+					case BuildJobStatus.RacedOut:
+						return Brushes.DarkGray;
 					case BuildJobStatus.Timeout:
 						return Brushes.DarkOrange;
 					case BuildJobStatus.Stopped:
@@ -138,6 +140,9 @@ namespace FastBuilder.ViewModels.Build
 						break;
 					case BuildJobStatus.Timeout:
 						builder.Append("Timed out");
+						break;
+					case BuildJobStatus.RacedOut:
+						builder.Append("Deprecated by local race");
 						break;
 					case BuildJobStatus.Stopped:
 						builder.Append("Stopped");
@@ -200,6 +205,12 @@ namespace FastBuilder.ViewModels.Build
 
 		public void OnFinished(FinishJobEventArgs e)
 		{
+			// already raced out
+			if (this.Status == BuildJobStatus.RacedOut)
+			{
+				return;
+			}
+
 			this.Message = e.Message;
 			this.ElapsedSeconds = (e.Time - this.StartTime).TotalSeconds;
 			this.Status = e.Result;
