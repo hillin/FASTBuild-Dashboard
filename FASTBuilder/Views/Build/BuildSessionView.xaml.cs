@@ -11,7 +11,10 @@ namespace FastBuilder.Views.Build
 	{
 		private bool _isAutoScrollingContent;
 		private double _previousHorizontalScrollOffset;
-		
+
+		private static IViewTransformService ViewTransformService => IoC.Get<IViewTransformService>();
+		private double HeaderViewWidth => (double)this.FindResource("HeaderViewWidth");
+
 		public BuildSessionView()
 		{
 			InitializeComponent();
@@ -44,28 +47,27 @@ namespace FastBuilder.Views.Build
 				this.BackgroundScrollViewer.ScrollToVerticalOffset(offset);
 			}
 
-			this.UpdateViewTimeRange(ViewTimeRangeChangeReason.Scroll);
-		}
-
-		private void UpdateViewTimeRange(ViewTimeRangeChangeReason reason)
-		{
-			var viewTransformService = IoC.Get<IViewTransformService>();
-
-			var headerViewWidth = (double)this.FindResource("HeaderViewWidth");
-
-			var startTime = (this.ContentScrollViewer.HorizontalOffset - headerViewWidth) / viewTransformService.Scaling;
+			var viewTransformService = BuildSessionView.ViewTransformService;
+			
+			var startTime = (this.ContentScrollViewer.HorizontalOffset - this.HeaderViewWidth) / viewTransformService.Scaling;
 			var duration = this.ContentScrollViewer.ActualWidth / viewTransformService.Scaling;
 			var endTime = startTime + duration;
-			viewTransformService.SetViewTimeRange(startTime, endTime, reason);
+			viewTransformService.SetViewTimeRange(startTime, endTime);
 		}
+
+
 
 		private void UserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
 		{
-			var scaleService = IoC.Get<IViewTransformService>();
-			scaleService.Scaling = scaleService.Scaling * (1 + e.Delta / 1200.0);
+			var viewTransformService = IoC.Get<IViewTransformService>();
+			var middleTime = (viewTransformService.ViewEndTimeOffsetSeconds + viewTransformService.ViewStartTimeOffsetSeconds) / 2;
 
-			this.UpdateViewTimeRange(ViewTimeRangeChangeReason.Zoom);
+			viewTransformService.Scaling = viewTransformService.Scaling * (1 + e.Delta / 1200.0);
 
+			var duration = this.ContentScrollViewer.ActualWidth / viewTransformService.Scaling;
+			var startTime = middleTime - duration / 2;
+			this.ContentScrollViewer.ScrollToHorizontalOffset(startTime * viewTransformService.Scaling + this.HeaderViewWidth);
+			
 			e.Handled = true;
 		}
 

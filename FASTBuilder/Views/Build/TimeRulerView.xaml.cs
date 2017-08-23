@@ -43,6 +43,19 @@ namespace FastBuilder.Views.Build
 			new GrainStop(0.1, 0.05)
 		};
 
+		private static GrainStop CalculateGrain(double scaling)
+		{
+			foreach (var grainStop in GrainStops)
+			{
+				if (scaling <= grainStop.Scaling)
+				{
+					return grainStop;
+				}
+			}
+
+			return GrainStops.Last();
+		}
+
 		private static string GetLabelTextFormat(double totalSeconds, double interval)
 		{
 			var formatBuilder = new StringBuilder();
@@ -87,10 +100,7 @@ namespace FastBuilder.Views.Build
 			viewTransformService.ViewTimeRangeChanged += this.OnViewTimeRangeChanged;
 		}
 
-		private void OnViewTimeRangeChanged(object sender, ViewTimeRangeChangeReason viewTimeRangeChangeReason)
-		{
-			this.UpdateTicks();
-		}
+		private void OnViewTimeRangeChanged(object sender, EventArgs e) => this.UpdateTicks();
 
 		protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
 		{
@@ -98,23 +108,9 @@ namespace FastBuilder.Views.Build
 			this.UpdateTicks();
 		}
 
-		private void OnPreScalingChanging(object sender, EventArgs e)
-		{
-			this.UpdateTicks();
-		}
+		private void OnPreScalingChanging(object sender, EventArgs e) => this.UpdateTicks();
 
-		private GrainStop CalculateGrain(double scaling)
-		{
-			foreach (var grainStop in GrainStops)
-			{
-				if (scaling <= grainStop.Scaling)
-				{
-					return grainStop;
-				}
-			}
 
-			return GrainStops.Last();
-		}
 
 		private TimeRulerMajorTickView PoolGetMajorTick()
 		{
@@ -161,7 +157,7 @@ namespace FastBuilder.Views.Build
 			var duration = endTime - startTime;
 			
 			var scaling = viewTransformService.Scaling;
-			var grain = this.CalculateGrain(scaling);
+			var grain = TimeRulerView.CalculateGrain(scaling);
 
 			_majorTickPoolIndex = 0;
 			_minorTickPoolIndex = 0;

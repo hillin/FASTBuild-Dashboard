@@ -21,7 +21,7 @@ namespace FastBuilder.Services
 		/// </summary>
 		event EventHandler PreScalingChanging;
 
-		event EventHandler<ViewTimeRangeChangeReason> ViewTimeRangeChanged;
-		void SetViewTimeRange(double startTime, double endTime, ViewTimeRangeChangeReason reason);
+		event EventHandler ViewTimeRangeChanged;
+		void SetViewTimeRange(double startTime, double endTime);
 	}
 }

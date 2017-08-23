@@ -123,7 +123,6 @@
     <Compile Include="Services\Worker\IWorkerAgent.cs" />
     <Compile Include="Services\Worker\IWorkerAgentService.cs" />
     <Compile Include="Services\IBrokerageService.cs" />
-    <Compile Include="Services\ViewTimeRangeChangeReason.cs" />
     <Compile Include="Services\ViewTransformService.cs" />
     <Compile Include="Services\Worker\WorkerAgentService.cs" />
     <Compile Include="Services\Worker\WorkerCoreState.cs" />

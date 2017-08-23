@@ -139,7 +139,7 @@ namespace FastBuilder.Views.Build
 			this.Canvas.Width = _sessionViewModel.ElapsedTime.TotalSeconds * _viewTransformService.Scaling;
 		}
 
-		private void OnViewTimeRangeChanged(object sender, ViewTimeRangeChangeReason e)
+		private void OnViewTimeRangeChanged(object sender, EventArgs e)
 		{
 			this.UpdateTimeFrame();
 		}

@@ -39,7 +39,7 @@ namespace FastBuilder.Services
 		public event EventHandler PreScalingChanging;
 		public event EventHandler ScalingChanged;
 
-		public event EventHandler<ViewTimeRangeChangeReason> ViewTimeRangeChanged;
+		public event EventHandler ViewTimeRangeChanged;
 
 		public ViewTransformService()
 		{
@@ -56,7 +56,7 @@ namespace FastBuilder.Services
 		}
 
 		[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
-		public void SetViewTimeRange(double startTime, double endTime, ViewTimeRangeChangeReason reason)
+		public void SetViewTimeRange(double startTime, double endTime)
 		{
 			if (this.ViewStartTimeOffsetSeconds == startTime && this.ViewEndTimeOffsetSeconds == endTime)
 			{
@@ -65,7 +65,7 @@ namespace FastBuilder.Services
 
 			this.ViewStartTimeOffsetSeconds = startTime;
 			this.ViewEndTimeOffsetSeconds = endTime;
-			this.ViewTimeRangeChanged?.Invoke(this, reason);
+			this.ViewTimeRangeChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }
