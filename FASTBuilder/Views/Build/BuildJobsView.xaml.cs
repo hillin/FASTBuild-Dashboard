@@ -26,8 +26,8 @@ namespace FastBuilder.Views.Build
 		private BuildSessionJobManager _jobManager;
 
 		// recoreds active (visible) jobs and their corresponding view
-		private readonly Dictionary<IBuildJobViewModel, BuildJobView> _activeJobViewMap
-			= new Dictionary<IBuildJobViewModel, BuildJobView>();
+		private readonly Dictionary<BuildJobViewModel, BuildJobView> _activeJobViewMap
+			= new Dictionary<BuildJobViewModel, BuildJobView>();
 
 		// a queue that stores recycled job views (hidden and no job assigned)
 		private readonly Queue<BuildJobView> _jobViewPool
@@ -133,7 +133,7 @@ namespace FastBuilder.Views.Build
 			_coreTopMap.Clear();
 		}
 
-		private void JobManager_OnJobStarted(object sender, IBuildJobViewModel job)
+		private void JobManager_OnJobStarted(object sender, BuildJobViewModel job)
 		{
 			this.Dispatcher.BeginInvoke(new System.Action(() =>
 			{
@@ -173,10 +173,10 @@ namespace FastBuilder.Views.Build
 
 		private bool IsShortJob(BuildJobViewModel job)
 		{
-			return job.ElapsedSeconds * _buildViewportService.Scaling <= BuildJobView.ShortJobThreshold;
+			return job.ElapsedSeconds * _buildViewportService.Scaling <= BuildJobView.ShortJobWidthThreshold;
 		}
 
-		private void AddJob(IBuildJobViewModel job)
+		private void AddJob(BuildJobViewModel job)
 		{
 
 			BuildJobView view;
@@ -248,7 +248,7 @@ namespace FastBuilder.Views.Build
 			_endTimeOffset = buildViewportService.ViewEndTimeOffsetSeconds;
 			_wasNowInTimeFrame = _endTimeOffset >= _currentTimeOffset && _startTimeOffset <= _currentTimeOffset;
 
-			var jobs = new HashSet<IBuildJobViewModel>(_jobManager.EnumerateJobs(_startTimeOffset, _endTimeOffset, _visibleCores));
+			var jobs = new HashSet<BuildJobViewModel>(_jobManager.EnumerateJobs(_startTimeOffset, _endTimeOffset, _visibleCores));
 
 			// remove (recycle) job views that are no longer existed in current time frame
 			var keysToRemove = _activeJobViewMap.Keys.Where(key => !jobs.Contains(key)).ToList();
@@ -280,15 +280,27 @@ namespace FastBuilder.Views.Build
 
 			var performanceMode = _activeJobViewMap.Count > 8;
 
+			var maxWidth = 24 * 60 * 60 * scaling;
+
 			foreach (var pair in _activeJobViewMap)
 			{
 				var job = pair.Key;
 				var view = pair.Value;
 
 				var left = Math.Max(minimumLeft, job.StartTimeOffset * scaling);
-				var width = Math.Max(0, Math.Min(job.EndTimeOffset - Math.Max(_startTimeOffset, job.StartTimeOffset), 24 * 60 * 60) * scaling);
-				if (width < 1	// job too short to display
-					|| left + width < 1)	// left could be negative
+				var acceptedStartTimeOffset = Math.Max(_startTimeOffset, job.StartTimeOffset);
+				var width = MathEx.Clamp((job.EndTimeOffset - acceptedStartTimeOffset) * scaling, 0, maxWidth);
+
+				if (width < BuildJobView.ShortJobWidthThreshold)	
+				{
+					// try to use space before next job
+					width = job.NextJob != null 
+						? MathEx.Clamp((job.NextJob.StartTimeOffset - acceptedStartTimeOffset) * scaling, 0, BuildJobView.ShortJobWidthThreshold) 
+						: BuildJobView.ShortJobWidthThreshold;
+				}
+
+				if (width < 1   // job too short to display
+					|| left + width < 1)    // left could be negative
 				{
 					// we don't recycle this view because it might be shown again after a zoom
 					view.Visibility = Visibility.Hidden;

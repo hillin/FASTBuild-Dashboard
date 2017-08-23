@@ -7,7 +7,7 @@ namespace FastBuilder.Views.Build
 {
 	public partial class BuildJobView
 	{
-		public const double ShortJobThreshold = 36;
+		public const double ShortJobWidthThreshold = 36;
 
 		public BuildJobView() => InitializeComponent();
 
@@ -19,14 +19,14 @@ namespace FastBuilder.Views.Build
 
 			this.Border.CornerRadius = new CornerRadius(MathEx.Clamp((this.Width - 12) / 2, 0, 2));
 
-			if (width < ShortJobThreshold)
+			if (width < ShortJobWidthThreshold)
 			{
 				this.DisplayName.Visibility = Visibility.Hidden;
 			}
 			else
 			{
 				this.DisplayName.Visibility = System.Windows.Visibility.Visible;
-				this.DisplayName.Opacity = Math.Min(1, Math.Max(0, (width - ShortJobThreshold) / 48));
+				this.DisplayName.Opacity = Math.Min(1, Math.Max(0, (width - ShortJobWidthThreshold) / 48));
 
 				if (performanceMode)
 				{
