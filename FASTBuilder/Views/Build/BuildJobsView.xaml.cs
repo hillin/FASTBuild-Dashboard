@@ -205,7 +205,7 @@ namespace FastBuilder.Views.Build
 
 				var left = Math.Max(minimumLeft, job.StartTimeOffset * scaling);
 				var width = Math.Min(job.EndTimeOffset - Math.Max(_startTimeOffset, job.StartTimeOffset), 24 * 60 * 60) * scaling;
-				view.SetDimensions(left, top, width);
+				view.Update(left, top, width, job.DisplayName);
 			}
 		}
 

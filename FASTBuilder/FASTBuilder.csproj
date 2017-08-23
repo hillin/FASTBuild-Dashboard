@@ -135,6 +135,7 @@
     <Compile Include="Support\DragScrollViewer.cs" />
     <Compile Include="Support\MouseWheelGesture.cs" />
     <Compile Include="Support\SimpleCommand.cs" />
+    <Compile Include="Support\TextTrimmer.cs" />
     <Compile Include="ViewModels\About\AboutViewModel.cs" />
     <Compile Include="ViewModels\Build\BuildSessionViewModel.Status.cs" />
     <Compile Include="ViewModels\IMainPage.cs" />
