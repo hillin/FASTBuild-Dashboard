@@ -143,8 +143,8 @@ namespace FastBuilder.Views.Build
 
 			var headerViewWidth = (double)this.FindResource("HeaderViewWidth");
 
-			_startTimeOffset = viewTransformService.ViewStartTimeOffsetSeconds 
-				+ (headerViewWidth - 8) / viewTransformService.Scaling;	// minus 8px to make the jobs looks like being covered under the header panel
+			_startTimeOffset = viewTransformService.ViewStartTimeOffsetSeconds
+				+ (headerViewWidth - 8) / viewTransformService.Scaling; // minus 8px to make the jobs looks like being covered under the header panel
 
 			_endTimeOffset = viewTransformService.ViewEndTimeOffsetSeconds;
 			_wasNowInTimeFrame = _endTimeOffset >= _currentTimeOffset && _startTimeOffset <= _currentTimeOffset;
@@ -176,7 +176,7 @@ namespace FastBuilder.Views.Build
 		{
 			var scaling = _viewTransformService.Scaling;
 
-			var minimumLeft = scaling * _startTimeOffset ;
+			var minimumLeft = scaling * _startTimeOffset;
 
 			foreach (var pair in _activeJobViewMap)
 			{
@@ -204,7 +204,7 @@ namespace FastBuilder.Views.Build
 				top += coreVerticalMargin;
 
 				var left = Math.Max(minimumLeft, job.StartTimeOffset * scaling);
-				var width = Math.Min(job.EndTimeOffset - Math.Max(_startTimeOffset, job.StartTimeOffset), 24 * 60 * 60) * scaling;
+				var width = Math.Max(0, Math.Min(job.EndTimeOffset - Math.Max(_startTimeOffset, job.StartTimeOffset), 24 * 60 * 60) * scaling);
 				view.Update(left, top, width, job.DisplayName);
 			}
 		}
