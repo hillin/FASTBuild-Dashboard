@@ -26,6 +26,8 @@ namespace FastBuilder.Services
 			}
 		}
 
+		private bool _isUpdatingWorkers;
+
 		public string BrokeragePath
 		{
 			get => Environment.GetEnvironmentVariable("FASTBUILD_BROKERAGE_PATH");
@@ -38,31 +40,46 @@ namespace FastBuilder.Services
 		{
 			_workerNames = new string[0];
 
-			var checkTimer = new Timer(1000);
+			var checkTimer = new Timer(5000);
 			checkTimer.Elapsed += CheckTimer_Elapsed;
 			checkTimer.AutoReset = true;
 			checkTimer.Enabled = true;
+			this.UpdateWorkers();
 		}
 
-		private void CheckTimer_Elapsed(object sender, ElapsedEventArgs e)
+		private void CheckTimer_Elapsed(object sender, ElapsedEventArgs e) => this.UpdateWorkers();
+
+		private void UpdateWorkers()
 		{
-			var brokeragePath = BrokeragePath;
-			if (string.IsNullOrEmpty(brokeragePath))
-			{
-				this.WorkerNames = new string[0];
+			if (_isUpdatingWorkers)
 				return;
-			}
+
+			_isUpdatingWorkers = true;
 
 			try
 			{
-				this.WorkerNames = Directory.GetFiles(Path.Combine(brokeragePath, WorkerPoolRelativePath)).Select(Path.GetFileName).ToArray();
+				var brokeragePath = this.BrokeragePath;
+				if (string.IsNullOrEmpty(brokeragePath))
+				{
+					this.WorkerNames = new string[0];
+					return;
+				}
+
+				try
+				{
+					this.WorkerNames = Directory.GetFiles(Path.Combine(brokeragePath, WorkerPoolRelativePath))
+						.Select(Path.GetFileName)
+						.ToArray();
+				}
+				catch (IOException)
+				{
+					this.WorkerNames = new string[0];
+				}
 			}
-			catch (IOException)
+			finally
 			{
-				this.WorkerNames = new string[0];
+				_isUpdatingWorkers = false;
 			}
 		}
-
-
 	}
 }

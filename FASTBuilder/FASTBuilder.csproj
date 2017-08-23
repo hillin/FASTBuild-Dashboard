@@ -154,6 +154,9 @@
     <Compile Include="Views\Build\BuildJobsView.xaml.cs">
       <DependentUpon>BuildJobsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Build\BuildWorkerStatusView.xaml.cs">
+      <DependentUpon>BuildWorkerStatusView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Build\TimeRulerView.xaml.cs">
       <DependentUpon>TimeRulerView.xaml</DependentUpon>
     </Compile>
@@ -201,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Build\BuildJobsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Build\BuildWorkerStatusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

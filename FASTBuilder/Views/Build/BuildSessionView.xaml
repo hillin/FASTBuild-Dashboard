@@ -191,45 +191,11 @@
                                          VerticalAlignment="Bottom"
                                          Height="24" />
 
-                    <Grid HorizontalAlignment="Left"
-                          VerticalAlignment="Bottom"
-                          Margin="0,0,0,17"
-                          Height="24"
-                          Width="{StaticResource HeaderViewWidth}"
-                          Background="{DynamicResource MaterialDesignBackground}">
-
-                        <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
-                            <materialDesign:PackIcon Kind="ServerNetwork"
-                                                     VerticalAlignment="Center" />
-                            <TextBlock x:Name="ActiveWorkerCount"
-                                       VerticalAlignment="Center"
-                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
-                                       Foreground="{DynamicResource SecondaryAccentBrush}"
-                                       Margin="4,0,0,0"
-                                       Text="2" />
-                            <TextBlock VerticalAlignment="Center"
-                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
-                                       Text="/" />
-                            <TextBlock x:Name="PoolWorkerCount"
-                                       VerticalAlignment="Center"
-                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
-                                       Text="2" />
-                            <materialDesign:PackIcon Kind="Chip" 
-                                                     VerticalAlignment="Center"
-                                                     Margin="12,0,0,0"/>
-                            <TextBlock x:Name="ActiveCoreCount"
-                                       VerticalAlignment="Center"
-                                       Style="{DynamicResource MaterialDesignBody2TextBlock}"
-                                       Foreground="{DynamicResource SecondaryAccentBrush}"
-                                       Margin="4,0,0,0"
-                                       Text="2" />
-                        </StackPanel>
-
-                        <GridSplitter HorizontalAlignment="Right"
-                                      Width="1" />
-                    </Grid>
+                    <build:BuildWorkerStatusView HorizontalAlignment="Left"
+                                                 VerticalAlignment="Bottom"
+                                                 Width="{StaticResource HeaderViewWidth}"
+                                                 Height="24" 
+                                                 Margin="0,0,0,17" />
                 </Grid>
             </Border>
 
