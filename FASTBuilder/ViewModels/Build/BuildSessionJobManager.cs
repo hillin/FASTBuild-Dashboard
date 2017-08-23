@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace FastBuilder.ViewModels.Build
 {
@@ -8,6 +9,7 @@ namespace FastBuilder.ViewModels.Build
 	{
 		private class JobStartTimeComparer : IComparer<BuildJobViewModel>
 		{
+			public static readonly JobStartTimeComparer Instance = new JobStartTimeComparer();
 			public int Compare(BuildJobViewModel x, BuildJobViewModel y)
 			{
 				Debug.Assert(x != null, "x != null");
@@ -16,8 +18,8 @@ namespace FastBuilder.ViewModels.Build
 			}
 		}
 
-		private readonly SortedSet<BuildJobViewModel> _startTimeSortedJobs
-			= new SortedSet<BuildJobViewModel>(new JobStartTimeComparer());
+		private readonly Dictionary<BuildCoreViewModel, SortedSet<BuildJobViewModel>> _coreMappedStartTimeSortedJobs
+			= new Dictionary<BuildCoreViewModel, SortedSet<BuildJobViewModel>>();
 
 		private double _currentTimeOffset;
 
@@ -26,7 +28,13 @@ namespace FastBuilder.ViewModels.Build
 
 		public void Add(BuildJobViewModel job)
 		{
-			_startTimeSortedJobs.Add(job);
+			if (!_coreMappedStartTimeSortedJobs.TryGetValue(job.OwnerCore, out var jobList))
+			{
+				jobList = new SortedSet<BuildJobViewModel>(JobStartTimeComparer.Instance);
+				_coreMappedStartTimeSortedJobs.Add(job.OwnerCore, jobList);
+			}
+
+			jobList.Add(job);
 
 			this.OnJobStarted?.Invoke(this, job);
 		}
@@ -43,31 +51,39 @@ namespace FastBuilder.ViewModels.Build
 
 		public IEnumerable<BuildJobViewModel> GetAllJobs()
 		{
-			return _startTimeSortedJobs;
+			return _coreMappedStartTimeSortedJobs.Values.SelectMany(j => j);
 		}
 
-		public IEnumerable<BuildJobViewModel> EnumerateJobs(double startTimeOffset, double endTimeOffset)
+		public IEnumerable<BuildJobViewModel> EnumerateJobs(double startTimeOffset, double endTimeOffset, HashSet<BuildCoreViewModel> cores)
 		{
 			var isTimeFrameAfterNow = startTimeOffset > _currentTimeOffset;
 
-			foreach (var job in _startTimeSortedJobs)
+			foreach (var pair in _coreMappedStartTimeSortedJobs)
 			{
-				if (job.StartTimeOffset > endTimeOffset)
+				if (!cores.Contains(pair.Key))
 				{
-					break;  // after time frame; because we are sorted by StartTimeOffset in ascending order, the following jobs can all be skipped
+					continue;
 				}
 
-				if (job.IsFinished && job.EndTimeOffset < startTimeOffset)
+				foreach (var job in pair.Value)
 				{
-					continue;   // before time frame
-				}
+					if (job.StartTimeOffset > endTimeOffset)
+					{
+						break;  // after time frame; because we are sorted by StartTimeOffset in ascending order, the following jobs can all be skipped
+					}
 
-				if (!job.IsFinished && isTimeFrameAfterNow)
-				{
-					continue;   // before time frame
-				}
+					if (job.IsFinished && job.EndTimeOffset < startTimeOffset)
+					{
+						continue;   // before time frame
+					}
 
-				yield return job;
+					if (!job.IsFinished && isTimeFrameAfterNow)
+					{
+						continue;   // before time frame
+					}
+
+					yield return job;
+				}
 			}
 		}
 	}

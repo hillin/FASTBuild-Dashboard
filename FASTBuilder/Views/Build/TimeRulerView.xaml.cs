@@ -95,9 +95,9 @@ namespace FastBuilder.Views.Build
 		public TimeRulerView()
 		{
 			InitializeComponent();
-			var viewTransformService = IoC.Get<IViewTransformService>();
-			viewTransformService.PreScalingChanging += this.OnPreScalingChanging;
-			viewTransformService.ViewTimeRangeChanged += this.OnViewTimeRangeChanged;
+			var buildViewportService = IoC.Get<IBuildViewportService>();
+			buildViewportService.ScalingChanging += this.OnPreScalingChanging;
+			buildViewportService.ViewTimeRangeChanged += this.OnViewTimeRangeChanged;
 		}
 
 		private void OnViewTimeRangeChanged(object sender, EventArgs e) => this.UpdateTicks();
@@ -150,13 +150,13 @@ namespace FastBuilder.Views.Build
 				return;
 			}
 
-			var viewTransformService = IoC.Get<IViewTransformService>();
+			var buildViewportService = IoC.Get<IBuildViewportService>();
 
-			var startTime = viewTransformService.ViewStartTimeOffsetSeconds;
-			var endTime = viewTransformService.ViewEndTimeOffsetSeconds;
+			var startTime = buildViewportService.ViewStartTimeOffsetSeconds;
+			var endTime = buildViewportService.ViewEndTimeOffsetSeconds;
 			var duration = endTime - startTime;
 			
-			var scaling = viewTransformService.Scaling;
+			var scaling = buildViewportService.Scaling;
 			var grain = TimeRulerView.CalculateGrain(scaling);
 
 			_majorTickPoolIndex = 0;

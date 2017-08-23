@@ -4,15 +4,13 @@ using System.Timers;
 
 namespace FastBuilder.Services
 {
-	internal class ViewTransformService : IViewTransformService
+	internal class BuildViewportService : IBuildViewportService
 	{
-		private const double ScalingChangedEventDelay = 50;
 		private const double StandardScaling = 50;
 		private const double MinimumScaling = 0.4;
 		private const double MaximumScaling = 1024;
 
 		private double _scaling = StandardScaling;
-		private readonly Timer _scalingChangedEventDelayTimer;
 
 		public double Scaling
 		{
@@ -26,34 +24,19 @@ namespace FastBuilder.Services
 				}
 
 				_scaling = Math.Min(Math.Max(value, MinimumScaling), MaximumScaling);
-				_scalingChangedEventDelayTimer.Stop();
-				_scalingChangedEventDelayTimer.Start();
-				this.PreScalingChanging?.Invoke(this, EventArgs.Empty);
+				this.ScalingChanging?.Invoke(this, EventArgs.Empty);
 			}
 		}
 
 		public double ViewStartTimeOffsetSeconds { get; private set; }
-
 		public double ViewEndTimeOffsetSeconds { get; private set; }
+		public double ViewTop { get; private set; }
+		public double ViewBottom { get; private set; }
 
-		public event EventHandler PreScalingChanging;
-		public event EventHandler ScalingChanged;
-
+		public event EventHandler ScalingChanging;
 		public event EventHandler ViewTimeRangeChanged;
+		public event EventHandler VerticalViewRangeChanged;
 
-		public ViewTransformService()
-		{
-			_scalingChangedEventDelayTimer = new Timer(ScalingChangedEventDelay)
-			{
-				AutoReset = false
-			};
-			_scalingChangedEventDelayTimer.Elapsed += this.ScalingChangedEventDelayTimer_Elapsed;
-		}
-
-		private void ScalingChangedEventDelayTimer_Elapsed(object sender, ElapsedEventArgs e)
-		{
-			this.ScalingChanged?.Invoke(this, EventArgs.Empty);
-		}
 
 		[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
 		public void SetViewTimeRange(double startTime, double endTime)
@@ -66,6 +49,20 @@ namespace FastBuilder.Services
 			this.ViewStartTimeOffsetSeconds = startTime;
 			this.ViewEndTimeOffsetSeconds = endTime;
 			this.ViewTimeRangeChanged?.Invoke(this, EventArgs.Empty);
+		}
+
+
+		[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
+		public void SetVerticalViewRange(double top, double bottom)
+		{
+			if (this.ViewTop == top && this.ViewBottom == bottom)
+			{
+				return;
+			}
+
+			this.ViewTop = top;
+			this.ViewBottom = bottom;
+			this.VerticalViewRangeChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

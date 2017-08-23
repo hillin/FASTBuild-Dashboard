@@ -9,15 +9,6 @@
              mc:Ignorable="d"
              d:DesignHeight="28" d:DesignWidth="120">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary
-                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Border x:Name="Border" 
             Height="24"
             Margin="1"

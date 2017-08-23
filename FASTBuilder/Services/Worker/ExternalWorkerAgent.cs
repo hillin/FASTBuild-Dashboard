@@ -121,7 +121,8 @@ namespace FastBuilder.Services.Worker
 					out var _);
 
 				var text = Encoding.Unicode.GetString(localTextBuffer);
-				return text.Substring(0, text.IndexOf('\0'));	// the trailing zeros are not cleared automatically
+				var zeroIndex = text.IndexOf('\0');
+				return zeroIndex < 0 ? text : text.Substring(0, zeroIndex);
 			}
 
 			for (var i = 0; i < itemCount; ++i)

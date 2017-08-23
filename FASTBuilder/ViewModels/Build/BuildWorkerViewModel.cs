@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Caliburn.Micro;
 using FastBuilder.Communication.Events;
 
 namespace FastBuilder.ViewModels.Build
 {
+	[DebuggerDisplay("Worker:{" + nameof(BuildWorkerViewModel.HostName) + "}")]
 	internal class BuildWorkerViewModel : PropertyChangedBase
 	{
 		public string HostName { get; }

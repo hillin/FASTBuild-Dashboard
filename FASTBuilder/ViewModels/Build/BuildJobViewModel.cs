@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Media;
@@ -8,22 +9,26 @@ using FastBuilder.Communication.Events;
 
 namespace FastBuilder.ViewModels.Build
 {
-	internal class BuildJobViewModel : PropertyChangedBase
+	[DebuggerDisplay("Job:{" + nameof(BuildJobViewModel.DisplayName) + "}")]
+	internal class BuildJobViewModel : PropertyChangedBase, IBuildJobViewModel
 	{
 		public BuildCoreViewModel OwnerCore { get; }
+
+		// double linked-list structure
+		public BuildJobViewModel PreviousJob { get; }
+		public IBuildJobViewModel NextJob { get; private set; }
 
 		private static string GenerateDisplayName(string eventName) => Path.GetFileName(eventName) ?? eventName;
 
 		private BuildJobStatus _status;
 		private double _elapsedSeconds;
-		private bool _shouldShowText;
 		public DateTime StartTime { get; }
 		public double StartTimeOffset { get; }
 
 		public DateTime EndTime => this.StartTime.AddSeconds(this.ElapsedSeconds);
 
 		public double EndTimeOffset => this.StartTimeOffset + this.ElapsedSeconds;
-		
+
 		public double ElapsedSeconds
 		{
 			get => _elapsedSeconds;
@@ -41,7 +46,7 @@ namespace FastBuilder.ViewModels.Build
 				this.NotifyOfPropertyChange(nameof(this.ToolTipText));
 			}
 		}
-		
+
 
 		public Brush UIForeground
 		{
@@ -176,13 +181,19 @@ namespace FastBuilder.ViewModels.Build
 			}
 		}
 
-		public BuildJobViewModel(BuildCoreViewModel ownerCore, StartJobEventArgs e, DateTime sessionStartTime)
+		public BuildJobViewModel(BuildCoreViewModel ownerCore, StartJobEventArgs e, BuildJobViewModel previousJob = null)
 		{
 			this.OwnerCore = ownerCore;
+			this.PreviousJob = previousJob;
+			if (previousJob != null)
+			{
+				previousJob.NextJob = this;
+			}
+
 			this.EventName = e.EventName;
 			this.DisplayName = BuildJobViewModel.GenerateDisplayName(this.EventName);
 			this.StartTime = e.Time;
-			this.StartTimeOffset = (e.Time - sessionStartTime).TotalSeconds;
+			this.StartTimeOffset = (e.Time - ownerCore.OwnerWorker.OwnerSession.StartTime).TotalSeconds;
 			this.Status = BuildJobStatus.Building;
 		}
 

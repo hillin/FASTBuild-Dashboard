@@ -28,7 +28,11 @@ namespace FastBuilder.Communication
 
 		public LogWatcher()
 		{
+#if DEBUG && DEBUG_TEST_LOG
+			_logPath = @"Test\FastBuildLog.log";
+#else
 			_logPath = Path.Combine(Path.GetTempPath(), LogRelativePath);
+#endif
 		}
 
 		public void Start()

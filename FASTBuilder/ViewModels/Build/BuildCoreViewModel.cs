@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using Caliburn.Micro;
 using FastBuilder.Communication.Events;
 using FastBuilder.Services;
 
 namespace FastBuilder.ViewModels.Build
 {
+	[DebuggerDisplay("Core:{" + nameof(BuildWorkerViewModel.HostName) + "}-{" + nameof(BuildCoreViewModel.Id) + "}")]
 	internal class BuildCoreViewModel : PropertyChangedBase
 	{
 		private bool _isBusy;
@@ -13,7 +16,7 @@ namespace FastBuilder.ViewModels.Build
 		public int Id { get; }
 		public BuildWorkerViewModel OwnerWorker { get; }
 
-		public BindableCollection <BuildJobViewModel> Jobs { get; } = new BindableCollection <BuildJobViewModel>();
+		public BindableCollection<BuildJobViewModel> Jobs { get; } = new BindableCollection<BuildJobViewModel>();
 
 		public BuildJobViewModel CurrentJob
 		{
@@ -64,14 +67,11 @@ namespace FastBuilder.ViewModels.Build
 		{
 			this.Id = id;
 			this.OwnerWorker = ownerWorker;
-			IoC.Get<IViewTransformService>().PreScalingChanging 
+			IoC.Get<IBuildViewportService>().ScalingChanging
 				+= this.ViewTransformService_PreScalingChanging;
 		}
 
-		private void ViewTransformService_PreScalingChanging(object sender, EventArgs e)
-		{
-			this.UpdateUIJobsTotalWidth();
-		}
+		private void ViewTransformService_PreScalingChanging(object sender, EventArgs e) => this.UpdateUIJobsTotalWidth();
 
 		public BuildJobViewModel OnJobFinished(FinishJobEventArgs e)
 		{
@@ -91,7 +91,7 @@ namespace FastBuilder.ViewModels.Build
 		{
 			this.IsBusy = true;
 
-			this.CurrentJob = new BuildJobViewModel(this, e, sessionStartTime);
+			this.CurrentJob = new BuildJobViewModel(this, e, this.Jobs.Count == 0 ? null : this.Jobs[this.Jobs.Count - 1]);
 
 			// called from log watcher thread
 			lock (this.Jobs)
@@ -126,8 +126,8 @@ namespace FastBuilder.ViewModels.Build
 
 		private void UpdateUIJobsTotalWidth()
 		{
-			this.UIJobsTotalWidth = IoC.Get<IViewTransformService>().Scaling *
-			                        this.OwnerWorker.OwnerSession.ElapsedTime.TotalSeconds;
+			this.UIJobsTotalWidth = IoC.Get<IBuildViewportService>().Scaling *
+									this.OwnerWorker.OwnerSession.ElapsedTime.TotalSeconds;
 		}
 	}
 }

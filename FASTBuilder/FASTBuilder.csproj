@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DEBUG_TEST_LOG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -116,15 +116,16 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Profile.settings</DependentUpon>
     </Compile>
-    <Compile Include="Services\IViewTransformService.cs" />
-    <Compile Include="Services\SingleInstance.cs" />
+    <Compile Include="Services\IBuildViewportService.cs" />
+    <Compile Include="Support\MathEx.cs" />
+    <Compile Include="Support\SingleInstance.cs" />
     <Compile Include="Services\Worker\ExternalWorkerAgent.cs" />
     <Compile Include="Services\Worker\ExternalWorkerAgent.interop.cs" />
     <Compile Include="Services\Worker\ExternalWorkerAgent.win32.cs" />
     <Compile Include="Services\Worker\IWorkerAgent.cs" />
     <Compile Include="Services\Worker\IWorkerAgentService.cs" />
     <Compile Include="Services\IBrokerageService.cs" />
-    <Compile Include="Services\ViewTransformService.cs" />
+    <Compile Include="Services\BuildViewportService.cs" />
     <Compile Include="Services\Worker\WorkerAgentService.cs" />
     <Compile Include="Services\Worker\WorkerCoreState.cs" />
     <Compile Include="Services\Worker\WorkerCoreStatus.cs" />
@@ -132,12 +133,15 @@
     <Compile Include="Services\BrokerageService.cs" />
     <Compile Include="Services\Worker\WorkerRunStateChangedEventArgs.cs" />
     <Compile Include="Support\BoolToVisibilityConverter.cs" />
+    <Compile Include="Support\DependencyObjectExtensions.cs" />
     <Compile Include="Support\DragScrollViewer.cs" />
     <Compile Include="Support\MouseWheelGesture.cs" />
     <Compile Include="Support\SimpleCommand.cs" />
     <Compile Include="Support\TextTrimmer.cs" />
     <Compile Include="ViewModels\About\AboutViewModel.cs" />
     <Compile Include="ViewModels\Build\BuildSessionViewModel.Status.cs" />
+    <Compile Include="ViewModels\Build\IBuildJobViewModel.cs" />
+    <Compile Include="ViewModels\Build\MergedBuildJobViewModel.cs" />
     <Compile Include="ViewModels\IMainPage.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Build\BuildSessionJobManager.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using FastBuilder.Support;
 
@@ -6,6 +7,8 @@ namespace FastBuilder.Views.Build
 {
 	public partial class BuildJobView
 	{
+		public const double ShortJobThreshold = 36;
+
 		public BuildJobView() => InitializeComponent();
 
 		public void Update(double left, double top, double width, string text, bool performanceMode)
@@ -14,22 +17,30 @@ namespace FastBuilder.Views.Build
 			Canvas.SetTop(this, top);
 			this.Width = width;
 
-			if (width < 36)
+			this.Border.CornerRadius = new CornerRadius(MathEx.Clamp((this.Width - 12) / 2, 0, 2));
+
+			if (width < ShortJobThreshold)
 			{
-				this.DisplayName.Visibility = System.Windows.Visibility.Hidden;
+				this.DisplayName.Visibility = Visibility.Hidden;
 			}
 			else
 			{
 				this.DisplayName.Visibility = System.Windows.Visibility.Visible;
-				this.DisplayName.Opacity = Math.Min(1, Math.Max(0, (width - 36) / 48));
+				this.DisplayName.Opacity = Math.Min(1, Math.Max(0, (width - ShortJobThreshold) / 48));
 
-				var textWidth = width
-								- this.Border.Padding.Left
-								- this.Border.Padding.Right
-								- this.Border.Margin.Left
-								- this.Border.Margin.Right;
-				this.DisplayName.SetTrimmedText(text, textWidth);
-
+				if (performanceMode)
+				{
+					this.DisplayName.Text = text;
+				}
+				else
+				{
+					var textWidth = width
+					                - this.Border.Padding.Left
+					                - this.Border.Padding.Right
+					                - this.Border.Margin.Left
+					                - this.Border.Margin.Right;
+					this.DisplayName.SetTrimmedText(text, textWidth);
+				}
 			}
 		}
 	}
