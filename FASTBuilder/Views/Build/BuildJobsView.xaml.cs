@@ -177,7 +177,7 @@ namespace FastBuilder.Views.Build
 			var scaling = _viewTransformService.Scaling;
 
 			var minimumLeft = scaling * _startTimeOffset;
-
+			
 			foreach (var pair in _activeJobViewMap)
 			{
 				var job = pair.Key;
