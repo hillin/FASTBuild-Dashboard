@@ -41,21 +41,7 @@ namespace FastBuilder.ViewModels.Build
 				this.NotifyOfPropertyChange(nameof(this.ToolTipText));
 			}
 		}
-
-		public bool ShouldShowText
-		{
-			get => _shouldShowText;
-			set
-			{
-				if (value == _shouldShowText)
-				{
-					return;
-				}
-
-				_shouldShowText = value;
-				this.NotifyOfPropertyChange();
-			}
-		}
+		
 
 		public Brush UIForeground
 		{

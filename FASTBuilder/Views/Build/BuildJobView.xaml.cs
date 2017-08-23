@@ -1,15 +1,19 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 
 namespace FastBuilder.Views.Build
 {
-	/// <summary>
-	/// Interaction logic for BuildJobView.xaml
-	/// </summary>
-	public partial class BuildJobView : UserControl
+	public partial class BuildJobView 
 	{
-		public BuildJobView()
+		public BuildJobView() => InitializeComponent();
+
+		public void SetDimensions(double left, double top, double width)
 		{
-			InitializeComponent();
+			Canvas.SetLeft(this, left);
+			Canvas.SetTop(this, top);
+			this.Width = width;
+
+			this.DisplayName.Opacity = Math.Min(1, Math.Max(0, (width - 24) / 24));
 		}
 	}
 }

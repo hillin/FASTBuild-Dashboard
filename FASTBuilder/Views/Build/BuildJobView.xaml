@@ -25,9 +25,9 @@
             BorderBrush="{Binding UIBorderBrush}"
             Background="{Binding UIBackground}"
             ToolTip="{Binding ToolTipText}">
-        <TextBlock Foreground="{Binding UIForeground}"
-                    VerticalAlignment="Center"
-                    Text="{Binding DisplayName}" 
-                    Visibility="{Binding ShouldShowText, Converter={support:BoolToVisibilityConverter}}" />
+        <TextBlock x:Name="DisplayName"
+                   Foreground="{Binding UIForeground}"
+                   VerticalAlignment="Center"
+                   Text="{Binding DisplayName}" />
     </Border>
 </UserControl>

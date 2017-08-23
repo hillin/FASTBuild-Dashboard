@@ -110,6 +110,7 @@
     <Compile Include="Communication\Events\StopBuildEventArgs.cs" />
     <Compile Include="Communication\Events\StartBuildEventArgs.cs" />
     <Compile Include="Communication\LogWatcher.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Profile.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

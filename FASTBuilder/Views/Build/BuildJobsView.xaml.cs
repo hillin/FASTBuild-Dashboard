@@ -203,11 +203,9 @@ namespace FastBuilder.Views.Build
 				top += job.OwnerCore.Id * (coreRowHeight + coreVerticalMargin * 2);
 				top += coreVerticalMargin;
 
-				Canvas.SetTop(view, top);
-
-				Canvas.SetLeft(view, Math.Max(minimumLeft, job.StartTimeOffset * scaling));
-				view.Width = Math.Min(job.EndTimeOffset - Math.Max(_startTimeOffset, job.StartTimeOffset), 24 * 60 * 60) * scaling;
-				job.ShouldShowText = view.Width >= 48;
+				var left = Math.Max(minimumLeft, job.StartTimeOffset * scaling);
+				var width = Math.Min(job.EndTimeOffset - Math.Max(_startTimeOffset, job.StartTimeOffset), 24 * 60 * 60) * scaling;
+				view.SetDimensions(left, top, width);
 			}
 		}
 
