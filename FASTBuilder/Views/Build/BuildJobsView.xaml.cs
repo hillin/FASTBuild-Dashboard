@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using FastBuilder.Services;
 using FastBuilder.ViewModels.Build;
@@ -51,6 +52,20 @@ namespace FastBuilder.Views.Build
 			_buildViewportService.VerticalViewRangeChanged += this._buildViewportService_VerticalViewRangeChanged;
 
 			this.DataContextChanged += this.FastBuildJobsView_DataContextChanged;
+
+			// this timer will slowly fill job pool when program is idle
+			var poolFillerTimer = new DispatcherTimer(DispatcherPriority.Background);
+			poolFillerTimer.Tick += this.PoolFillerTimer_Tick;
+		}
+
+		private void PoolFillerTimer_Tick(object sender, EventArgs e)
+		{
+			if (_activeJobViewMap.Count + _jobViewPool.Count < _jobManager.JobCount)
+			{
+				var view = this.CreateJobView();
+				view.Visibility = Visibility.Hidden;
+				_jobViewPool.Enqueue(view);
+			}
 		}
 
 		private void _buildViewportService_VerticalViewRangeChanged(object sender, EventArgs e)
@@ -167,8 +182,7 @@ namespace FastBuilder.Views.Build
 			BuildJobView view;
 			if (_jobViewPool.Count == 0)
 			{
-				view = new BuildJobView();
-				this.Canvas.Children.Add(view);
+				view = this.CreateJobView();
 			}
 			else
 			{
@@ -179,6 +193,13 @@ namespace FastBuilder.Views.Build
 			view.DataContext = job;
 			_activeJobViewMap[job] = view;
 
+		}
+
+		private BuildJobView CreateJobView()
+		{
+			var view = new BuildJobView();
+			this.Canvas.Children.Add(view);
+			return view;
 		}
 
 		private void OnTicked(object sender, double timeOffset)

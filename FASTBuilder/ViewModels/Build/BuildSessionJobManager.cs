@@ -26,6 +26,8 @@ namespace FastBuilder.ViewModels.Build
 		public event EventHandler<BuildJobViewModel> OnJobStarted;
 		public event EventHandler<BuildJobViewModel> OnJobFinished;
 
+		public int JobCount { get; private set; }
+
 		public void Add(BuildJobViewModel job)
 		{
 			if (!_coreMappedStartTimeSortedJobs.TryGetValue(job.OwnerCore, out var jobList))
@@ -35,6 +37,7 @@ namespace FastBuilder.ViewModels.Build
 			}
 
 			jobList.Add(job);
+			++this.JobCount;
 
 			this.OnJobStarted?.Invoke(this, job);
 		}

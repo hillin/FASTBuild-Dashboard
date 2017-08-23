@@ -187,7 +187,7 @@
                     </ScrollViewer>
 
                     <build:TimeRulerView x:Name="TimeRuler" 
-                                         Margin="0,0,17,17"
+                                         Margin="0,0,17,16.5"
                                          VerticalAlignment="Bottom"
                                          Height="24" />
 
@@ -195,7 +195,7 @@
                                                  VerticalAlignment="Bottom"
                                                  Width="{StaticResource HeaderViewWidth}"
                                                  Height="24" 
-                                                 Margin="0,0,0,17" />
+                                                 Margin="0,0,0,16.5" />
                 </Grid>
             </Border>
 
