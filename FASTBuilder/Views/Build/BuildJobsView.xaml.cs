@@ -130,19 +130,12 @@ namespace FastBuilder.Views.Build
 				_wasNowInTimeFrame = isNowInTimeFrame;
 
 				this.UpdateCanvasSize();
-
 			}));
 		}
 
-		private void UpdateCanvasSize()
-		{
-			this.Canvas.Width = _sessionViewModel.ElapsedTime.TotalSeconds * _viewTransformService.Scaling;
-		}
+		private void UpdateCanvasSize() => this.Canvas.Width = _sessionViewModel.ElapsedTime.TotalSeconds * _viewTransformService.Scaling;
 
-		private void OnViewTimeRangeChanged(object sender, EventArgs e)
-		{
-			this.UpdateTimeFrame();
-		}
+		private void OnViewTimeRangeChanged(object sender, EventArgs e) => this.UpdateTimeFrame();
 
 		private void UpdateTimeFrame()
 		{
