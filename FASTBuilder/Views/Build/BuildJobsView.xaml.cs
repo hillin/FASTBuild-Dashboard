@@ -28,9 +28,6 @@ namespace FastBuilder.Views.Build
 		private readonly Dictionary<IBuildJobViewModel, BuildJobView> _activeJobViewMap
 			= new Dictionary<IBuildJobViewModel, BuildJobView>();
 
-		private readonly Dictionary<BuildJobViewModel, MergedBuildJobViewModel> _mergedJobMap
-			= new Dictionary<BuildJobViewModel, MergedBuildJobViewModel>();
-
 		// a queue that stores recycled job views (hidden and no job assigned)
 		private readonly Queue<BuildJobView> _jobViewPool
 			= new Queue<BuildJobView>();
