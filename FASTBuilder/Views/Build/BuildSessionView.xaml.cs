@@ -97,20 +97,24 @@ namespace FastBuilder.Views.Build
 		private void UserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
 		{
 			var buildViewportService = IoC.Get<IBuildViewportService>();
-			var middleTime = (buildViewportService.ViewEndTimeOffsetSeconds + buildViewportService.ViewStartTimeOffsetSeconds) / 2;
+
+			var relativePosition = e.GetPosition(this);
+			var proportion = relativePosition.X / this.ActualWidth;
+
+			var fixedTime = buildViewportService.ViewStartTimeOffsetSeconds
+			                + (buildViewportService.ViewEndTimeOffsetSeconds - buildViewportService.ViewStartTimeOffsetSeconds)
+			                * proportion;
 
 			buildViewportService.Scaling = buildViewportService.Scaling * (1 + e.Delta / 1200.0);
 
-			var duration = this.ContentScrollViewer.ActualWidth / buildViewportService.Scaling;
-			var startTime = middleTime - duration / 2;
+			var startTime = fixedTime - this.ContentScrollViewer.ActualWidth / buildViewportService.Scaling * proportion;
+
 			this.ContentScrollViewer.ScrollToHorizontalOffset(startTime * buildViewportService.Scaling + this.HeaderViewWidth);
 
 			e.Handled = true;
 		}
 
-		private void BuildJobsView_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
-		{
-			this.NotifyVerticalViewRangeChanged();
-		}
+		private void BuildJobsView_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e) 
+			=> this.NotifyVerticalViewRangeChanged();
 	}
 }
