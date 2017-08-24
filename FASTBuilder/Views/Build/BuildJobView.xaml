@@ -16,7 +16,8 @@
             CornerRadius="2"
             BorderBrush="{Binding UIBorderBrush}"
             Background="{Binding UIBackground}"
-            ToolTip="{Binding ToolTipText}">
+            ToolTip="{Binding ToolTipText}"
+            ToolTipService.Placement="Mouse">
         <TextBlock x:Name="DisplayName"
                    Foreground="{Binding UIForeground}"
                    VerticalAlignment="Center"
