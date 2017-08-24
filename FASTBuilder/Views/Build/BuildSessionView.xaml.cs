@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using FastBuilder.Services;
 
@@ -20,12 +21,32 @@ namespace FastBuilder.Views.Build
 			InitializeComponent();
 			_isAutoScrollingContent = true;
 			_previousHorizontalScrollOffset = this.ContentScrollViewer.ScrollableWidth;
-			BuildSessionView.BuildViewportService.SetVerticalViewRange(0, this.ContentScrollViewer.ViewportHeight);
+			BuildSessionView.BuildViewportService.BuildJobDisplayModeChanged += this.BuildViewportService_BuildJobDisplayModeChanged;
+			this.NotifyVerticalViewRangeChanged();
+		}
+
+		private void BuildViewportService_BuildJobDisplayModeChanged(object sender, EventArgs e)
+		{
+			// when this event is triggered, the layout of header/background is not updated immediately.
+			// we use a one-shot timer to delay a synchronization among scroll viewers
+
+			var t = new DispatcherTimer();
+
+			void Callback(object callbackSender, EventArgs callbackArgs)
+			{
+				this.SynchronizeScrollViewers();
+				t.Tick -= Callback;
+				t.IsEnabled = false;
+			}
+
+			t.Tick += Callback;
+
+			t.IsEnabled = true;
 		}
 
 		private void ContentScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
 		{
-			var horizontalOffset = e.HorizontalOffset;
+			var horizontalOffset = this.ContentScrollViewer.HorizontalOffset;
 			if (_isAutoScrollingContent)
 			{
 				// ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -41,28 +62,37 @@ namespace FastBuilder.Views.Build
 
 			_previousHorizontalScrollOffset = horizontalOffset;
 
+			this.SynchronizeScrollViewers();
 
-			var buildViewportService = BuildSessionView.BuildViewportService;
+			this.NotifyVerticalViewRangeChanged();
 
+			var startTime = (this.ContentScrollViewer.HorizontalOffset - this.HeaderViewWidth) / BuildSessionView.BuildViewportService.Scaling;
+			var duration = this.ContentScrollViewer.ActualWidth / BuildSessionView.BuildViewportService.Scaling;
+			var endTime = startTime + duration;
+			BuildSessionView.BuildViewportService.SetViewTimeRange(startTime, endTime);
+		}
+
+		private void SynchronizeScrollViewers()
+		{
 			if (this.ContentScrollViewer.ScrollableHeight > 0)
 			{
-				var offset = e.VerticalOffset * this.HeaderScrollViewer.ScrollableHeight /
+				var offset = this.ContentScrollViewer.VerticalOffset * this.HeaderScrollViewer.ScrollableHeight /
 							 this.ContentScrollViewer.ScrollableHeight;
 				this.HeaderScrollViewer.ScrollToVerticalOffset(offset);
 				this.BackgroundScrollViewer.ScrollToVerticalOffset(offset);
 			}
-
-			BuildSessionView.BuildViewportService.SetVerticalViewRange(e.VerticalOffset,
-				e.VerticalOffset + this.ContentScrollViewer.ViewportHeight);
-
-
-			var startTime = (this.ContentScrollViewer.HorizontalOffset - this.HeaderViewWidth) / buildViewportService.Scaling;
-			var duration = this.ContentScrollViewer.ActualWidth / buildViewportService.Scaling;
-			var endTime = startTime + duration;
-			buildViewportService.SetViewTimeRange(startTime, endTime);
+			else
+			{
+				this.HeaderScrollViewer.ScrollToVerticalOffset(0);
+				this.BackgroundScrollViewer.ScrollToVerticalOffset(0);
+			}
 		}
 
-
+		private void NotifyVerticalViewRangeChanged()
+		{
+			BuildSessionView.BuildViewportService.SetVerticalViewRange(this.ContentScrollViewer.VerticalOffset,
+				this.ContentScrollViewer.VerticalOffset + this.ContentScrollViewer.ViewportHeight);
+		}
 
 		private void UserControl_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
 		{
@@ -78,5 +108,9 @@ namespace FastBuilder.Views.Build
 			e.Handled = true;
 		}
 
+		private void BuildJobsView_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+		{
+			this.NotifyVerticalViewRangeChanged();
+		}
 	}
 }

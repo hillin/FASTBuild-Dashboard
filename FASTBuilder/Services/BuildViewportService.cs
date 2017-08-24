@@ -24,7 +24,7 @@ namespace FastBuilder.Services
 				}
 
 				_scaling = Math.Min(Math.Max(value, MinimumScaling), MaximumScaling);
-				this.ScalingChanging?.Invoke(this, EventArgs.Empty);
+				this.ScalingChanged?.Invoke(this, EventArgs.Empty);
 			}
 		}
 
@@ -32,10 +32,12 @@ namespace FastBuilder.Services
 		public double ViewEndTimeOffsetSeconds { get; private set; }
 		public double ViewTop { get; private set; }
 		public double ViewBottom { get; private set; }
+		public BuildJobDisplayMode BuildJobDisplayMode { get; private set; }
 
-		public event EventHandler ScalingChanging;
+		public event EventHandler ScalingChanged;
 		public event EventHandler ViewTimeRangeChanged;
 		public event EventHandler VerticalViewRangeChanged;
+		public event EventHandler BuildJobDisplayModeChanged;
 
 
 		[SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
@@ -63,6 +65,12 @@ namespace FastBuilder.Services
 			this.ViewTop = top;
 			this.ViewBottom = bottom;
 			this.VerticalViewRangeChanged?.Invoke(this, EventArgs.Empty);
+		}
+
+		public void SetBuildJobDisplayMode(BuildJobDisplayMode mode)
+		{
+			this.BuildJobDisplayMode = mode;
+			this.BuildJobDisplayModeChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

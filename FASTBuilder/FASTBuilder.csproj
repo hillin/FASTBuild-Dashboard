@@ -116,6 +116,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Profile.settings</DependentUpon>
     </Compile>
+    <Compile Include="Services\BuildJobDisplayMode.cs" />
+    <Compile Include="Services\BuildViewportServiceXamlSupport.cs" />
     <Compile Include="Services\IBuildViewportService.cs" />
     <Compile Include="Support\MathEx.cs" />
     <Compile Include="Support\SingleInstance.cs" />
@@ -151,6 +153,12 @@
     <Compile Include="ViewModels\Worker\WorkerViewModel.cs" />
     <Compile Include="Views\About\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Build\BuildJobsView.xaml.JobManagement.cs">
+      <DependentUpon>BuildJobsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Build\BuildJobsView.xaml.Layout.cs">
+      <DependentUpon>BuildJobsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Build\BuildSessionWorkersBackgroundView.xaml.cs">
       <DependentUpon>BuildSessionWorkersBackgroundView.xaml</DependentUpon>

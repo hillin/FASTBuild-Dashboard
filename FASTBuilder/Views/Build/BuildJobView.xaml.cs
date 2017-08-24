@@ -11,15 +11,16 @@ namespace FastBuilder.Views.Build
 
 		public BuildJobView() => InitializeComponent();
 
-		public void Update(double left, double top, double width, string text, bool performanceMode)
+		public void Update(double left, double top, double width, double height, string text, bool performanceMode)
 		{
 			Canvas.SetLeft(this, left);
 			Canvas.SetTop(this, top);
 			this.Width = width;
+			this.Height = height;
 
 			this.Border.CornerRadius = new CornerRadius(MathEx.Clamp((this.Width - 12) / 2, 0, 2));
 
-			if (width < ShortJobWidthThreshold)
+			if (width < ShortJobWidthThreshold || text == null)
 			{
 				this.DisplayName.Visibility = Visibility.Hidden;
 			}

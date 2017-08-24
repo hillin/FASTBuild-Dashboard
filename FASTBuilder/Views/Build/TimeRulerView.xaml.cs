@@ -96,7 +96,7 @@ namespace FastBuilder.Views.Build
 		{
 			InitializeComponent();
 			var buildViewportService = IoC.Get<IBuildViewportService>();
-			buildViewportService.ScalingChanging += this.OnPreScalingChanging;
+			buildViewportService.ScalingChanged += this.OnPreScalingChanged;
 			buildViewportService.ViewTimeRangeChanged += this.OnViewTimeRangeChanged;
 		}
 
@@ -108,7 +108,7 @@ namespace FastBuilder.Views.Build
 			this.UpdateTicks();
 		}
 
-		private void OnPreScalingChanging(object sender, EventArgs e) => this.UpdateTicks();
+		private void OnPreScalingChanged(object sender, EventArgs e) => this.UpdateTicks();
 
 
 

@@ -11,5 +11,6 @@ namespace FastBuilder.Views.Build
 		{
 			InitializeComponent();
 		}
+
 	}
 }

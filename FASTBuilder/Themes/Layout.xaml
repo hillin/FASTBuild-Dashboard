@@ -13,4 +13,26 @@
 
     <system:Double x:Key="HeaderViewWidth">192</system:Double>
     <GridLength x:Key="HeaderViewColumnSize">192</GridLength>
+
+    <system:Double x:Key="BuildCoreRowHeightStandard">28</system:Double>
+    <system:Double x:Key="BuildCoreRowHeightCompact">14</system:Double>
+
+    <system:Double x:Key="BuildCoreRowVerticalMarginStandard">0</system:Double>
+    <system:Double x:Key="BuildCoreRowVerticalMarginCompact">0</system:Double>
+
+    <Thickness x:Key="BuildCoreRowMarginStandard">0</Thickness>
+    <Thickness x:Key="BuildCoreRowMarginCompact">0</Thickness>
+
+    <Thickness x:Key="BuildWorkerCardMarginStandard">0,2</Thickness>
+    <Thickness x:Key="BuildWorkerCardMarginCompact">0,0.5</Thickness>
+
+    <!-- worker row margin is 2x larger vertically than worker card margin because card has another 1x margin within itself-->
+    <Thickness x:Key="BuildWorkerRowMarginStandard">0,4</Thickness>
+    <Thickness x:Key="BuildWorkerRowMarginCompact">0,1</Thickness>
+
+    <Thickness x:Key="BuildWorkerRowPaddingStandard">8</Thickness>
+    <Thickness x:Key="BuildWorkerRowPaddingCompact">4</Thickness>
+
+    <system:Double x:Key="JobViewHeightStandard">24</system:Double>
+    <system:Double x:Key="JobViewHeightCompact">12</system:Double>
 </ResourceDictionary>

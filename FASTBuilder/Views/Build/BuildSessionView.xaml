@@ -164,22 +164,25 @@
                             <Grid Height="{Binding ElementName=TimeRuler, Path=ActualHeight}" 
                                   DockPanel.Dock="Bottom" />   <!-- leave blank for time ruler -->
 
-                            <build:BuildJobsView Height="{Binding ElementName=WorkersHeader, Path=ActualHeight}"
-                                                     HorizontalAlignment="Left"
-                                                     VerticalAlignment="Top" />
+                            <build:BuildJobsView x:Name="BuildJobsView"
+                                                 SizeChanged="BuildJobsView_SizeChanged"
+                                                 Height="{Binding ElementName=WorkersHeader, Path=ActualHeight}"
+                                                 HorizontalAlignment="Left"
+                                                 VerticalAlignment="Top" />
                         </DockPanel>
                     </support:DragScrollViewer>
-                    
-                    <ScrollViewer x:Name="HeaderScrollViewer" 
-                                    IsEnabled="False"
-                                    IsHitTestVisible="False"
-                                    Margin="0,0,17,17"
-                                    HorizontalScrollBarVisibility="Hidden"
-                                    VerticalScrollBarVisibility="Hidden">
+
+                    <ScrollViewer x:Name="HeaderScrollViewer"
+                                  IsEnabled="False"
+                                  IsHitTestVisible="False"
+                                  Margin="0,0,17,17"
+                                  HorizontalAlignment="Left"
+                                  HorizontalScrollBarVisibility="Hidden"
+                                  VerticalScrollBarVisibility="Hidden">
                         <DockPanel>
-                            <Grid Height="{Binding ElementName=TimeRuler, Path=ActualHeight}" 
+                            <Grid Height="{Binding ElementName=TimeRuler, Path=ActualHeight}"
                                   DockPanel.Dock="Bottom" /> <!-- leave blank for time ruler -->
-                            
+
                             <build:BuildSessionWorkersHeaderView x:Name="WorkersHeader"
                                                                  Height="{Binding ElementName=WorkersBackground, Path=ActualHeight}"
                                                                  HorizontalAlignment="Left" />

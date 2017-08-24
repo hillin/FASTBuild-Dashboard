@@ -6,24 +6,54 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:viewModels="clr-namespace:FastBuilder.ViewModels"
              xmlns:build="clr-namespace:FastBuilder.ViewModels.Build"
+             xmlns:services="clr-namespace:FastBuilder.Services"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
+    <!-- workers -->
     <ItemsControl ItemsSource="{Binding Workers}"
                   VerticalAlignment="Top">
         
         <ItemsControl.ItemTemplate>
             <DataTemplate DataType="{x:Type build:BuildWorkerViewModel}">
-                
-                <materialDesign:Card Padding="8" 
-                         Margin="0,2"
-                         UniformCornerRadius="0">
 
+                <!-- worker template -->
+                <materialDesign:Card UniformCornerRadius="0">
+                    <materialDesign:Card.Style>
+                        <Style TargetType="{x:Type materialDesign:Card}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                             Value="Compact">
+                                    <Setter Property="Padding" Value="{StaticResource BuildWorkerRowPaddingCompact}" />
+                                    <Setter Property="Margin" Value="{StaticResource BuildWorkerCardMarginCompact}" />
+                                    <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth0" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                            <Setter Property="Padding" Value="{StaticResource BuildWorkerRowPaddingStandard}" />
+                            <Setter Property="Margin" Value="{StaticResource BuildWorkerCardMarginStandard}" />
+                            <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth1" />
+                        </Style>
+                    </materialDesign:Card.Style>
+
+                    <!-- cores -->
                     <ItemsControl ItemsSource="{Binding Cores}"
-                      VerticalAlignment="Top">
+                                  VerticalAlignment="Top">
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="{x:Type ContentPresenter}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                                 Value="Compact">
+                                        <Setter Property="Height" Value="{StaticResource BuildCoreRowHeightCompact}" />
+                                        <Setter Property="Margin" Value="{StaticResource BuildCoreRowMarginCompact}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                <Setter Property="Margin" Value="{DynamicResource BuildCoreRowMarginStandard}" />
+                                <Setter Property="Height" Value="{DynamicResource BuildCoreRowHeightStandard}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type build:BuildCoreViewModel}">
-                                <Canvas Height="28" />
+                                <Canvas  />
                                 <!-- simply a placeholder -->
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>

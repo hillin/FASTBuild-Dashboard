@@ -6,47 +6,122 @@
              xmlns:local="clr-namespace:FastBuilder.Views"
              xmlns:viewModels="clr-namespace:FastBuilder.ViewModels"
              xmlns:build="clr-namespace:FastBuilder.ViewModels.Build"
+             xmlns:services="clr-namespace:FastBuilder.Services"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
+    <!-- workers -->
     <ItemsControl ItemsSource="{Binding Workers}"
                   VerticalAlignment="Top">
+
+        <!-- worker template -->
         <ItemsControl.ItemTemplate>
             <DataTemplate DataType="{x:Type build:BuildWorkerViewModel}">
 
-                <Grid Margin="0,4" 
-                      Width="{StaticResource HeaderViewWidth}"
+                <Grid Width="{StaticResource HeaderViewWidth}"
                       Background="{DynamicResource MaterialDesignBackground}">
-                    <Grid Margin="8">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                             Value="Compact">
+                                    <Setter Property="Margin" Value="{StaticResource BuildWorkerRowMarginCompact}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                            <Setter Property="Margin" Value="{StaticResource BuildWorkerRowMarginStandard}" />
+                        </Style>
+                    </Grid.Style>
+
+                    <!-- padding grid -->
+                    <Grid >
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                                 Value="Compact">
+                                        <Setter Property="Margin" Value="{StaticResource BuildWorkerRowPaddingCompact}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                <Setter Property="Margin" Value="{StaticResource BuildWorkerRowPaddingStandard}" />
+                            </Style>
+                        </Grid.Style>
+
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="{StaticResource WorkerHeaderColumnSize}" />
                             <ColumnDefinition Width="{StaticResource CoreHeaderColumnSize}" />
                         </Grid.ColumnDefinitions>
 
-                        <Grid Height="28" 
-                              VerticalAlignment="Top">
+                        <!-- host name container -->
+                        <Grid VerticalAlignment="Top">
+
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                                     Value="Compact">
+                                            <Setter Property="Height" Value="{StaticResource BuildCoreRowHeightCompact}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                    <Setter Property="Height" Value="{StaticResource BuildCoreRowHeightStandard}" />
+                                </Style>
+                            </Grid.Style>
+
                             <TextBlock Style="{DynamicResource MaterialDesignBody2TextBlock}"
                                        VerticalAlignment="Center"
                                        Text="{Binding HostName}" />
                         </Grid>
 
+                        <!-- cores -->
                         <ItemsControl ItemsSource="{Binding Cores}"
                                       Grid.Column="1"
                                       VerticalAlignment="Top">
                             <ItemsControl.ItemTemplate>
+                                <!-- core template -->
                                 <DataTemplate DataType="{x:Type build:BuildCoreViewModel}">
 
-                                    <Grid Width="28" Height="28">
-                                        <Ellipse Fill="{DynamicResource PrimaryHueLightBrush}"
-                                                 Width="24"
-                                                 Height="24"
-                                                 HorizontalAlignment="Center"
-                                                 VerticalAlignment="Center"
-                                                 StrokeThickness="1"
-                                                 Stroke="{DynamicResource PrimaryHueDarkBrush}"/>
-                                        <TextBlock HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   Text="{Binding Id}" />
+                                    <Grid>
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                                                 Value="Compact">
+                                                        <Setter Property="Height" Value="{StaticResource BuildCoreRowHeightCompact}" />
+                                                        <Setter Property="Width" Value="{StaticResource BuildCoreRowHeightCompact}" />
+                                                        <Setter Property="Margin" Value="{StaticResource BuildCoreRowMarginCompact}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                                <Setter Property="Height" Value="{StaticResource BuildCoreRowHeightStandard}" />
+                                                <Setter Property="Width" Value="{StaticResource BuildCoreRowHeightStandard}" />
+                                                <Setter Property="Margin" Value="{DynamicResource BuildCoreRowMarginStandard}" />
+                                            </Style>
+                                        </Grid.Style>
+
+                                        <Grid>
+
+                                            <Grid.Style>
+                                                <Style TargetType="Grid">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                                                     Value="Compact">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </Style>
+                                            </Grid.Style>
+
+                                            <Ellipse Fill="{DynamicResource PrimaryHueLightBrush}"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center"
+                                                     Width="24"
+                                                     Height="24"
+                                                     StrokeThickness="1"
+                                                     Stroke="{DynamicResource PrimaryHueDarkBrush}" />
+
+                                            <TextBlock HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding Id}" />
+                                        </Grid>
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

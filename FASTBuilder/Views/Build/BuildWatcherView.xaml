@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:build="clr-namespace:FastBuilder.ViewModels.Build"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:services="clr-namespace:FastBuilder.Services"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
 
@@ -23,16 +24,14 @@
                 Padding="16"
                 DockPanel.Dock="Top">
 
-            <Grid TextElement.Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                  VerticalAlignment="Center">
+            <DockPanel TextElement.Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                       VerticalAlignment="Center">
 
-                <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}"
-                           VerticalAlignment="Center"
-                           Text="{Binding ActiveItem.StatusText, Mode=OneWay}" />
+                
 
-                <materialDesign:ColorZone Mode="Standard" 
+                <materialDesign:ColorZone DockPanel.Dock="Right"
+                                          Mode="Standard" 
                                           Padding="8 4 8 4" 
-                                          HorizontalAlignment="Right"
                                           VerticalAlignment="Center"
                                           CornerRadius="2" 
                                           Panel.ZIndex="1"
@@ -50,7 +49,27 @@
                     </ComboBox>
                 </materialDesign:ColorZone>
 
-            </Grid>
+                <StackPanel DockPanel.Dock="Right"
+                            Orientation="Horizontal">
+
+                    <materialDesign:PackIcon Kind="ViewStream"
+                                             Width="24"
+                                             Height="24"
+                                             VerticalAlignment="Center"/>
+                    <ToggleButton IsChecked="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=IsCompactDisplayMode }"
+                                  Margin="8,0"/>
+
+                    <materialDesign:PackIcon Kind="ViewHeadline"
+                                             Width="24"
+                                             Height="24"
+                                             VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                           VerticalAlignment="Center"
+                           Text="{Binding ActiveItem.StatusText, Mode=OneWay}" />
+
+            </DockPanel>
 
         </Border>
 

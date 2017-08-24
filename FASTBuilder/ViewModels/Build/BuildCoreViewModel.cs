@@ -7,7 +7,9 @@ using FastBuilder.Services;
 
 namespace FastBuilder.ViewModels.Build
 {
+#if DEBUG
 	[DebuggerDisplay("{" + nameof(BuildCoreViewModel.DebuggerDisplay) + "}")]
+#endif
 	internal class BuildCoreViewModel : PropertyChangedBase
 	{
 #if DEBUG
@@ -71,11 +73,11 @@ namespace FastBuilder.ViewModels.Build
 		{
 			this.Id = id;
 			this.OwnerWorker = ownerWorker;
-			IoC.Get<IBuildViewportService>().ScalingChanging
-				+= this.ViewTransformService_PreScalingChanging;
+			IoC.Get<IBuildViewportService>().ScalingChanged
+				+= this.ViewTransformServicePreScalingChanged;
 		}
 
-		private void ViewTransformService_PreScalingChanging(object sender, EventArgs e) => this.UpdateUIJobsTotalWidth();
+		private void ViewTransformServicePreScalingChanged(object sender, EventArgs e) => this.UpdateUIJobsTotalWidth();
 
 		public BuildJobViewModel OnJobFinished(FinishJobEventArgs e)
 		{

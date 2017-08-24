@@ -4,6 +4,7 @@ using System.Windows.Shell;
 using Caliburn.Micro;
 using FastBuilder.Communication;
 using FastBuilder.Communication.Events;
+using FastBuilder.Services;
 
 namespace FastBuilder.ViewModels.Build
 {
@@ -60,7 +61,6 @@ namespace FastBuilder.ViewModels.Build
 				this.NotifyOfPropertyChange();
 			}
 		}
-
 
 		public string Icon => "HeartPulse";
 

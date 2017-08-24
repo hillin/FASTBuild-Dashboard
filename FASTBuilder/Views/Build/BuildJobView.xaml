@@ -10,9 +10,8 @@
              d:DesignHeight="28" d:DesignWidth="120">
 
     <Border x:Name="Border" 
-            Height="24"
             Margin="1"
-            Padding="8,2"
+            Padding="8,2,2,2"
             BorderThickness="1"
             CornerRadius="2"
             BorderBrush="{Binding UIBorderBrush}"
