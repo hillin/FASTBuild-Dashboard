@@ -139,7 +139,6 @@
     <Compile Include="Support\DragScrollViewer.cs" />
     <Compile Include="Support\MouseWheelGesture.cs" />
     <Compile Include="Support\SimpleCommand.cs" />
-    <Compile Include="Support\TextTrimmer.cs" />
     <Compile Include="ViewModels\About\AboutViewModel.cs" />
     <Compile Include="ViewModels\Build\BuildSessionViewModel.Status.cs" />
     <Compile Include="ViewModels\Build\IBuildJobViewModel.cs" />
@@ -160,7 +159,9 @@
     <Compile Include="Views\Build\BuildJobsView.Layout.cs">
       <DependentUpon>BuildJobsView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Build\BuildJobsView.Render.cs" />
+    <Compile Include="Views\Build\BuildJobsView.Render.cs">
+      <DependentUpon>BuildJobsView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Build\BuildSessionWorkersBackgroundView.xaml.cs">
       <DependentUpon>BuildSessionWorkersBackgroundView.xaml</DependentUpon>
     </Compile>
@@ -202,10 +203,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Build\BuildJobView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Build\BuildSessionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -239,9 +236,6 @@
     <Compile Include="ViewModels\Build\BuildSessionViewModel.cs" />
     <Compile Include="ViewModels\Build\BuildJobViewModel.cs" />
     <Compile Include="ViewModels\Build\BuildWatcherViewModel.cs" />
-    <Compile Include="Views\Build\BuildJobView.xaml.cs">
-      <DependentUpon>BuildJobView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Build\BuildSessionView.xaml.cs">
       <DependentUpon>BuildSessionView.xaml</DependentUpon>
     </Compile>

@@ -12,6 +12,9 @@ namespace FastBuilder.Views.Build
 {
 	partial class BuildJobsView
 	{
+		private const double ShortJobWidthThreshold = 12;
+		private const double TextlessJobWidthThreshold = 36;
+
 
 		public Thickness JobMargin
 		{
@@ -99,12 +102,12 @@ namespace FastBuilder.Views.Build
 				var acceptedStartTimeOffset = Math.Max(_startTimeOffset, job.StartTimeOffset);
 				var width = MathEx.Clamp((job.EndTimeOffset - acceptedStartTimeOffset) * scaling, 0, maxWidth);
 
-				if (width < BuildJobView.ShortJobWidthThreshold)
+				if (width < ShortJobWidthThreshold)
 				{
 					// try to use space before next job
 					width = job.NextJob != null
-						? MathEx.Clamp((job.NextJob.StartTimeOffset - acceptedStartTimeOffset) * scaling, 0, BuildJobView.ShortJobWidthThreshold)
-						: BuildJobView.ShortJobWidthThreshold;
+						? MathEx.Clamp((job.NextJob.StartTimeOffset - acceptedStartTimeOffset) * scaling, 0, ShortJobWidthThreshold)
+						: ShortJobWidthThreshold;
 				}
 
 				if (width < 1   // job too short to display
@@ -138,7 +141,7 @@ namespace FastBuilder.Views.Build
 				paddedWidth,
 				rect.Height - this.JobMargin.Top - this.JobMargin.Bottom);
 
-			if (rect.Width <= 12)
+			if (rect.Width <= ShortJobWidthThreshold)
 			{
 				dc.DrawRectangle(job.UIBackground, job.UIBorderPen, paddedRect);
 				return;
@@ -150,14 +153,14 @@ namespace FastBuilder.Views.Build
 			}
 			else
 			{
-				var cornerRadius = MathEx.Clamp((rect.Width - 12) / 2, 0, 2);
+				var cornerRadius = MathEx.Clamp((rect.Width - ShortJobWidthThreshold) / 2, 0, 2);
 
 				dc.DrawRoundedRectangle(job.UIBackground, job.UIBorderPen, paddedRect, cornerRadius, cornerRadius);
 			}
 
-			if (rect.Width > 36 && showText)
+			if (rect.Width > TextlessJobWidthThreshold && showText)
 			{
-				var opactiy = Math.Min(1, Math.Max(0, (rect.Width - 36) / 48));
+				var opactiy = Math.Min(1, Math.Max(0, (rect.Width - TextlessJobWidthThreshold) / TextlessJobWidthThreshold));
 				var brush = job.UIForeground.Clone();
 				brush.Opacity = opactiy;
 
