@@ -19,7 +19,7 @@ namespace FASTBuilder
 			public static T GetResource(string key)
 			{
 #if DEBUG
-				if (App.Current == null || App.Current.IsInDesignTime)
+				if (App.IsInDesignTime)
 				{
 					return default(T);
 				}
@@ -37,7 +37,7 @@ namespace FASTBuilder
 
 		public new static App Current { get; private set; }
 #if DEBUG
-		public bool IsInDesignTime { get; }
+		public static bool IsInDesignTime { get; } = DesignerProperties.GetIsInDesignMode(new DependencyObject());
 #endif
 		public bool StartMinimized { get; private set; }
 
@@ -45,10 +45,6 @@ namespace FASTBuilder
 		{
 			this.InitializeComponent();
 			App.Current = this;
-
-#if DEBUG
-			this.IsInDesignTime = DesignerProperties.GetIsInDesignMode(new DependencyObject());
-#endif
 		}
 
 		public bool SignalExternalCommandLineArgs(IList<string> args)

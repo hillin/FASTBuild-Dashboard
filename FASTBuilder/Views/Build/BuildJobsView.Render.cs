@@ -23,7 +23,11 @@ namespace FastBuilder.Views.Build
 		}
 
 		public static readonly DependencyProperty JobMarginProperty =
-			DependencyProperty.Register("JobMargin", typeof(Thickness), typeof(BuildJobsView), new UIPropertyMetadata(new Thickness(2), BuildJobsView.AffectsVisual));
+			DependencyProperty.Register(
+				"JobMargin", 
+				typeof(Thickness),
+				typeof(BuildJobsView),
+				new UIPropertyMetadata(new Thickness(2), BuildJobsView.AffectsVisual));
 
 		public Thickness JobTextMargin
 		{
@@ -32,7 +36,11 @@ namespace FastBuilder.Views.Build
 		}
 
 		public static readonly DependencyProperty JobTextMarginProperty =
-			DependencyProperty.Register("JobTextMargin", typeof(Thickness), typeof(BuildJobsView), new UIPropertyMetadata(new Thickness(8, 2, 2, 2), BuildJobsView.AffectsVisual));
+			DependencyProperty.Register(
+				"JobTextMargin", 
+				typeof(Thickness), 
+				typeof(BuildJobsView),
+				new UIPropertyMetadata(new Thickness(8, 2, 2, 2), BuildJobsView.AffectsVisual));
 
 		public Style JobTextStyle
 		{
@@ -41,11 +49,17 @@ namespace FastBuilder.Views.Build
 		}
 
 		public static readonly DependencyProperty JobTextStyleProperty =
-			DependencyProperty.Register("JobTextStyle", typeof(Style), typeof(BuildJobsView), new UIPropertyMetadata(null, BuildJobsView.OnJobTextStyleChanged));
+			DependencyProperty.Register(
+				"JobTextStyle", 
+				typeof(Style), 
+				typeof(BuildJobsView), 
+				new UIPropertyMetadata(null, BuildJobsView.OnJobTextStyleChanged));
 
-		private static void OnJobTextStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) => ((BuildJobsView)d).OnJobTextStyleChanged((Style)e.NewValue);
+		private static void OnJobTextStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) 
+			=> ((BuildJobsView)d).OnJobTextStyleChanged((Style)e.NewValue);
 
-		private static void AffectsVisual(DependencyObject d, DependencyPropertyChangedEventArgs e) => ((BuildJobsView)d).InvalidateVisual();
+		private static void AffectsVisual(DependencyObject d, DependencyPropertyChangedEventArgs e) 
+			=> ((BuildJobsView)d).InvalidateVisual();
 
 		private readonly TextBlock _jobTextStyleBridge = new TextBlock();
 		private GlyphTypeface _jobTextGlyphTypeface;

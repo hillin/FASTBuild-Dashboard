@@ -169,15 +169,7 @@
     <Compile Include="Views\Build\BuildWorkerStatusView.xaml.cs">
       <DependentUpon>BuildWorkerStatusView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Build\TimeRulerView.xaml.cs">
-      <DependentUpon>TimeRulerView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Build\TimeRulerMajorTickView.xaml.cs">
-      <DependentUpon>TimeRulerMajorTickView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Build\TimeRulerMinorTickView.xaml.cs">
-      <DependentUpon>TimeRulerMinorTickView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Views\Build\TimeRulerView.cs" />
     <Compile Include="Views\Build\BuildSessionWorkersHeaderView.xaml.cs">
       <DependentUpon>BuildSessionWorkersHeaderView.xaml</DependentUpon>
     </Compile>
@@ -219,10 +211,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Build\TimeRulerView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\MainWindowView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -246,14 +234,6 @@
       <DependentUpon>MainWindowView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Build\TimeRulerMajorTickView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Build\TimeRulerMinorTickView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Build\BuildSessionWorkersHeaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

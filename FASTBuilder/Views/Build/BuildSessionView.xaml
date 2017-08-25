@@ -190,16 +190,35 @@
                         </DockPanel>
                     </ScrollViewer>
 
-                    <build:TimeRulerView x:Name="TimeRuler" 
+                    <!--<build:TimeRulerView x:Name="TimeRuler" 
                                          Margin="0,0,17,16.5"
                                          VerticalAlignment="Bottom"
-                                         Height="24" />
+                                         Height="24" />-->
 
-                    <build:BuildWorkerStatusView HorizontalAlignment="Left"
-                                                 VerticalAlignment="Bottom"
-                                                 Width="{StaticResource HeaderViewWidth}"
-                                                 Height="24" 
-                                                 Margin="0,0,0,16.5" />
+                    <Grid Margin="0,0,17,16.5"
+                          VerticalAlignment="Bottom" 
+                          Background="{DynamicResource MaterialDesignBackground}"
+                          Height="24">
+
+                        <build:TimeRulerView x:Name="TimeRuler"
+                                                 MinorTickBrush="{DynamicResource MaterialDesignBodyLight}"
+                                                 MajorTickBrush="{DynamicResource MaterialDesignBody}">
+                            <build:TimeRulerView.TimeLabelStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody2TextBlock}">
+                                    <Setter Property="FontSize" Value="10" />
+                                </Style>
+                            </build:TimeRulerView.TimeLabelStyle>
+                        </build:TimeRulerView>
+
+                        <build:BuildWorkerStatusView HorizontalAlignment="Left"
+                                                     Background="{DynamicResource MaterialDesignBackground}"
+                                                     Width="{StaticResource HeaderViewWidth}" />
+
+                        <GridSplitter Height="1"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Top" />
+                    </Grid>
+
                 </Grid>
             </Border>
 
