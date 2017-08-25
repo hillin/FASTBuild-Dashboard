@@ -52,11 +52,6 @@ namespace FastBuilder.Views.Build
 			_coreTopMap.Clear();
 		}
 
-		private bool IsShortJob(BuildJobViewModel job)
-		{
-			return job.ElapsedSeconds * _buildViewportService.Scaling <= BuildJobView.ShortJobWidthThreshold;
-		}
-
 		private void AddJob(BuildJobViewModel job)
 		{
 
@@ -87,7 +82,7 @@ namespace FastBuilder.Views.Build
 		private void UpdateJobs()
 		{
 			var buildViewportService = IoC.Get<IBuildViewportService>();
-			
+
 			_startTimeOffset = buildViewportService.ViewStartTimeOffsetSeconds
 							   + (_headerViewWidth - 8) / buildViewportService.Scaling; // minus 8px to make the jobs looks like being covered under the header panel
 
@@ -125,6 +120,7 @@ namespace FastBuilder.Views.Build
 			var minimumLeft = scaling * _startTimeOffset;
 			var maxWidth = 24 * 60 * 60 * scaling;
 			var performanceMode = _activeJobViewMap.Count > 8;
+			var showText = _jobDisplayMode == BuildJobDisplayMode.Standard;
 
 			foreach (var pair in _activeJobViewMap)
 			{
@@ -154,7 +150,7 @@ namespace FastBuilder.Views.Build
 					var top = _coreTopMap[job.OwnerCore];
 
 					view.Visibility = Visibility.Visible;
-					view.Update(left, top, width, _jobViewHeight, _jobDisplayMode == BuildJobDisplayMode.Compact ? null : job.DisplayName, performanceMode);
+					view.Update(left, top, width, _jobViewHeight, showText ? job.DisplayName : null, performanceMode);
 				}
 			}
 		}
