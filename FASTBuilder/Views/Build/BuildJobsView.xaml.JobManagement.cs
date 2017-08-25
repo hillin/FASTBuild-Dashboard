@@ -87,11 +87,9 @@ namespace FastBuilder.Views.Build
 		private void UpdateJobs()
 		{
 			var buildViewportService = IoC.Get<IBuildViewportService>();
-
-			var headerViewWidth = (double)this.FindResource("HeaderViewWidth");
-
+			
 			_startTimeOffset = buildViewportService.ViewStartTimeOffsetSeconds
-							   + (headerViewWidth - 8) / buildViewportService.Scaling; // minus 8px to make the jobs looks like being covered under the header panel
+							   + (_headerViewWidth - 8) / buildViewportService.Scaling; // minus 8px to make the jobs looks like being covered under the header panel
 
 			_endTimeOffset = buildViewportService.ViewEndTimeOffsetSeconds;
 			_wasNowInTimeFrame = _endTimeOffset >= _currentTimeOffset && _startTimeOffset <= _currentTimeOffset;
@@ -117,7 +115,7 @@ namespace FastBuilder.Views.Build
 				}
 			}
 
-			this.UpdateJobViews();
+			this.InvalidateJobViews();
 		}
 
 		private void UpdateJobViews()
@@ -127,7 +125,6 @@ namespace FastBuilder.Views.Build
 			var minimumLeft = scaling * _startTimeOffset;
 			var maxWidth = 24 * 60 * 60 * scaling;
 			var performanceMode = _activeJobViewMap.Count > 8;
-
 
 			foreach (var pair in _activeJobViewMap)
 			{

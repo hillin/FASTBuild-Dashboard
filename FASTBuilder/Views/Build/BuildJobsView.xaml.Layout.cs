@@ -18,7 +18,15 @@ namespace FastBuilder.Views.Build
 		private double _workerRowTopMargin;
 		private double _workerRowBottomMargin;
 		private double _jobViewHeight;
+
+		private double _headerViewWidth;
+
 		private BuildJobDisplayMode _jobDisplayMode;
+
+		private bool _coresInvalidated = true;
+		private bool _visibleCoresInvalidated = true;
+		private bool _jobsInvalidated = true;
+		private bool _jobViewsInvalidated = true;
 
 		// maps a core row to the top position of its jobs
 		private readonly Dictionary<BuildCoreViewModel, double> _coreTopMap
@@ -55,15 +63,13 @@ namespace FastBuilder.Views.Build
 
 			_jobViewHeight = (double)this.FindResource($"JobViewHeight{postFix}");
 
-			if (_sessionViewModel != null)
-			{
-				this.UpdateCoreTopMap();
-				this.UpdateVisibleCores();
-				this.UpdateJobs();
-			}
+			_headerViewWidth = (double)this.FindResource("HeaderViewWidth");
+
+			this.InvalidateCores();
+			this.InvalidateJobs();
 		}
 
-		private void UpdateCoreTopMap()
+		private void UpdateCores()
 		{
 			var top = 0.0;
 
@@ -83,18 +89,14 @@ namespace FastBuilder.Views.Build
 
 				top += _workerRowBottomMargin;
 			}
+
+			this.InvalidateVisibleCores();
 		}
 
 		private void OnVerticalViewRangeChanged(object sender, EventArgs e)
 		{
-			if (_sessionViewModel == null)
-			{
-				// this could happen even before view model is assigned
-				return;
-			}
-
-			this.UpdateVisibleCores();
-			this.UpdateJobs();
+			this.InvalidateVisibleCores();
+			this.InvalidateJobs();
 		}
 
 		private void UpdateVisibleCores()
@@ -113,14 +115,80 @@ namespace FastBuilder.Views.Build
 			}
 		}
 
-		private void UpdateCanvasSize() => this.Canvas.Width = _sessionViewModel.ElapsedTime.TotalSeconds * _buildViewportService.Scaling;
-
-		private void OnViewTimeRangeChanged(object sender, EventArgs e) => this.UpdateJobs();
+		private void OnViewTimeRangeChanged(object sender, EventArgs e) => this.InvalidateJobs();
 
 		private void OnScalingChanged(object sender, EventArgs e)
 		{
-			this.UpdateJobs();
-			this.UpdateCanvasSize();
+			this.InvalidateMeasure();
+			this.InvalidateJobs();
+		}
+
+		private void InvalidateCores()
+		{
+			if (!_coresInvalidated)
+			{
+				_coresInvalidated = true;
+				this.InvalidateArrange();
+			}
+		}
+
+		private void InvalidateVisibleCores()
+		{
+			if (!_visibleCoresInvalidated)
+			{
+				_visibleCoresInvalidated = true;
+				this.InvalidateArrange();
+			}
+		}
+
+		private void InvalidateJobs()
+		{
+			if (!_jobsInvalidated)
+			{
+				_jobsInvalidated = true;
+				this.InvalidateArrange();
+			}
+		}
+
+		private void InvalidateJobViews()
+		{
+			if (!_jobViewsInvalidated)
+			{
+				_jobViewsInvalidated = true;
+				this.InvalidateArrange();
+			}
+		}
+
+		protected override Size MeasureOverride(Size constraint)
+			=> new Size(_sessionViewModel.ElapsedTime.TotalSeconds * _buildViewportService.Scaling + _headerViewWidth * 2, constraint.Height);
+
+		protected override Size ArrangeOverride(Size arrangeBounds)
+		{
+			if (_coresInvalidated)
+			{
+				this.UpdateCores();
+				_coresInvalidated = false;
+			}
+
+			if (_visibleCoresInvalidated)
+			{
+				this.UpdateVisibleCores();
+				_visibleCoresInvalidated = false;
+			}
+
+			if (_jobsInvalidated)
+			{
+				this.UpdateJobs();
+				_jobsInvalidated = false;
+			}
+
+			if (_jobViewsInvalidated)
+			{
+				this.UpdateJobViews();
+				_jobViewsInvalidated = false;
+			}
+
+			return base.ArrangeOverride(arrangeBounds);
 		}
 	}
 }

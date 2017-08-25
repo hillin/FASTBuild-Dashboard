@@ -33,7 +33,6 @@ namespace FastBuilder.Views.Build
 			InitializeComponent();
 			_buildViewportService = IoC.Get<IBuildViewportService>();
 
-
 			this.DataContextChanged += this.FastBuildJobsView_DataContextChanged;
 			this.InitializeJobManagementPart();
 
@@ -66,9 +65,8 @@ namespace FastBuilder.Views.Build
 			_jobManager = vm.JobManager;
 			_jobManager.OnJobStarted += this.JobManager_OnJobStarted;
 
-			this.UpdateCoreTopMap();
-			this.UpdateVisibleCores();
-			this.UpdateJobs();
+			this.InvalidateCores();
+			this.InvalidateJobs();
 		}
 
 
@@ -76,15 +74,14 @@ namespace FastBuilder.Views.Build
 		{
 			this.Dispatcher.BeginInvoke(new System.Action(() =>
 			{
-				this.UpdateCoreTopMap();
-				this.UpdateVisibleCores();
+				this.InvalidateCores();
 
 				if (job.StartTimeOffset <= _endTimeOffset && job.EndTimeOffset >= _startTimeOffset)
 				{
 					this.AddJob(job);
 				}
 
-				this.UpdateJobViews();
+				this.InvalidateJobViews();
 			}));
 		}
 
@@ -110,12 +107,10 @@ namespace FastBuilder.Views.Build
 						}
 					}
 
-					this.UpdateJobViews();
+					this.InvalidateJobViews();
 				}
 
 				_wasNowInTimeFrame = isNowInTimeFrame;
-
-				this.UpdateCanvasSize();
 			}));
 		}
 
