@@ -11,7 +11,7 @@ using FastBuilder.Support;
 
 namespace FastBuilder.Views.Build
 {
-	public partial class BuildJobsView : Canvas
+	public partial class BuildJobsView : Control
 	{
 
 		private double _startTimeOffset;

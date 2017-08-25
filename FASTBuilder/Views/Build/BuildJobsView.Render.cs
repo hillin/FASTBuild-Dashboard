@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -45,6 +46,7 @@ namespace FastBuilder.Views.Build
 
 		private readonly TextBlock _jobTextStyleBridge = new TextBlock();
 		private GlyphTypeface _jobTextGlyphTypeface;
+
 
 		private void InitializeRenderPart()
 		{
