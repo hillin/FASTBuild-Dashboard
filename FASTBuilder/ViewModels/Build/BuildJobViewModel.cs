@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -6,12 +7,28 @@ using System.Windows.Media;
 using Caliburn.Micro;
 using FastBuilder.Communication;
 using FastBuilder.Communication.Events;
+using FASTBuilder;
 
 namespace FastBuilder.ViewModels.Build
 {
 	[DebuggerDisplay("Job:{" + nameof(BuildJobViewModel.DisplayName) + "}")]
 	internal class BuildJobViewModel : PropertyChangedBase, IBuildJobViewModel
 	{
+		private static readonly Dictionary<string, Brush> CachedJobBrushes
+			= new Dictionary<string, Brush>();
+
+		private static Brush GetJobBrush(string type, BuildJobStatus status)
+		{
+			var key = $"Job{type}Brush_{status}";
+			if (!CachedJobBrushes.TryGetValue(key, out var brush))
+			{
+				brush = (Brush)App.Current.FindResource(key);
+				CachedJobBrushes.Add(key, brush);
+			}
+
+			return brush;
+		}
+
 		public BuildCoreViewModel OwnerCore { get; }
 
 		// double linked-list structure
@@ -49,62 +66,13 @@ namespace FastBuilder.ViewModels.Build
 
 
 		public Brush UIForeground
-		{
-			get
-			{
-				switch (this.Status)
-				{
-					case BuildJobStatus.Building:
-						return Brushes.Black;
-					default:
-						return Brushes.White;
-				}
-			}
-		}
+			=> BuildJobViewModel.GetJobBrush("Foreground", this.Status);
 
-		public Brush UIBackground
-		{
-			get
-			{
-				switch (this.Status)
-				{
-					case BuildJobStatus.Building:
-						return Brushes.White;
-					case BuildJobStatus.Success:
-						return Brushes.ForestGreen;
-					case BuildJobStatus.SuccessCached:
-						return Brushes.MediumAquamarine;
-					case BuildJobStatus.SuccessPreprocessed:
-						return Brushes.DarkSeaGreen;
-					case BuildJobStatus.Failed:
-						return Brushes.Crimson;
-					case BuildJobStatus.Error:
-						return Brushes.Crimson;
-					case BuildJobStatus.RacedOut:
-						return Brushes.DarkGray;
-					case BuildJobStatus.Timeout:
-						return Brushes.DarkOrange;
-					case BuildJobStatus.Stopped:
-						return Brushes.DarkOrange;
-					default:
-						throw new ArgumentOutOfRangeException();
-				}
-			}
-		}
+		public Brush UIBackground 
+			=> BuildJobViewModel.GetJobBrush("Background", this.Status);
 
-		public Brush UIBorderBrush
-		{
-			get
-			{
-				switch (this.Status)
-				{
-					case BuildJobStatus.Building:
-						return Brushes.DarkGreen;
-					default:
-						return this.UIBackground;
-				}
-			}
-		}
+		public Brush UIBorderBrush 
+			=> BuildJobViewModel.GetJobBrush("Border", this.Status);
 
 		public bool IsFinished => this.Status != BuildJobStatus.Building;
 		public string EventName { get; }

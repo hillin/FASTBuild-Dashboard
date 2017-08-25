@@ -39,9 +39,9 @@
                             HorizontalAlignment="Right">
                     <Border CornerRadius="2"
                             BorderThickness="1"
-                            BorderBrush="DarkGreen"
-                            Background="White"
-                            TextElement.Foreground="Black"
+                            BorderBrush="{StaticResource JobBorderBrush_Building}"
+                            Background="{StaticResource JobBackgroundBrush_Building}"
+                            TextElement.Foreground="{StaticResource JobForegroundBrush_Building}"
                             Padding="8,2">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock FontSize="10"
@@ -57,9 +57,9 @@
 
                     <Border CornerRadius="2"
                             BorderThickness="1"
-                            BorderBrush="DarkGreen"
-                            Background="DarkGreen"
-                            TextElement.Foreground="White"
+                            BorderBrush="{StaticResource JobBorderBrush_Success}"
+                            Background="{StaticResource JobBackgroundBrush_Success}"
+                            TextElement.Foreground="{StaticResource JobForegroundBrush_Success}"
                             Margin="8,0,0,0"
                             Padding="8,2,2,2">
                         <StackPanel Orientation="Horizontal">
@@ -78,9 +78,9 @@
 
                             <Border CornerRadius="2"
                                     BorderThickness="1"
-                                    BorderBrush="DarkCyan"
-                                    Background="DarkCyan"
-                                    TextElement.Foreground="White"
+                                    BorderBrush="{StaticResource JobBorderBrush_SuccessCached}"
+                                    Background="{StaticResource JobBackgroundBrush_SuccessCached}"
+                                    TextElement.Foreground="{StaticResource JobForegroundBrush_SuccessCached}"
                                     Padding="6,0"
                                     Margin="8,0,0,0">
                                 <StackPanel Orientation="Horizontal">
@@ -102,9 +102,9 @@
 
                     <Border CornerRadius="2"
                             BorderThickness="1"
-                            BorderBrush="Crimson"
-                            Background="Crimson"
-                            TextElement.Foreground="White"
+                            BorderBrush="{StaticResource JobBorderBrush_Failed}"
+                            Background="{StaticResource JobBackgroundBrush_Failed}"
+                            TextElement.Foreground="{StaticResource JobForegroundBrush_Failed}"
                             Padding="8,2"
                             Margin="8,0,0,0">
                         <StackPanel Orientation="Horizontal">

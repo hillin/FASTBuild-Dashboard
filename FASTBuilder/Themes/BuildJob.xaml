@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:FastBuilder.Themes">
+
+    <SolidColorBrush x:Key="JobBackgroundBrush_Building">White</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBackgroundBrush_Success">ForestGreen</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBackgroundBrush_SuccessCached">MediumAquamarine</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBackgroundBrush_SuccessPreprocessed">DarkSeaGreen</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBackgroundBrush_Failed">Crimson</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBackgroundBrush_Error">Crimson</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBackgroundBrush_RacedOut">DarkGray</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBackgroundBrush_Timeout">DarkOrange</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBackgroundBrush_Stopped">DarkOrange</SolidColorBrush>
+
+    <SolidColorBrush x:Key="JobBorderBrush_Building">DarkGreen</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBorderBrush_Success">ForestGreen</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBorderBrush_SuccessCached">MediumAquamarine</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBorderBrush_SuccessPreprocessed">DarkSeaGreen</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBorderBrush_Failed">Crimson</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBorderBrush_Error">Crimson</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBorderBrush_RacedOut">DarkGray</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBorderBrush_Timeout">DarkOrange</SolidColorBrush>
+    <SolidColorBrush x:Key="JobBorderBrush_Stopped">DarkOrange</SolidColorBrush>
+
+    <SolidColorBrush x:Key="JobForegroundBrush_Building">Black</SolidColorBrush>
+    <SolidColorBrush x:Key="JobForegroundBrush_Success">White</SolidColorBrush>
+    <SolidColorBrush x:Key="JobForegroundBrush_SuccessCached">White</SolidColorBrush>
+    <SolidColorBrush x:Key="JobForegroundBrush_SuccessPreprocessed">White</SolidColorBrush>
+    <SolidColorBrush x:Key="JobForegroundBrush_Failed">White</SolidColorBrush>
+    <SolidColorBrush x:Key="JobForegroundBrush_Error">White</SolidColorBrush>
+    <SolidColorBrush x:Key="JobForegroundBrush_RacedOut">White</SolidColorBrush>
+    <SolidColorBrush x:Key="JobForegroundBrush_Timeout">White</SolidColorBrush>
+    <SolidColorBrush x:Key="JobForegroundBrush_Stopped">White</SolidColorBrush>
+</ResourceDictionary>
