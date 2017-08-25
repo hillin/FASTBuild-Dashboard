@@ -14,20 +14,6 @@ namespace FastBuilder.ViewModels.Build
 	[DebuggerDisplay("Job:{" + nameof(BuildJobViewModel.DisplayName) + "}")]
 	internal class BuildJobViewModel : PropertyChangedBase, IBuildJobViewModel
 	{
-		private static readonly Dictionary<string, Brush> CachedJobBrushes
-			= new Dictionary<string, Brush>();
-
-		private static Brush GetJobBrush(string type, BuildJobStatus status)
-		{
-			var key = $"Job{type}Brush_{status}";
-			if (!CachedJobBrushes.TryGetValue(key, out var brush))
-			{
-				brush = (Brush)App.Current.FindResource(key);
-				CachedJobBrushes.Add(key, brush);
-			}
-
-			return brush;
-		}
 
 		public BuildCoreViewModel OwnerCore { get; }
 
@@ -39,6 +25,10 @@ namespace FastBuilder.ViewModels.Build
 
 		private BuildJobStatus _status;
 		private double _elapsedSeconds;
+		private Brush _uiForeground;
+		private Brush _uiBackground;
+		private Brush _uiBorderBrush;
+		private Pen _uiBorderPen;
 		public DateTime StartTime { get; }
 		public double StartTimeOffset { get; }
 
@@ -66,13 +56,64 @@ namespace FastBuilder.ViewModels.Build
 
 
 		public Brush UIForeground
-			=> BuildJobViewModel.GetJobBrush("Foreground", this.Status);
+		{
+			get => _uiForeground;
+			private set
+			{
+				if (object.Equals(value, _uiForeground))
+				{
+					return;
+				}
 
-		public Brush UIBackground 
-			=> BuildJobViewModel.GetJobBrush("Background", this.Status);
+				_uiForeground = value;
+				this.NotifyOfPropertyChange();
+			}
+		}
 
-		public Brush UIBorderBrush 
-			=> BuildJobViewModel.GetJobBrush("Border", this.Status);
+		public Brush UIBackground
+		{
+			get => _uiBackground;
+			private set
+			{
+				if (object.Equals(value, _uiBackground))
+				{
+					return;
+				}
+
+				_uiBackground = value;
+				this.NotifyOfPropertyChange();
+			}
+		}
+
+		public Brush UIBorderBrush
+		{
+			get => _uiBorderBrush;
+			private set
+			{
+				if (object.Equals(value, _uiBorderBrush))
+				{
+					return;
+				}
+
+				_uiBorderBrush = value;
+				this.NotifyOfPropertyChange();
+			}
+		}
+
+		public Pen UIBorderPen
+		{
+			get => _uiBorderPen;
+			private set
+			{
+				if (object.Equals(value, _uiBorderPen))
+				{
+					return;
+				}
+
+				_uiBorderPen = value;
+				this.NotifyOfPropertyChange();
+			}
+		}
 
 		public bool IsFinished => this.Status != BuildJobStatus.Building;
 		public string EventName { get; }
@@ -148,10 +189,16 @@ namespace FastBuilder.ViewModels.Build
 				this.NotifyOfPropertyChange(nameof(this.IsFinished));
 				this.NotifyOfPropertyChange(nameof(this.ElapsedSeconds));
 				this.NotifyOfPropertyChange(nameof(this.ToolTipText));
-				this.NotifyOfPropertyChange(nameof(this.UIForeground));
-				this.NotifyOfPropertyChange(nameof(this.UIBackground));
-				this.NotifyOfPropertyChange(nameof(this.UIBorderBrush));
+				this.UpdateUIBrushes();
 			}
+		}
+
+		private void UpdateUIBrushes()
+		{
+			this.UIForeground = App.CachedResource<Brush>.GetResource($"JobForegroundBrush_{this.Status}");
+			this.UIBackground = App.CachedResource<Brush>.GetResource($"JobBackgroundBrush_{this.Status}");
+			this.UIBorderBrush = App.CachedResource<Brush>.GetResource($"JobBorderBrush_{this.Status}");
+			this.UIBorderPen = App.CachedResource<Pen>.GetResource($"JobBorderPen_{this.Status}");
 		}
 
 		public BuildJobViewModel(BuildCoreViewModel ownerCore, StartJobEventArgs e, BuildJobViewModel previousJob = null)

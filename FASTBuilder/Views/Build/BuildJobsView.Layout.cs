@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Threading;
 using FastBuilder.Services;
 using FastBuilder.ViewModels.Build;
+using FASTBuilder;
 
 namespace FastBuilder.Views.Build
 {
@@ -26,7 +27,6 @@ namespace FastBuilder.Views.Build
 		private bool _coresInvalidated = true;
 		private bool _visibleCoresInvalidated = true;
 		private bool _jobsInvalidated = true;
-		private bool _jobViewsInvalidated = true;
 
 		// maps a core row to the top position of its jobs
 		private readonly Dictionary<BuildCoreViewModel, double> _coreTopMap
@@ -51,19 +51,19 @@ namespace FastBuilder.Views.Build
 
 			// queried resources are defined in /Theme/Layout.xaml
 
-			_coreRowHeight = (double)this.FindResource($"BuildCoreRowHeight{postFix}");
-			var buildCoreRowMargin = (Thickness)this.FindResource($"BuildCoreRowMargin{postFix}");
+			_coreRowHeight = App.CachedResource<double>.GetResource($"BuildCoreRowHeight{postFix}");
+			var buildCoreRowMargin = App.CachedResource<Thickness>.GetResource($"BuildCoreRowMargin{postFix}");
 			_coreRowTopMargin = buildCoreRowMargin.Top;
 			_coreRowBottomMargin = buildCoreRowMargin.Bottom;
 
-			var workerRowMargin = (Thickness)this.FindResource($"BuildWorkerRowMargin{postFix}");
-			var workerRowPadding = (Thickness)this.FindResource($"BuildWorkerRowPadding{postFix}");
+			var workerRowMargin = App.CachedResource<Thickness>.GetResource($"BuildWorkerRowMargin{postFix}");
+			var workerRowPadding = App.CachedResource<Thickness>.GetResource($"BuildWorkerRowPadding{postFix}");
 			_workerRowTopMargin = workerRowMargin.Top + workerRowPadding.Top;
 			_workerRowBottomMargin = workerRowMargin.Bottom + workerRowPadding.Bottom;
 
-			_jobViewHeight = (double)this.FindResource($"JobViewHeight{postFix}");
+			_jobViewHeight = App.CachedResource<double>.GetResource($"JobViewHeight{postFix}");
 
-			_headerViewWidth = (double)this.FindResource("HeaderViewWidth");
+			_headerViewWidth = App.CachedResource<double>.GetResource("HeaderViewWidth");
 
 			this.InvalidateCores();
 			this.InvalidateJobs();
@@ -150,42 +150,33 @@ namespace FastBuilder.Views.Build
 			}
 		}
 
-		private void InvalidateJobViews()
-		{
-			if (!_jobViewsInvalidated)
-			{
-				_jobViewsInvalidated = true;
-				this.InvalidateArrange();
-			}
-		}
-
 		protected override Size MeasureOverride(Size constraint)
-			=> new Size(_sessionViewModel.ElapsedTime.TotalSeconds * _buildViewportService.Scaling + _headerViewWidth * 2, constraint.Height);
+			=> _sessionViewModel == null
+				? new Size(0, 0)
+				: new Size(_sessionViewModel.ElapsedTime.TotalSeconds * _buildViewportService.Scaling + _headerViewWidth * 2,
+					constraint.Height);
 
 		protected override Size ArrangeOverride(Size arrangeBounds)
 		{
-			if (_coresInvalidated)
+			if (_sessionViewModel != null)
 			{
-				this.UpdateCores();
-				_coresInvalidated = false;
-			}
+				if (_coresInvalidated)
+				{
+					this.UpdateCores();
+					_coresInvalidated = false;
+				}
 
-			if (_visibleCoresInvalidated)
-			{
-				this.UpdateVisibleCores();
-				_visibleCoresInvalidated = false;
-			}
+				if (_visibleCoresInvalidated)
+				{
+					this.UpdateVisibleCores();
+					_visibleCoresInvalidated = false;
+				}
 
-			if (_jobsInvalidated)
-			{
-				this.UpdateJobs();
-				_jobsInvalidated = false;
-			}
-
-			if (_jobViewsInvalidated)
-			{
-				this.UpdateJobViews();
-				_jobViewsInvalidated = false;
+				if (_jobsInvalidated)
+				{
+					this.UpdateJobs();
+					_jobsInvalidated = false;
+				}
 			}
 
 			return base.ArrangeOverride(arrangeBounds);

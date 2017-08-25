@@ -166,6 +166,7 @@
 
                             <build:BuildJobsView x:Name="BuildJobsView"
                                                  SizeChanged="BuildJobsView_SizeChanged"
+                                                 JobTextStyle="{StaticResource {x:Type TextBlock}}"
                                                  Height="{Binding ElementName=WorkersHeader, Path=ActualHeight}"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top" />

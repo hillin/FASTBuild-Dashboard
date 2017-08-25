@@ -10,6 +10,23 @@ namespace FASTBuilder
 {
 	public partial class App : ISingleInstanceApp
 	{
+		public static class CachedResource<T>
+		{
+			private static readonly Dictionary<string, T> CachedResources
+				= new Dictionary<string, T>();
+
+			public static T GetResource(string key)
+			{
+				if (!CachedResources.TryGetValue(key, out var brush))
+				{
+					brush = (T)App.Current.FindResource(key);
+					CachedResources.Add(key, brush);
+				}
+
+				return brush;
+			}
+		}
+
 		public new static App Current { get; private set; }
 
 		public bool StartMinimized { get; private set; }

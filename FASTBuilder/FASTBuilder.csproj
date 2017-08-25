@@ -154,18 +154,17 @@
     <Compile Include="Views\About\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Build\BuildJobsView.xaml.JobManagement.cs">
-      <DependentUpon>BuildJobsView.xaml</DependentUpon>
+    <Compile Include="Views\Build\BuildJobsView.JobManagement.cs">
+      <DependentUpon>BuildJobsView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Build\BuildJobsView.xaml.Layout.cs">
-      <DependentUpon>BuildJobsView.xaml</DependentUpon>
+    <Compile Include="Views\Build\BuildJobsView.Layout.cs">
+      <DependentUpon>BuildJobsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Build\BuildJobsView.Render.cs" />
     <Compile Include="Views\Build\BuildSessionWorkersBackgroundView.xaml.cs">
       <DependentUpon>BuildSessionWorkersBackgroundView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Build\BuildJobsView.xaml.cs">
-      <DependentUpon>BuildJobsView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Views\Build\BuildJobsView.cs" />
     <Compile Include="Views\Build\BuildWorkerStatusView.xaml.cs">
       <DependentUpon>BuildWorkerStatusView.xaml</DependentUpon>
     </Compile>
@@ -216,10 +215,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Build\BuildSessionWorkersBackgroundView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Build\BuildJobsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -11,7 +11,7 @@ using FastBuilder.Support;
 
 namespace FastBuilder.Views.Build
 {
-	public partial class BuildJobsView
+	public partial class BuildJobsView : Canvas
 	{
 
 		private double _startTimeOffset;
@@ -30,13 +30,12 @@ namespace FastBuilder.Views.Build
 
 		public BuildJobsView()
 		{
-			InitializeComponent();
 			_buildViewportService = IoC.Get<IBuildViewportService>();
 
 			this.DataContextChanged += this.FastBuildJobsView_DataContextChanged;
-			this.InitializeJobManagementPart();
 
 			this.InitializeLayoutPart();
+			this.InitializeRenderPart();
 		}
 
 
@@ -47,10 +46,11 @@ namespace FastBuilder.Views.Build
 				_sessionViewModel.Ticked -= this.OnTicked;
 				_sessionViewModel = null;
 
+				_jobManager.OnJobFinished -= this.JobManager_OnJobFinished;
 				_jobManager.OnJobStarted -= this.JobManager_OnJobStarted;
 				_jobManager = null;
 
-				this.ClearJobs();
+				this.Clear();
 			}
 
 			var vm = this.DataContext as BuildSessionViewModel;
@@ -64,11 +64,14 @@ namespace FastBuilder.Views.Build
 
 			_jobManager = vm.JobManager;
 			_jobManager.OnJobStarted += this.JobManager_OnJobStarted;
+			_jobManager.OnJobFinished += this.JobManager_OnJobFinished;
 
 			this.InvalidateCores();
 			this.InvalidateJobs();
 		}
 
+		private void JobManager_OnJobFinished(object sender, BuildJobViewModel e) 
+			=> this.InvalidateVisual();
 
 		private void JobManager_OnJobStarted(object sender, BuildJobViewModel job)
 		{
@@ -78,10 +81,10 @@ namespace FastBuilder.Views.Build
 
 				if (job.StartTimeOffset <= _endTimeOffset && job.EndTimeOffset >= _startTimeOffset)
 				{
-					this.AddJob(job);
+					this.TryAddJob(job);
 				}
 
-				this.InvalidateJobViews();
+				this.InvalidateVisual();
 			}));
 		}
 
@@ -100,14 +103,11 @@ namespace FastBuilder.Views.Build
 						// "now" has come into current time frame, add all active jobs
 						foreach (var job in _jobManager.GetAllJobs().Where(j => !j.IsFinished))
 						{
-							if (!_activeJobViewMap.ContainsKey(job))
-							{
-								this.AddJob(job);
-							}
+							this.TryAddJob(job);
 						}
 					}
 
-					this.InvalidateJobViews();
+					this.InvalidateVisual();
 				}
 
 				_wasNowInTimeFrame = isNowInTimeFrame;

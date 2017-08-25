@@ -22,6 +22,16 @@
     <SolidColorBrush x:Key="JobBorderBrush_Timeout">DarkOrange</SolidColorBrush>
     <SolidColorBrush x:Key="JobBorderBrush_Stopped">DarkOrange</SolidColorBrush>
 
+    <Pen x:Key="JobBorderPen_Building" Brush="{StaticResource JobBorderBrush_Building}" Thickness="1" />
+    <Pen x:Key="JobBorderPen_Success" Brush="{StaticResource JobBorderBrush_Success}" Thickness="1" />
+    <Pen x:Key="JobBorderPen_SuccessCached" Brush="{StaticResource JobBorderBrush_SuccessCached}" Thickness="1" />
+    <Pen x:Key="JobBorderPen_SuccessPreprocessed" Brush="{StaticResource JobBorderBrush_SuccessPreprocessed}" Thickness="1" />
+    <Pen x:Key="JobBorderPen_Failed" Brush="{StaticResource JobBorderBrush_Failed}" Thickness="1" />
+    <Pen x:Key="JobBorderPen_Error" Brush="{StaticResource JobBorderBrush_Error}" Thickness="1" />
+    <Pen x:Key="JobBorderPen_RacedOut" Brush="{StaticResource JobBorderBrush_RacedOut}" Thickness="1" />
+    <Pen x:Key="JobBorderPen_Timeout" Brush="{StaticResource JobBorderBrush_Timeout}" Thickness="1" />
+    <Pen x:Key="JobBorderPen_Stopped" Brush="{StaticResource JobBorderBrush_Stopped}" Thickness="1" />
+
     <SolidColorBrush x:Key="JobForegroundBrush_Building">Black</SolidColorBrush>
     <SolidColorBrush x:Key="JobForegroundBrush_Success">White</SolidColorBrush>
     <SolidColorBrush x:Key="JobForegroundBrush_SuccessCached">White</SolidColorBrush>

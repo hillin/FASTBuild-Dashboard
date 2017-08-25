@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using FastBuilder.Services;
+using FASTBuilder;
 
 namespace FastBuilder.Views.Build
 {
@@ -14,7 +15,7 @@ namespace FastBuilder.Views.Build
 		private double _previousHorizontalScrollOffset;
 
 		private static IBuildViewportService BuildViewportService => IoC.Get<IBuildViewportService>();
-		private double HeaderViewWidth => (double)this.FindResource("HeaderViewWidth");
+		private double HeaderViewWidth => App.CachedResource<double>.GetResource("HeaderViewWidth");
 
 		public BuildSessionView()
 		{
