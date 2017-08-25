@@ -24,7 +24,7 @@ namespace FastBuilder.Views.Build
 
 		public static readonly DependencyProperty JobMarginProperty =
 			DependencyProperty.Register(
-				"JobMargin", 
+				"JobMargin",
 				typeof(Thickness),
 				typeof(BuildJobsView),
 				new UIPropertyMetadata(new Thickness(2), BuildJobsView.AffectsVisual));
@@ -37,8 +37,8 @@ namespace FastBuilder.Views.Build
 
 		public static readonly DependencyProperty JobTextMarginProperty =
 			DependencyProperty.Register(
-				"JobTextMargin", 
-				typeof(Thickness), 
+				"JobTextMargin",
+				typeof(Thickness),
 				typeof(BuildJobsView),
 				new UIPropertyMetadata(new Thickness(8, 2, 2, 2), BuildJobsView.AffectsVisual));
 
@@ -50,15 +50,15 @@ namespace FastBuilder.Views.Build
 
 		public static readonly DependencyProperty JobTextStyleProperty =
 			DependencyProperty.Register(
-				"JobTextStyle", 
-				typeof(Style), 
-				typeof(BuildJobsView), 
+				"JobTextStyle",
+				typeof(Style),
+				typeof(BuildJobsView),
 				new UIPropertyMetadata(null, BuildJobsView.OnJobTextStyleChanged));
 
-		private static void OnJobTextStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) 
+		private static void OnJobTextStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 			=> ((BuildJobsView)d).OnJobTextStyleChanged((Style)e.NewValue);
 
-		private static void AffectsVisual(DependencyObject d, DependencyPropertyChangedEventArgs e) 
+		private static void AffectsVisual(DependencyObject d, DependencyPropertyChangedEventArgs e)
 			=> ((BuildJobsView)d).InvalidateVisual();
 
 		private readonly TextBlock _jobTextStyleBridge = new TextBlock();
@@ -107,7 +107,6 @@ namespace FastBuilder.Views.Build
 
 			var minimumLeft = scaling * _startTimeOffset;
 			var maxWidth = 24 * 60 * 60 * scaling;
-			var performanceMode = _activeJobs.Count > 8;
 			var showText = _jobDisplayMode == BuildJobDisplayMode.Standard;
 
 			foreach (var job in _activeJobs)
@@ -127,17 +126,16 @@ namespace FastBuilder.Views.Build
 				if (width < 1   // job too short to display
 					|| left + width < 1)    // left could be negative
 				{
-					// we don't recycle this view because it might be shown again after a zoom
 					continue;
 				}
 
 				var top = _coreTopMap[job.OwnerCore];
 
-				this.DrawJob(dc, job, new Rect(left + _headerViewWidth, top, width, _jobViewHeight), showText, performanceMode);
+				this.DrawJob(dc, job, new Rect(left + _headerViewWidth, top, width, _jobViewHeight), showText);
 			}
 		}
 
-		private void DrawJob(DrawingContext dc, BuildJobViewModel job, Rect rect, bool showText, bool performanceMode)
+		private void DrawJob(DrawingContext dc, BuildJobViewModel job, Rect rect, bool showText)
 		{
 			var paddedLeft = rect.X + this.JobMargin.Left;
 			var paddedWidth = rect.Width - this.JobMargin.Left - this.JobMargin.Right;
@@ -157,20 +155,14 @@ namespace FastBuilder.Views.Build
 
 			if (rect.Width <= ShortJobWidthThreshold)
 			{
+				// a very short job, simply draw a rectangle 
 				dc.DrawRectangle(job.UIBackground, job.UIBorderPen, paddedRect);
 				return;
 			}
 
-			if (performanceMode)
-			{
-				dc.DrawRectangle(job.UIBackground, job.UIBorderPen, paddedRect);
-			}
-			else
-			{
-				var cornerRadius = MathEx.Clamp((rect.Width - ShortJobWidthThreshold) / 2, 0, 2);
+			var cornerRadius = MathEx.Clamp((rect.Width - ShortJobWidthThreshold) / 2, 0, 2);
 
-				dc.DrawRoundedRectangle(job.UIBackground, job.UIBorderPen, paddedRect, cornerRadius, cornerRadius);
-			}
+			dc.DrawRoundedRectangle(job.UIBackground, job.UIBorderPen, paddedRect, cornerRadius, cornerRadius);
 
 			if (rect.Width > TextlessJobWidthThreshold && showText)
 			{
