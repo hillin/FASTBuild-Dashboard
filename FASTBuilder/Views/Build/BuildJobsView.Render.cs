@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -48,14 +44,22 @@ namespace FastBuilder.Views.Build
 		private static void AffectsVisual(DependencyObject d, DependencyPropertyChangedEventArgs e) => ((BuildJobsView)d).InvalidateVisual();
 
 		private readonly TextBlock _jobTextStyleBridge = new TextBlock();
-		private Typeface _jobTextTypeface;
-
-		private readonly Dictionary<BuildJobViewModel, FormattedText> _jobTextCache
-			= new Dictionary<BuildJobViewModel, FormattedText>();
+		private GlyphTypeface _jobTextGlyphTypeface;
 
 		private void InitializeRenderPart()
 		{
 			this.UpdateJobTextTypeface();
+			this.Loaded += this.OnLoaded;
+		}
+
+		private void OnLoaded(object sender, RoutedEventArgs e)
+		{
+			var window = this.FindAncestor<Window>();
+			if (window != null)
+			{
+				_jobTextStyleBridge.FontFamily = window.FontFamily;
+				this.UpdateJobTextTypeface();
+			}
 		}
 
 		private void OnJobTextStyleChanged(Style value)
@@ -66,11 +70,14 @@ namespace FastBuilder.Views.Build
 
 		private void UpdateJobTextTypeface()
 		{
-			_jobTextTypeface = new Typeface(
+			var jobTextTypeface = new Typeface(
 				_jobTextStyleBridge.FontFamily,
 				_jobTextStyleBridge.FontStyle,
 				_jobTextStyleBridge.FontWeight,
 				_jobTextStyleBridge.FontStretch);
+
+			jobTextTypeface.TryGetGlyphTypeface(out _jobTextGlyphTypeface);
+			this.InvalidateVisual();
 		}
 
 		protected override void OnRender(DrawingContext dc)
@@ -151,35 +158,81 @@ namespace FastBuilder.Views.Build
 				var opactiy = Math.Min(1, Math.Max(0, (rect.Width - 36) / 48));
 				var brush = job.UIForeground.Clone();
 				brush.Opacity = opactiy;
-				var formattedText = this.GetJobText(job, brush);
-				formattedText.MaxTextWidth = paddedWidth - this.JobTextMargin.Left - this.JobTextMargin.Right;
+
+				var textWidth = paddedWidth - this.JobTextMargin.Left - this.JobTextMargin.Right;
 
 				var position = new Point(
-					paddedRect.Left + this.JobTextMargin.Left, 
-					paddedRect.Top + (paddedRect.Height - formattedText.Height) / 2);
+					paddedRect.Left + this.JobTextMargin.Left,
+					paddedRect.Top + (paddedRect.Height - _jobTextGlyphTypeface.Height * _jobTextStyleBridge.FontSize) / 2);
 
-				dc.DrawText(formattedText, position);
+				dc.DrawGlyphRun(brush, CreateGlyphRun(job.DisplayName, position, textWidth, true));
 			}
 		}
 
-		private FormattedText GetJobText(BuildJobViewModel job, Brush foreground)
+		private GlyphRun CreateGlyphRun(string text, Point origin, double width, bool useEllipsis)
 		{
-			if (!_jobTextCache.TryGetValue(job, out var formattedText))
+			var length = text.Length;
+
+			// the final text could be at most length + 2 long (last char omitted and ellipsis appended)
+			var glyphIndices = new List<ushort>(length + 2);
+			var advanceWidths = new List<double>(length + 2);
+
+			var size = _jobTextStyleBridge.FontSize;
+
+			var baselineOrigin = new Point(origin.X, origin.Y + _jobTextGlyphTypeface.Baseline * size);
+
+			var availableWidth = width;
+			var index = 0;
+			for (; index < length; ++index)
 			{
-				formattedText = new FormattedText(job.DisplayName,
-					CultureInfo.CurrentCulture,
-					FlowDirection.LeftToRight,
-					_jobTextTypeface,
-					_jobTextStyleBridge.FontSize,
-					foreground)
+				var c = text[index];
+				var glyphIndex = _jobTextGlyphTypeface.CharacterToGlyphMap[c];
+				var advanceWidth = _jobTextGlyphTypeface.AdvanceWidths[glyphIndex] * size;
+				var remainingWidth = availableWidth - advanceWidth;
+				if (remainingWidth < 0)
 				{
-					MaxLineCount = 1,
-					Trimming = TextTrimming.CharacterEllipsis
-				};
-				_jobTextCache[job] = formattedText;
+					break;
+				}
+
+				glyphIndices.Add(glyphIndex);
+				advanceWidths.Add(advanceWidth);
+				availableWidth = remainingWidth;
 			}
 
-			return formattedText;
+			if (index < length && useEllipsis)
+			{
+				var dotIndex = _jobTextGlyphTypeface.CharacterToGlyphMap['.'];
+				var dotAdvanceWidth = _jobTextGlyphTypeface.AdvanceWidths[dotIndex] * _jobTextStyleBridge.FontSize;
+				var ellipsisWidth = dotAdvanceWidth * 3;
+
+				for (--index; index >= 0; --index)
+				{
+					availableWidth += advanceWidths[index];
+					advanceWidths.RemoveAt(index);
+					glyphIndices.RemoveAt(index);
+					if (availableWidth >= ellipsisWidth)
+					{
+						break;
+					}
+				}
+
+				for (var i = 0; i < 3; ++i)
+				{
+					advanceWidths.Add(dotAdvanceWidth);
+					glyphIndices.Add(dotIndex);
+				}
+			}
+
+			return new GlyphRun(
+				_jobTextGlyphTypeface,
+				0,
+				false,
+				size,
+				glyphIndices,
+				baselineOrigin,
+				advanceWidths,
+				null, null, null, null, null, null);
 		}
+
 	}
 }

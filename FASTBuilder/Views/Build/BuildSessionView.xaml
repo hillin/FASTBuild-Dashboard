@@ -166,7 +166,7 @@
 
                             <build:BuildJobsView x:Name="BuildJobsView"
                                                  SizeChanged="BuildJobsView_SizeChanged"
-                                                 JobTextStyle="{StaticResource {x:Type TextBlock}}"
+                                                 JobTextStyle="{DynamicResource MaterialDesignBody1TextBlock}"
                                                  Height="{Binding ElementName=WorkersHeader, Path=ActualHeight}"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top" />
@@ -204,7 +204,8 @@
             </Border>
 
             <Border Background="#E0FFFFFF"
-                    x:Name="IsRestoringHistory">
+                    x:Name="IsRestoringHistory"
+                    d:IsHidden="true">
                 <StackPanel VerticalAlignment="Center">
                     <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
                                  HorizontalAlignment="Center"

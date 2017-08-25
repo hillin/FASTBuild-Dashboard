@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
@@ -17,6 +18,13 @@ namespace FASTBuilder
 
 			public static T GetResource(string key)
 			{
+#if DEBUG
+				if (App.Current == null || App.Current.IsInDesignTime)
+				{
+					return default(T);
+				}
+#endif
+
 				if (!CachedResources.TryGetValue(key, out var brush))
 				{
 					brush = (T)App.Current.FindResource(key);
@@ -28,13 +36,19 @@ namespace FASTBuilder
 		}
 
 		public new static App Current { get; private set; }
-
+#if DEBUG
+		public bool IsInDesignTime { get; }
+#endif
 		public bool StartMinimized { get; private set; }
 
 		public App()
 		{
 			this.InitializeComponent();
 			App.Current = this;
+
+#if DEBUG
+			this.IsInDesignTime = DesignerProperties.GetIsInDesignMode(new DependencyObject());
+#endif
 		}
 
 		public bool SignalExternalCommandLineArgs(IList<string> args)
