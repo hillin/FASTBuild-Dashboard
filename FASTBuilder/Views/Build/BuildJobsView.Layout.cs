@@ -32,6 +32,11 @@ namespace FastBuilder.Views.Build
 		private readonly Dictionary<BuildCoreViewModel, double> _coreTopMap
 			= new Dictionary<BuildCoreViewModel, double>();
 
+		// maps a job to its bounds, used for hit testing
+		// we may convert this to a quad-tree solution in the future
+		private readonly Dictionary<BuildJobViewModel, Rect> _jobBounds
+			= new Dictionary<BuildJobViewModel, Rect>();
+
 		private void InitializeLayoutPart()
 		{
 			this.UpdateLayoutParameters();

@@ -30,6 +30,7 @@ namespace FastBuilder.ViewModels.Build
 		private Brush _uiBorderBrush;
 		private Pen _uiBorderPen;
 		public DateTime StartTime { get; }
+		public string DisplayStartTime => $"Started: {this.StartTime}";
 		public double StartTimeOffset { get; }
 
 		public DateTime EndTime => this.StartTime.AddSeconds(this.ElapsedSeconds);
@@ -50,10 +51,10 @@ namespace FastBuilder.ViewModels.Build
 				this.NotifyOfPropertyChange();
 				this.NotifyOfPropertyChange(nameof(this.EndTime));
 				this.NotifyOfPropertyChange(nameof(this.EndTimeOffset));
-				this.NotifyOfPropertyChange(nameof(this.ToolTipText));
+				this.NotifyOfPropertyChange(nameof(this.DisplayElapsedSeconds));
 			}
 		}
-
+		public string DisplayElapsedSeconds => $"{this.ElapsedSeconds:0.#} seconds elapsed";
 
 		public Brush UIForeground
 		{
@@ -188,8 +189,38 @@ namespace FastBuilder.ViewModels.Build
 				this.NotifyOfPropertyChange();
 				this.NotifyOfPropertyChange(nameof(this.IsFinished));
 				this.NotifyOfPropertyChange(nameof(this.ElapsedSeconds));
-				this.NotifyOfPropertyChange(nameof(this.ToolTipText));
+				this.NotifyOfPropertyChange(nameof(this.DisplayStatus));
 				this.UpdateUIBrushes();
+			}
+		}
+
+		public string DisplayStatus
+		{
+			get
+			{
+				switch (this.Status)
+				{
+					case BuildJobStatus.Building:
+						return "Building";
+					case BuildJobStatus.Success:
+						return "Successfully Built";
+					case BuildJobStatus.SuccessCached:
+						return "Successfully (Cache Hit)";
+					case BuildJobStatus.SuccessPreprocessed:
+						return "Successfully Preprocessed";
+					case BuildJobStatus.Failed:
+						return "Failed";
+					case BuildJobStatus.Error:
+						return "Error Occurred";
+					case BuildJobStatus.Timeout:
+						return "Timed Out";
+					case BuildJobStatus.RacedOut:
+						return "Deprecated by Local Race";
+					case BuildJobStatus.Stopped:
+						return "Stopped";
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
 			}
 		}
 

@@ -162,6 +162,10 @@
     <Compile Include="Views\Build\BuildJobsView.Render.cs">
       <DependentUpon>BuildJobsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Build\BuildJobTooltipView.xaml.cs">
+      <DependentUpon>BuildJobTooltipView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Build\BuildJobsView.Tooltip.cs" />
     <Compile Include="Views\Build\BuildSessionWorkersBackgroundView.xaml.cs">
       <DependentUpon>BuildSessionWorkersBackgroundView.xaml</DependentUpon>
     </Compile>
@@ -192,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\About\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Build\BuildJobTooltipView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

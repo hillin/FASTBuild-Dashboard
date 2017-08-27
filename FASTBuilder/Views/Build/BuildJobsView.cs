@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using FastBuilder.Services;
@@ -28,16 +30,19 @@ namespace FastBuilder.Views.Build
 		private readonly IBuildViewportService _buildViewportService;
 		private BuildSessionViewModel _sessionViewModel;
 
+
 		public BuildJobsView()
 		{
 			_buildViewportService = IoC.Get<IBuildViewportService>();
 
 			this.DataContextChanged += this.FastBuildJobsView_DataContextChanged;
 
+			this.Background = Brushes.Transparent;
+			
 			this.InitializeLayoutPart();
 			this.InitializeRenderPart();
+			this.InitializeTooltipPart();
 		}
-
 
 		private void FastBuildJobsView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{

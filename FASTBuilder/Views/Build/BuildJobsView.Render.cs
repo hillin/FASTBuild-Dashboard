@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using FastBuilder.Services;
 using FastBuilder.Support;
@@ -103,10 +104,12 @@ namespace FastBuilder.Views.Build
 		{
 			base.OnRender(dc);
 
+			dc.DrawRectangle(this.Background, null, LayoutInformation.GetLayoutSlot(this));
+
 			var scaling = _buildViewportService.Scaling;
 
 			var minimumLeft = scaling * _startTimeOffset;
-			var maxWidth = 24 * 60 * 60 * scaling;
+			var maxWidth = scaling * (_endTimeOffset - _startTimeOffset) + 16;
 			var showText = _jobDisplayMode == BuildJobDisplayMode.Standard;
 
 			foreach (var job in _activeJobs)
@@ -131,7 +134,9 @@ namespace FastBuilder.Views.Build
 
 				var top = _coreTopMap[job.OwnerCore];
 
-				this.DrawJob(dc, job, new Rect(left + _headerViewWidth, top, width, _jobViewHeight), showText);
+				var bounds = new Rect(left + _headerViewWidth, top, width, _jobViewHeight);
+				_jobBounds[job] = bounds;
+				this.DrawJob(dc, job, bounds, showText);
 			}
 		}
 

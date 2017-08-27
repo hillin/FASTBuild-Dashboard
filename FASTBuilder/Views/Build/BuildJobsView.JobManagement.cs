@@ -59,6 +59,9 @@ namespace FastBuilder.Views.Build
 				this.TryAddJob(job);
 			}
 
+			// will be filled in OnRender
+			_jobBounds.Clear();
+
 			this.InvalidateVisual();
 		}
 
