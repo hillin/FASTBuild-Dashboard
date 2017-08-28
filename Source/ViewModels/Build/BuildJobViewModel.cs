@@ -302,23 +302,26 @@ namespace FastBuild.Dashboard.ViewModels.Build
 				return;
 			}
 
-			var message = e.Message.TrimEnd().Replace('\f', '\n');
-			var matches = Regex.Matches(message, @"^(.+)\((\d+)\)\: (.+)$", RegexOptions.Multiline);
-			if (matches.Count > 0)
+			if (e.Message != null)
 			{
-				this.ErrorGroups = matches.Cast<Match>()
-					.Select(m => new BuildErrorInfo(
-						m.Groups[1].Value,
-						int.Parse(m.Groups[2].Value, CultureInfo.InvariantCulture),
-						m.Groups[3].Value))
-					.GroupBy(i => i.FilePath, (file, group) => new BuildErrorGroup(file, group))
-					.ToArray();
+				var message = e.Message.TrimEnd().Replace('\f', '\n');
+				var matches = Regex.Matches(message, @"^(.+)\((\d+)\)\: (.+)$", RegexOptions.Multiline);
+				if (matches.Count > 0)
+				{
+					this.ErrorGroups = matches.Cast<Match>()
+						.Select(m => new BuildErrorInfo(
+							m.Groups[1].Value,
+							int.Parse(m.Groups[2].Value, CultureInfo.InvariantCulture),
+							m.Groups[3].Value))
+						.GroupBy(i => i.FilePath, (file, group) => new BuildErrorGroup(file, group))
+						.ToArray();
 
-				this.Message = null; // we don't show both message and parsed errors
-			}
-			else
-			{
-				this.Message = message;
+					this.Message = null; // we don't show both message and parsed errors
+				}
+				else
+				{
+					this.Message = message;
+				}
 			}
 
 			this.ElapsedSeconds = (e.Time - this.StartTime).TotalSeconds;
