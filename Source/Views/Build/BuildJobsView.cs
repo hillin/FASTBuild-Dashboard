@@ -109,7 +109,7 @@ namespace FastBuild.Dashboard.Views.Build
 						}
 					}
 
-					this.InvalidateVisual();
+					this.InvalidateMeasure();
 				}
 
 				_wasNowInTimeFrame = isNowInTimeFrame;

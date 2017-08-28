@@ -24,18 +24,14 @@ namespace FastBuild.Dashboard
 					return default(T);
 				}
 #endif
+				
+				if (!CachedResources.TryGetValue(key, out var resource))
+				{
+					resource = (T)App.Current.FindResource(key);
+					CachedResources.Add(key, resource);
+				}
 
-				//lock (CachedResources)
-				//{
-					if (!CachedResources.TryGetValue(key, out var brush))
-					{
-						brush = (T) App.Current.FindResource(key);
-						CachedResources.Add(key, brush);
-					}
-
-					return brush;
-				//}
-
+				return resource;
 			}
 		}
 
