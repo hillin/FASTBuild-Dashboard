@@ -16,7 +16,6 @@ namespace FastBuild.Dashboard.ViewModels.Build
 		public Brush UIBackground => _mergedJobs.First.Value.UIBackground;
 		public Brush UIBorderBrush => _mergedJobs.First.Value.UIBorderBrush;
 		public string DisplayName => $"{0} Jobs";
-		public string ToolTipText => string.Join("\n\n", _mergedJobs.Select(j => j.ToolTipText));
 
 		public MergedBuildJobViewModel(BuildJobViewModel first, BuildJobViewModel last)
 		{
@@ -42,7 +41,6 @@ namespace FastBuild.Dashboard.ViewModels.Build
 		private void OnJobsChanged()
 		{
 			this.NotifyOfPropertyChange(nameof(this.DisplayName));
-			this.NotifyOfPropertyChange(nameof(this.ToolTipText));
 		}
 	}
 }

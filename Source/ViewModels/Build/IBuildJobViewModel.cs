@@ -11,6 +11,5 @@ namespace FastBuild.Dashboard.ViewModels.Build
 		Brush UIBackground { get; }
 		Brush UIBorderBrush { get; }
 		string DisplayName { get; }
-		string ToolTipText { get; }
 	}
 }

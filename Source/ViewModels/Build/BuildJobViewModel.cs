@@ -126,59 +126,6 @@ namespace FastBuild.Dashboard.ViewModels.Build
 		public string EventName { get; }
 		public string DisplayName { get; }
 
-		public string ToolTipText
-		{
-			get
-			{
-				var builder = new StringBuilder();
-				builder.AppendLine(this.EventName);
-				builder.AppendLine($"Started: {this.StartTime}");
-
-				switch (this.Status)
-				{
-					case BuildJobStatus.Building:
-						builder.Append("Building");
-						break;
-					case BuildJobStatus.Success:
-						builder.Append("Successfully built");
-						break;
-					case BuildJobStatus.SuccessCached:
-						builder.Append("Successfully built (cache hit)");
-						break;
-					case BuildJobStatus.SuccessPreprocessed:
-						builder.Append("Successfully preprocessed");
-						break;
-					case BuildJobStatus.Failed:
-						builder.Append("Failed");
-						break;
-					case BuildJobStatus.Error:
-						builder.Append("Error occurred");
-						break;
-					case BuildJobStatus.Timeout:
-						builder.Append("Timed out");
-						break;
-					case BuildJobStatus.RacedOut:
-						builder.Append("Deprecated by local race");
-						break;
-					case BuildJobStatus.Stopped:
-						builder.Append("Stopped");
-						break;
-					default:
-						throw new ArgumentOutOfRangeException();
-				}
-
-				builder.AppendLine($" ({this.ElapsedSeconds:0.#} seconds elapsed)");
-
-				if (!string.IsNullOrWhiteSpace(this.Message))
-				{
-					builder.AppendLine(this.Message);
-				}
-
-				return builder.ToString();
-			}
-		}
-
-
 		public string Message
 		{
 			get => _message;
@@ -191,7 +138,6 @@ namespace FastBuild.Dashboard.ViewModels.Build
 
 				_message = value;
 				this.NotifyOfPropertyChange();
-				this.NotifyOfPropertyChange(nameof(this.ToolTipText));
 				this.NotifyOfPropertyChange(nameof(this.HasError));
 				this.NotifyOfPropertyChange(nameof(this.ShouldShowErrorMessage));
 			}
