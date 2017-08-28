@@ -6,6 +6,7 @@ using System.Windows.Media;
 using Caliburn.Micro;
 using FastBuild.Dashboard.Services;
 using FastBuild.Dashboard.ViewModels.Build;
+using Action = System.Action;
 
 namespace FastBuild.Dashboard.Views.Build
 {
@@ -72,7 +73,7 @@ namespace FastBuild.Dashboard.Views.Build
 		}
 
 		private void JobManager_OnJobFinished(object sender, BuildJobViewModel e) 
-			=> this.InvalidateVisual();
+			=> this.Dispatcher.BeginInvoke(new Action(this.InvalidateVisual));
 
 		private void JobManager_OnJobStarted(object sender, BuildJobViewModel job)
 		{

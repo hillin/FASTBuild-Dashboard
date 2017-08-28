@@ -291,6 +291,7 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			this.StartTime = e.Time;
 			this.StartTimeOffset = (e.Time - ownerCore.OwnerWorker.OwnerSession.StartTime).TotalSeconds;
 			this.Status = BuildJobStatus.Building;
+			this.UpdateUIBrushes();
 		}
 
 
