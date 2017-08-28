@@ -12,6 +12,9 @@ namespace FastBuild.Dashboard.ViewModels.Build
 	[DebuggerDisplay("Job:{" + nameof(BuildJobViewModel.DisplayName) + "}")]
 	internal class BuildJobViewModel : PropertyChangedBase, IBuildJobViewModel
 	{
+		private static string GenerateDisplayName(string eventName)
+			=> Path.GetFileName(eventName) ?? eventName;
+
 
 		public BuildCoreViewModel OwnerCore { get; }
 
@@ -19,7 +22,6 @@ namespace FastBuild.Dashboard.ViewModels.Build
 		public BuildJobViewModel PreviousJob { get; }
 		public IBuildJobViewModel NextJob { get; private set; }
 
-		private static string GenerateDisplayName(string eventName) => Path.GetFileName(eventName) ?? eventName;
 
 		private BuildJobStatus _status;
 		private double _elapsedSeconds;

@@ -168,20 +168,36 @@ namespace FastBuild.Dashboard.Views.Build
 
 			dc.DrawRoundedRectangle(job.UIBackground, job.UIBorderPen, paddedRect, cornerRadius, cornerRadius);
 
-			if (rect.Width > TextlessJobWidthThreshold && showText)
+			if (!(rect.Width > TextlessJobWidthThreshold) || !showText)
 			{
-				var opactiy = Math.Min(1, Math.Max(0, (rect.Width - TextlessJobWidthThreshold) / TextlessJobWidthThreshold));
-				var brush = job.UIForeground.Clone();
-				brush.Opacity = opactiy;
-
-				var textWidth = paddedWidth - this.JobTextMargin.Left - this.JobTextMargin.Right;
-
-				var position = new Point(
-					paddedRect.Left + this.JobTextMargin.Left,
-					paddedRect.Top + (paddedRect.Height - _jobTextGlyphTypeface.Height * _jobTextStyleBridge.FontSize) / 2);
-
-				dc.DrawGlyphRun(brush, this.CreateGlyphRun(job.DisplayName, position, textWidth, true));
+				return;
 			}
+
+			var opactiy = (rect.Width - TextlessJobWidthThreshold) / TextlessJobWidthThreshold;
+
+			if (opactiy <= 0)
+			{
+				return;
+			}
+
+			Brush brush;
+			if (opactiy >= 1)
+			{
+				brush = job.UIForeground;
+			}
+			else
+			{
+				brush = job.UIForeground.Clone();
+				brush.Opacity = opactiy;
+			}
+
+			var textWidth = paddedWidth - this.JobTextMargin.Left - this.JobTextMargin.Right;
+
+			var position = new Point(
+				paddedRect.Left + this.JobTextMargin.Left,
+				paddedRect.Top + (paddedRect.Height - _jobTextGlyphTypeface.Height * _jobTextStyleBridge.FontSize) / 2);
+
+			dc.DrawGlyphRun(brush, this.CreateGlyphRun(job.DisplayName, position, textWidth, true));
 		}
 
 		private GlyphRun CreateGlyphRun(string text, Point origin, double width, bool useEllipsis)
