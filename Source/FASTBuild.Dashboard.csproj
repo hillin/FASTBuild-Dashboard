@@ -143,7 +143,9 @@
     <Compile Include="Support\MouseWheelGesture.cs" />
     <Compile Include="Support\SimpleCommand.cs" />
     <Compile Include="ViewModels\About\AboutViewModel.cs" />
-    <Compile Include="ViewModels\Build\BuildSessionViewModel.Status.cs" />
+    <Compile Include="ViewModels\Build\BuildSessionViewModel.Status.cs">
+      <DependentUpon>BuildSessionViewModel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Build\IBuildJobViewModel.cs" />
     <Compile Include="ViewModels\Build\MergedBuildJobViewModel.cs" />
     <Compile Include="ViewModels\IMainPage.cs" />
@@ -171,7 +173,9 @@
     <Compile Include="Views\Build\BuildJobTooltipView.xaml.cs">
       <DependentUpon>BuildJobTooltipView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Build\BuildJobsView.Tooltip.cs" />
+    <Compile Include="Views\Build\BuildJobsView.Tooltip.cs">
+      <DependentUpon>BuildJobsView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Build\BuildSessionWorkersBackgroundView.xaml.cs">
       <DependentUpon>BuildSessionWorkersBackgroundView.xaml</DependentUpon>
     </Compile>
