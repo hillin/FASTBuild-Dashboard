@@ -4,25 +4,82 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:support="clr-namespace:FastBuild.Dashboard.Support"
+             xmlns:build="clr-namespace:FastBuild.Dashboard.ViewModels.Build"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <materialDesign:Card UniformCornerRadius="2"
                          Margin="8"
-                         materialDesign:ShadowAssist.ShadowDepth="Depth3"
-                         Background="{Binding UIBackground}"
-                         TextElement.Foreground="{Binding UIForeground}">
-        <StackPanel Margin="8">
-            <TextBlock Text="{Binding DisplayName}"
-                       Style="{DynamicResource MaterialDesignTitleTextBlock}" />
-            <TextBlock Text="{Binding DisplayStatus}"
-                       Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                         materialDesign:ShadowAssist.ShadowDepth="Depth3">
+        <StackPanel>
+
+            <materialDesign:ColorZone Background="{Binding UIBackground}"
+                                      TextElement.Foreground="{Binding UIForeground}"
+                                      Padding="8">
+                <StackPanel>
+                    <TextBlock Text="{Binding DisplayName}"
+                               Style="{DynamicResource MaterialDesignTitleTextBlock}" />
+                    <TextBlock Text="{Binding DisplayStatus}"
+                               Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+            </materialDesign:ColorZone>
+            
+            <StackPanel Margin="8">
+                <TextBlock Text="{Binding EventName}" />
+                <TextBlock Text="{Binding DisplayStartTime}"
                        Margin="0,4,0,0"/>
-            <TextBlock Text="{Binding EventName}"
-                       Margin="0,8,0,0"/>
-            <TextBlock Text="{Binding DisplayStartTime}"
+                <TextBlock Text="{Binding DisplayElapsedSeconds}"
                        Margin="0,4,0,0"/>
-            <TextBlock Text="{Binding DisplayElapsedSeconds}"
-                       Margin="0,4,0,0"/>
+
+                <StackPanel Visibility="{Binding HasError, Converter={support:BoolToVisibilityConverter}}"
+                            Margin="0,8,0,0">
+                    <Border BorderThickness="0,1,0,0"
+                            Margin="0,4"
+                            BorderBrush="{DynamicResource MaterialDesignDivider}" />
+                    <TextBlock Text="{Binding Message}"
+                               Visibility="{Binding ShouldShowErrorMessage, Converter={support:BoolToVisibilityConverter}}"
+                               FontFamily="{StaticResource MonoFont}" />
+                    <ItemsControl ItemsSource="{Binding ErrorGroups}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type build:BuildErrorGroup}">
+                                <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                        HorizontalContentAlignment="Left"
+                                        VerticalContentAlignment="Top"
+                                        Height="NaN"
+                                        Command="{Binding OpenFileCommand}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding FilePath}" />
+
+                                        <ItemsControl ItemsSource="{Binding Errors}"
+                                                      TextElement.FontFamily="{StaticResource MonoFont}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type build:BuildErrorInfo}">
+                                                    <Grid Margin="0,4,0,0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition MinWidth="32" 
+                                                                              Width="auto"
+                                                                              SharedSizeGroup="KeyColumn" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Orientation="Horizontal"
+                                                                    Margin="16,0">
+                                                            <TextBlock Text="#" />
+                                                            <TextBlock Text="{Binding LineNumber}" />
+                                                        </StackPanel>
+                                                        <TextBlock Text="{Binding ErrorMessage}"
+                                                                   Grid.Column="1" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </materialDesign:Card>
 </UserControl>

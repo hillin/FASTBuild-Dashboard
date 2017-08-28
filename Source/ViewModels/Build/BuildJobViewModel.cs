@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Media;
 using Caliburn.Micro;
 using FastBuild.Dashboard.Communication;
@@ -29,6 +33,8 @@ namespace FastBuild.Dashboard.ViewModels.Build
 		private Brush _uiBackground;
 		private Brush _uiBorderBrush;
 		private Pen _uiBorderPen;
+		private string _message;
+		private IEnumerable<BuildErrorGroup> _errorGroups;
 		public DateTime StartTime { get; }
 		public string DisplayStartTime => $"Started: {this.StartTime}";
 		public double StartTimeOffset { get; }
@@ -173,7 +179,38 @@ namespace FastBuild.Dashboard.ViewModels.Build
 		}
 
 
-		public string Message { get; private set; }
+		public string Message
+		{
+			get => _message;
+			private set
+			{
+				if (value == _message)
+				{
+					return;
+				}
+
+				_message = value;
+				this.NotifyOfPropertyChange();
+				this.NotifyOfPropertyChange(nameof(this.ToolTipText));
+				this.NotifyOfPropertyChange(nameof(this.HasError));
+				this.NotifyOfPropertyChange(nameof(this.ShouldShowErrorMessage));
+			}
+		}
+
+		public IEnumerable<BuildErrorGroup> ErrorGroups
+		{
+			get => _errorGroups;
+			private set
+			{
+				if (object.Equals(value, _errorGroups))
+				{
+					return;
+				}
+
+				_errorGroups = value;
+				this.NotifyOfPropertyChange();
+			}
+		}
 
 		public BuildJobStatus Status
 		{
@@ -190,9 +227,17 @@ namespace FastBuild.Dashboard.ViewModels.Build
 				this.NotifyOfPropertyChange(nameof(this.IsFinished));
 				this.NotifyOfPropertyChange(nameof(this.ElapsedSeconds));
 				this.NotifyOfPropertyChange(nameof(this.DisplayStatus));
+				this.NotifyOfPropertyChange(nameof(this.HasError));
+				this.NotifyOfPropertyChange(nameof(this.ShouldShowErrorMessage));
 				this.UpdateUIBrushes();
 			}
 		}
+
+		public bool HasError => this.Status == BuildJobStatus.Error
+								|| this.Status == BuildJobStatus.Failed;
+
+		public bool ShouldShowErrorMessage => this.HasError
+											  && !string.IsNullOrEmpty(this.Message);
 
 		public string DisplayStatus
 		{
@@ -257,7 +302,19 @@ namespace FastBuild.Dashboard.ViewModels.Build
 				return;
 			}
 
-			this.Message = e.Message;
+			this.Message = e.Message.TrimEnd().Replace('\f', '\n');
+			var matches = Regex.Matches(this.Message, @"^(.+)\((\d+)\)\: (.+)$", RegexOptions.Multiline);
+			if (matches.Count > 0)
+			{
+				this.ErrorGroups = matches.Cast<Match>()
+					.Select(m => new BuildErrorInfo(m.Groups[1].Value, int.Parse(m.Groups[2].Value, CultureInfo.InvariantCulture),
+						m.Groups[3].Value))
+					.GroupBy(i => i.FilePath, (file, group) => new BuildErrorGroup(file, group))
+					.ToArray();
+
+				this.Message = null;    // we don't show both message and parsed errors
+			}
+
 			this.ElapsedSeconds = (e.Time - this.StartTime).TotalSeconds;
 			this.Status = e.Result;
 		}

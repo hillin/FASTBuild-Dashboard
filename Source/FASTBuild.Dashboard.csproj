@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DEBUG_TEST_LOG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NO_DEBUG_TEST_LOG0</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -143,6 +143,8 @@
     <Compile Include="Support\MouseWheelGesture.cs" />
     <Compile Include="Support\SimpleCommand.cs" />
     <Compile Include="ViewModels\About\AboutViewModel.cs" />
+    <Compile Include="ViewModels\Build\BuildErrorGroup.cs" />
+    <Compile Include="ViewModels\Build\BuildErrorInfo.cs" />
     <Compile Include="ViewModels\Build\BuildSessionViewModel.Status.cs">
       <DependentUpon>BuildSessionViewModel.xaml</DependentUpon>
     </Compile>

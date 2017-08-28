@@ -183,12 +183,13 @@ namespace FastBuild.Dashboard.Views.Build
 			Brush brush;
 			if (opactiy >= 1)
 			{
+				// don't clone (to save performance)
 				brush = job.UIForeground;
 			}
 			else
 			{
 				brush = job.UIForeground.Clone();
-				brush.Opacity = opactiy;
+				brush.Opacity = brush.Opacity * opactiy;
 			}
 
 			var textWidth = paddedWidth - this.JobTextMargin.Left - this.JobTextMargin.Right;

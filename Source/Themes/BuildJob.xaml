@@ -40,4 +40,6 @@
     <SolidColorBrush x:Key="JobForegroundBrush_RacedOut">White</SolidColorBrush>
     <SolidColorBrush x:Key="JobForegroundBrush_Timeout">White</SolidColorBrush>
     <SolidColorBrush x:Key="JobForegroundBrush_Stopped">White</SolidColorBrush>
+
+    <FontFamily x:Key="MonoFont">Consolas</FontFamily>
 </ResourceDictionary>
