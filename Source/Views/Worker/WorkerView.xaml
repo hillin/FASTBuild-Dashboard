@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="FastBuild.Dashboard.Views.Worker.WorkerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:support="clr-namespace:FastBuild.Dashboard.Support"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="600">
+    <Grid>
+        <DockPanel>
+
+            <Border Height="{StaticResource TitleColorZoneHeight}"
+                    Margin="{StaticResource MainPageTitleMargin}"
+                    Padding="16"
+                    DockPanel.Dock="Top">
+
+                <Grid TextElement.Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                      VerticalAlignment="Center">
+
+                    <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                               VerticalAlignment="Center"
+                               Text="{Binding StatusTitle, Mode=OneWay}" />
+                </Grid>
+            </Border>
+            <Grid>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="CoreStatuses"
+                                  Margin="8"/>
+                </ScrollViewer>
+
+                <Border Background="#E0FFFFFF"
+                        Visibility="{Binding IsWorkerRunning, Converter={support:BoolToVisibilityConverter TrueValue=Hidden, FalseValue=Visible}}">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="The worker is not running due to an error occurred"
+                                   Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock x:Name="WorkerErrorMessage"
+                                   Margin="0,16,0,0"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</UserControl>

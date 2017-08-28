@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="FastBuild.Dashboard.Views.Worker.WorkerCoreStatusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:support="clr-namespace:FastBuild.Dashboard.Support"
+             mc:Ignorable="d" 
+             d:DesignHeight="52"
+             d:DesignWidth="300">
+    <materialDesign:Card Margin="2"
+                         Height="52">
+        <Grid>
+            <Grid Width="32"
+                  Height="32"
+                  HorizontalAlignment="Left"
+                  Margin="8">
+                <Ellipse Fill="{Binding UIBulbFillColor}"
+                         Width="32"
+                         Height="32"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         StrokeThickness="1"
+                         Stroke="{Binding UIBulbBorderColor}"/>
+                <TextBlock x:Name="CoreId"
+                           Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="{Binding UIBulbForeground}"
+                           Text="0" />
+            </Grid>
+
+            <Grid Margin="48,0,0,0">
+                <TextBlock x:Name="DisplayState"
+                            Visibility="{Binding IsWorking, Converter={support:BoolToVisibilityConverter TrueValue=Hidden, FalseValue=Visible}}"
+                            Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                            Foreground="{Binding UIBulbForeground}"
+                            Text="Working"
+                            VerticalAlignment="Center" />
+
+                <Grid Visibility="{Binding IsWorking, Converter={support:BoolToVisibilityConverter}}">
+                    <TextBlock x:Name="HostHelping"
+                               Style="{DynamicResource MaterialDesignBody2TextBlock}"
+                               Text="Host"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               Margin="4,6" />
+
+                    <TextBlock x:Name="WorkingItem"
+                               Text="Working Item"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Bottom"
+                               Margin="4,6" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>
