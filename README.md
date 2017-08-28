@@ -4,7 +4,7 @@ FASTBuild ([website](http://www.fastbuild.org/) or [GitHub repository](https://g
 
 FASTBuild Dashboard (FBD) is a GUI program for FASTBuild. It can watch and report FASTBuild's build progress in a friendly timeline interface; track your local worker's activities; and provide a simple setting interface to configure how FASTBuild works.
 
-![Screenshot of FBD 0.8.0](https://github.com/hillin/FASTBuilder/blob/master/Documentations/Screenshots/FASTBuilder.0.8.0.png)
+![Screenshot of FBD 0.93.1](https://github.com/hillin/FASTBuilder/blob/master/Documentations/Screenshots/FASTBuild-Dashboard.0.93.1.png)
 
 ## Get FASTBuild Dashboard
 You can get the latest release of FBD at https://github.com/hillin/FASTBuild-Dashboard/releases. You'll need [.NET Framework 4.6](https://www.microsoft.com/en-us/download/details.aspx?id=48130) or newer version installed on your Windows system.
