@@ -94,5 +94,17 @@ namespace FastBuild.Dashboard {
                 this["WindowState"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BuildJobDisplayMode {
+            get {
+                return ((int)(this["BuildJobDisplayMode"]));
+            }
+            set {
+                this["BuildJobDisplayMode"] = value;
+            }
+        }
     }
 }

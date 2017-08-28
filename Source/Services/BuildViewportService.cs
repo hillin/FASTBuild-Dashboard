@@ -31,7 +31,16 @@ namespace FastBuild.Dashboard.Services
 		public double ViewEndTimeOffsetSeconds { get; private set; }
 		public double ViewTop { get; private set; }
 		public double ViewBottom { get; private set; }
-		public BuildJobDisplayMode BuildJobDisplayMode { get; private set; }
+
+		public BuildJobDisplayMode BuildJobDisplayMode
+		{
+			get => (BuildJobDisplayMode)Profile.Default.BuildJobDisplayMode;
+			private set
+			{
+				Profile.Default.BuildJobDisplayMode = (int) value;
+				Profile.Default.Save();
+			}
+		}
 
 		public event EventHandler ScalingChanged;
 		public event EventHandler ViewTimeRangeChanged;

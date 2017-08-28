@@ -7,32 +7,15 @@ namespace FastBuild.Dashboard.Services
 	{
 		public static BuildViewportServiceXamlSupport Instance { get; }
 
-		static BuildViewportServiceXamlSupport()
-		{
-			BuildViewportServiceXamlSupport.Instance = new BuildViewportServiceXamlSupport();
-		}
+		static BuildViewportServiceXamlSupport() 
+			=> BuildViewportServiceXamlSupport.Instance = new BuildViewportServiceXamlSupport();
 
-		private BuildJobDisplayMode _jobDisplayMode;
 
-		public BuildJobDisplayMode JobDisplayMode
-		{
-			get => _jobDisplayMode;
-			private set
-			{
-				if (value == _jobDisplayMode)
-				{
-					return;
-				}
-
-				_jobDisplayMode = value;
-				this.NotifyOfPropertyChange();
-				this.NotifyOfPropertyChange(nameof(this.IsCompactDisplayMode));
-			}
-		}
+		public BuildJobDisplayMode JobDisplayMode => IoC.Get<IBuildViewportService>().BuildJobDisplayMode;
 
 		public bool IsCompactDisplayMode
 		{
-			get => _jobDisplayMode == BuildJobDisplayMode.Compact;
+			get => this.JobDisplayMode == BuildJobDisplayMode.Compact;
 			set => IoC.Get<IBuildViewportService>().SetBuildJobDisplayMode(value ? BuildJobDisplayMode.Compact : BuildJobDisplayMode.Standard);
 		}
 
@@ -43,6 +26,9 @@ namespace FastBuild.Dashboard.Services
 		}
 
 		private void ViewportService_BuildJobDisplayModeChanged(object sender, EventArgs e)
-			=> this.JobDisplayMode = IoC.Get<IBuildViewportService>().BuildJobDisplayMode;
+		{
+			this.NotifyOfPropertyChange(nameof(this.JobDisplayMode));
+			this.NotifyOfPropertyChange(nameof(this.IsCompactDisplayMode));
+		}
 	}
 }
