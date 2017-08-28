@@ -199,6 +199,29 @@ namespace FastBuild.Dashboard.Views.Build
 				paddedRect.Top + (paddedRect.Height - _jobTextGlyphTypeface.Height * _jobTextStyleBridge.FontSize) / 2);
 
 			dc.DrawGlyphRun(brush, this.CreateGlyphRun(job.DisplayName, position, textWidth, true));
+
+			if (job.Status == Communication.BuildJobStatus.Building)
+			{
+				var elapsedTimeTextOpacity = job.ElapsedSeconds - 4;
+
+				if (elapsedTimeTextOpacity > 0)
+				{
+					if (elapsedTimeTextOpacity >= 1)
+					{
+						// don't clone (to save performance)
+						brush = job.UIForeground;
+					}
+					else
+					{
+						brush = job.UIForeground.Clone();
+						brush.Opacity = brush.Opacity * elapsedTimeTextOpacity;
+					}
+
+					position.X += paddedRect.Width;
+					var elapsedTimeText = $"+{job.ElapsedSeconds:0.0}";
+					dc.DrawGlyphRun(brush, this.CreateGlyphRun(elapsedTimeText, position, double.PositiveInfinity, false));
+				}
+			}
 		}
 
 		private GlyphRun CreateGlyphRun(string text, Point origin, double width, bool useEllipsis)
