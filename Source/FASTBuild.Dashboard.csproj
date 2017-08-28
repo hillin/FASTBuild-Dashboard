@@ -156,6 +156,9 @@
     <Compile Include="Views\About\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Build\BuildSessionStatusView.xaml.cs">
+      <DependentUpon>BuildSessionStatusView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Build\BuildJobsView.JobManagement.cs">
       <DependentUpon>BuildJobsView.cs</DependentUpon>
     </Compile>
@@ -199,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\About\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Build\BuildSessionStatusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -31,6 +31,16 @@ namespace FastBuild.Dashboard.ViewModels.Build
 				this.NotifyOfPropertyChange();
 				this.NotifyOfPropertyChange(nameof(this.IsSessionViewVisible));
 				this.NotifyOfPropertyChange(nameof(this.StatusText));
+
+				if (!this.IsRestoringHistory)
+				{
+					// refresh these values after restoring history because they are not updated during the process
+					// in order to increase history restoration performance
+					this.NotifyOfPropertyChange(nameof(this.SuccessfulJobCount));
+					this.NotifyOfPropertyChange(nameof(this.CacheHitCount));
+					this.NotifyOfPropertyChange(nameof(this.InProgressJobCount));
+					this.NotifyOfPropertyChange(nameof(this.FailedJobCount));
+				}
 			}
 		}
 
@@ -100,7 +110,11 @@ namespace FastBuild.Dashboard.ViewModels.Build
 				}
 
 				_inProgressJobCount = value;
-				this.NotifyOfPropertyChange();
+
+				if (!this.IsRestoringHistory)
+				{
+					this.NotifyOfPropertyChange();
+				}
 			}
 		}
 
@@ -115,7 +129,11 @@ namespace FastBuild.Dashboard.ViewModels.Build
 				}
 
 				_successfulJobCount = value;
-				this.NotifyOfPropertyChange();
+
+				if (!this.IsRestoringHistory)
+				{
+					this.NotifyOfPropertyChange();
+				}
 			}
 		}
 
@@ -130,7 +148,11 @@ namespace FastBuild.Dashboard.ViewModels.Build
 				}
 
 				_failedJobCount = value;
-				this.NotifyOfPropertyChange();
+
+				if (!this.IsRestoringHistory)
+				{
+					this.NotifyOfPropertyChange();
+				}
 			}
 		}
 
@@ -145,7 +167,11 @@ namespace FastBuild.Dashboard.ViewModels.Build
 				}
 
 				_cacheHitCount = value;
-				this.NotifyOfPropertyChange();
+
+				if (!this.IsRestoringHistory)
+				{
+					this.NotifyOfPropertyChange();
+				}
 			}
 		}
 
@@ -194,6 +220,11 @@ namespace FastBuild.Dashboard.ViewModels.Build
 
 		private void UpdateActiveWorkerAndCoreCount()
 		{
+			if (this.IsRestoringHistory)
+			{
+				return;
+			}
+
 			var activeWorkerCount = 0;
 			var activeCoreCount = 0;
 			foreach (var worker in this.Workers)

@@ -56,8 +56,9 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			// ReSharper disable once VirtualMemberCallInConstructor
 			this.DisplayName = startTime.ToString(CultureInfo.CurrentCulture);
 
-			this.PoolWorkerNames = new string[0];
-			IoC.Get<IBrokerageService>().WorkerCountChanged += this.BrokerageService_WorkerCountChanged;
+			var brokerageService = IoC.Get<IBrokerageService>();
+			this.PoolWorkerNames = brokerageService.WorkerNames;
+			brokerageService.WorkerCountChanged += this.BrokerageService_WorkerCountChanged;
 		}
 
 
