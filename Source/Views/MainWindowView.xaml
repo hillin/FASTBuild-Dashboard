@@ -11,6 +11,7 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
+        Icon="/Resources/Icons/app.ico"
         mc:Ignorable="d"
         MinWidth="600"
         MinHeight="400"
