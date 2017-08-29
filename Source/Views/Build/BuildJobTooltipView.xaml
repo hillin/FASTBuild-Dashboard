@@ -1,12 +1,12 @@
 ﻿<UserControl x:Class="FastBuild.Dashboard.Views.Build.BuildJobTooltipView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:support="clr-namespace:FastBuild.Dashboard.Support"
              xmlns:build="clr-namespace:FastBuild.Dashboard.ViewModels.Build"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <materialDesign:Card UniformCornerRadius="2"
                          Margin="8"
@@ -21,16 +21,16 @@
                                Style="{DynamicResource MaterialDesignTitleTextBlock}" />
                     <TextBlock Text="{Binding DisplayStatus}"
                                Style="{DynamicResource MaterialDesignSubheadingTextBlock}"
-                               Margin="0,4,0,0"/>
+                               Margin="0,4,0,0" />
                 </StackPanel>
             </materialDesign:ColorZone>
-            
+
             <StackPanel Margin="8">
                 <TextBlock Text="{Binding EventName}" />
                 <TextBlock Text="{Binding DisplayStartTime}"
-                       Margin="0,4,0,0"/>
+                           Margin="0,4,0,0" />
                 <TextBlock Text="{Binding DisplayElapsedSeconds}"
-                       Margin="0,4,0,0"/>
+                           Margin="0,4,0,0" />
 
                 <StackPanel Visibility="{Binding HasError, Converter={support:BoolToVisibilityConverter}}"
                             Margin="0,8,0,0">
@@ -43,38 +43,42 @@
                     <ItemsControl ItemsSource="{Binding ErrorGroups}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate DataType="{x:Type build:BuildErrorGroup}">
-                                <Button Style="{DynamicResource MaterialDesignFlatButton}"
-                                        HorizontalContentAlignment="Left"
-                                        VerticalContentAlignment="Top"
-                                        Height="NaN"
-                                        Command="{Binding OpenFileCommand}">
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding FilePath}" />
 
-                                        <ItemsControl ItemsSource="{Binding Errors}"
-                                                      TextElement.FontFamily="{StaticResource MonoFont}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate DataType="{x:Type build:BuildErrorInfo}">
-                                                    <Grid Margin="0,4,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding FilePath}" />
+
+                                    <ItemsControl ItemsSource="{Binding Errors}"
+                                                  TextElement.FontFamily="{StaticResource MonoFont}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate DataType="{x:Type build:BuildErrorInfo}">
+                                                <Button Style="{DynamicResource MaterialDesignFlatButton}"
+                                                        HorizontalContentAlignment="Left"
+                                                        VerticalContentAlignment="Top"
+                                                        Height="NaN"
+                                                        Margin="0,4,0,0"
+                                                        Command="{Binding OpenFileCommand}"
+                                                        ToolTip="Click to open source file">
+                                                    <Grid>
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition MinWidth="32" 
+                                                            <ColumnDefinition MinWidth="32"
                                                                               Width="auto"
                                                                               SharedSizeGroup="KeyColumn" />
                                                             <ColumnDefinition Width="*" />
                                                         </Grid.ColumnDefinitions>
                                                         <StackPanel Orientation="Horizontal"
                                                                     Margin="16,0">
-                                                            <TextBlock Text="#" />
-                                                            <TextBlock Text="{Binding LineNumber}" />
+                                                            <TextBlock>
+                                                                #<Run Text="{Binding LineNumber, Mode=OneWay}" />
+                                                            </TextBlock>
                                                         </StackPanel>
                                                         <TextBlock Text="{Binding ErrorMessage}"
                                                                    Grid.Column="1" />
                                                     </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>
-                                </Button>
+                                                </Button>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -83,3 +87,4 @@
         </StackPanel>
     </materialDesign:Card>
 </UserControl>
+

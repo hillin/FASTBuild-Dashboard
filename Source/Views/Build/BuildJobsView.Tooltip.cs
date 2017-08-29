@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
+using FastBuild.Dashboard.Support;
 using FastBuild.Dashboard.ViewModels.Build;
 
 namespace FastBuild.Dashboard.Views.Build
@@ -19,6 +21,7 @@ namespace FastBuild.Dashboard.Views.Build
 		private void InitializeTooltipPart()
 		{
 			this.CreateTooltipPopup();
+			Application.Current.Deactivated += this.Application_Deactivated;
 
 			_tooltipTimer = new DispatcherTimer
 			{
@@ -46,6 +49,12 @@ namespace FastBuild.Dashboard.Views.Build
 			_tooltipPopup.PlacementRectangle = rect;
 			_tooltipPopup.IsOpen = true;
 		}
+
+		private void Application_Deactivated(object sender, EventArgs e)
+		{
+			this.CloseTooltip();
+		}
+
 
 		private void CreateTooltipPopup()
 		{
@@ -92,6 +101,11 @@ namespace FastBuild.Dashboard.Views.Build
 				}
 			}
 
+			this.CloseTooltip();
+		}
+
+		private void CloseTooltip()
+		{
 			_tooltipJob = null;
 			_tooltip.DataContext = null;
 			_tooltipPopup.IsOpen = false;

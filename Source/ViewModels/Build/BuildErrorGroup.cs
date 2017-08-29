@@ -17,19 +17,11 @@ namespace FastBuild.Dashboard.ViewModels.Build
 	{
 		public string FilePath { get; }
 		public IEnumerable<BuildErrorInfo> Errors { get; }
-		public ICommand OpenFileCommand { get; }
 
 		public BuildErrorGroup(string fileName, IEnumerable<BuildErrorInfo> errors)
 		{
 			this.FilePath = fileName;
 			this.Errors = errors;
-			this.OpenFileCommand = new SimpleCommand(this.ExecuteOpenFile, this.CanExecuteOpenFile);
 		}
-
-		private bool CanExecuteOpenFile(object obj)
-			=> File.Exists(this.FilePath);
-
-		private void ExecuteOpenFile(object obj) 
-			=> Process.Start(this.FilePath);
 	}
 }

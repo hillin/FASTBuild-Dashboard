@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -45,6 +46,11 @@ namespace FastBuild.Dashboard
 		{
 			this.InitializeComponent();
 			App.Current = this;
+		}
+
+		internal void RaiseOnDeactivated()
+		{
+			this.OnDeactivated(EventArgs.Empty);
 		}
 
 		public bool SignalExternalCommandLineArgs(IList<string> args)

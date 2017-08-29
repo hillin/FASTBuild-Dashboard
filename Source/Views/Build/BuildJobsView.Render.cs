@@ -200,6 +200,7 @@ namespace FastBuild.Dashboard.Views.Build
 
 			dc.DrawGlyphRun(brush, this.CreateGlyphRun(job.DisplayName, position, textWidth, true));
 
+			// draw elapsed time for long jobs
 			if (job.Status == Communication.BuildJobStatus.Building)
 			{
 				var elapsedTimeTextOpacity = job.ElapsedSeconds - 4;
