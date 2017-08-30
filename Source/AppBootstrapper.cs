@@ -61,7 +61,7 @@ namespace FastBuild.Dashboard
 			else
 			{
 				var shadowAssemblyName = $"{Path.GetFileNameWithoutExtension(assemblyLocation)}.shadow.exe";
-				var shadowPath = Path.Combine(Path.GetDirectoryName(assemblyLocation), shadowAssemblyName);
+				var shadowPath = Path.Combine(Path.GetTempPath(), shadowAssemblyName);
 				try
 				{
 					if (File.Exists(shadowPath))
