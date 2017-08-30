@@ -17,6 +17,15 @@ namespace FastBuild.Dashboard.Views
 			_trayNotifier = new TrayNotifier(this);
 
 			this.DataContextChanged += this.OnDataContextChanged;
+			this.Loaded += this.OnLoaded;
+		}
+
+		private void OnLoaded(object sender, RoutedEventArgs e)
+		{
+			if (App.Current.StartMinimized)
+			{
+				this.Hide();
+			}
 		}
 
 		protected override void OnClosed(EventArgs e)
@@ -64,9 +73,15 @@ namespace FastBuild.Dashboard.Views
 			this.Width = Profile.Default.WindowWidth;
 			this.Height = Profile.Default.WindowHeight;
 
-			this.WindowState = App.Current.StartMinimized
-				? WindowState.Minimized
-				: Profile.Default.WindowState;
+			if (App.Current.StartMinimized)
+			{
+				this.WindowState = WindowState.Minimized;
+				this.Hide();
+			}
+			else
+			{
+				this.WindowState = Profile.Default.WindowState;
+			}
 
 			this.LocationChanged += this.MainWindowView_LocationChanged;
 			this.SizeChanged += this.MainWindowView_SizeChanged;

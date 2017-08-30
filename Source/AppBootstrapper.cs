@@ -61,7 +61,7 @@ namespace FastBuild.Dashboard
 			else
 			{
 				var shadowAssemblyName = $"{Path.GetFileNameWithoutExtension(assemblyLocation)}.shadow.exe";
-				var shadowPath = Path.Combine(Environment.CurrentDirectory, shadowAssemblyName);
+				var shadowPath = Path.Combine(Path.GetDirectoryName(assemblyLocation), shadowAssemblyName);
 				try
 				{
 					if (File.Exists(shadowPath))
@@ -101,18 +101,12 @@ namespace FastBuild.Dashboard
 		}
 
 		protected override object GetInstance(Type serviceType, string key)
-		{
-			return _container.GetInstance(serviceType, key);
-		}
+			=> _container.GetInstance(serviceType, key);
 
 		protected override IEnumerable<object> GetAllInstances(Type serviceType)
-		{
-			return _container.GetAllInstances(serviceType);
-		}
+			=> _container.GetAllInstances(serviceType);
 
 		protected override void BuildUp(object instance)
-		{
-			_container.BuildUp(instance);
-		}
+			=> _container.BuildUp(instance);
 	}
 }
