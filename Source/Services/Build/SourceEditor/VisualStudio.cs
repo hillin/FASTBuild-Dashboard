@@ -10,11 +10,11 @@ using FastBuild.Dashboard.ViewModels.Build;
 namespace FastBuild.Dashboard.Services.Build.SourceEditor
 {
 	[ExternalSourceEditor(
-		"visual-studio", 
-		"Visual Studio", 
+		"visual-studio",
+		"Visual Studio",
 		"Open source file in a running Visual Studio instance. Will fallback to system default editor if Visual Studio is not running.",
-		AllowOverridePath = false, 
-		AllowSpecifyAdditionalArgs = false, 
+		AllowOverridePath = false,
+		AllowSpecifyAdditionalArgs = false,
 		AllowSpecifyArgs = false)]
 	internal class VisualStudio : IExternalSourceEditor
 	{
@@ -30,7 +30,7 @@ namespace FastBuild.Dashboard.Services.Build.SourceEditor
 
 		public bool IsAvailable => true;
 
-		public bool OpenFile(string file, int lineNumber)
+		public bool OpenFile(string file, int lineNumber, int initiatorProcessId)
 		{
 			var retVal = VisualStudio.GetRunningObjectTable(0, out IRunningObjectTable rot);
 
@@ -48,6 +48,21 @@ namespace FastBuild.Dashboard.Services.Build.SourceEditor
 					moniker.GetClassID(out var _);
 					if (displayName.StartsWith("!VisualStudio.DTE"))
 					{
+						if (initiatorProcessId > 0)
+						{
+							// DTE's process id is appended in its moniker name after a colon
+							var colonIndex = displayName.LastIndexOf(':');
+							if (colonIndex < 0)
+							{
+								continue;
+							}
+
+							if (displayName.Substring(colonIndex + 1) != initiatorProcessId.ToString())
+							{
+								continue;
+							}
+						}
+
 						try
 						{
 							rot.GetObject(monikers[0], out dynamic dte);
@@ -74,7 +89,13 @@ namespace FastBuild.Dashboard.Services.Build.SourceEditor
 						}
 						catch (COMException)
 						{
-							// the debugger might not be ready at this time
+							// DTE might not be ready at this time
+
+							if (initiatorProcessId > 0)
+							{
+								// skip other DTE instances if distinct id is specified
+								return false;
+							}
 						}
 					}
 				}

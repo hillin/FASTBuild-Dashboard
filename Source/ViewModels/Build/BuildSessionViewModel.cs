@@ -44,6 +44,7 @@ namespace FastBuild.Dashboard.ViewModels.Build
 		public BindableCollection<BuildWorkerViewModel> Workers { get; } = new BindableCollection<BuildWorkerViewModel>();
 
 		public BuildSessionJobManager JobManager { get; } = new BuildSessionJobManager();
+		public BuildInitiatorProcessViewModel InitiatorProcess { get; }
 
 		private BuildSessionViewModel(DateTime startTime, int? processId, int? logVersion)
 		{
@@ -59,8 +60,9 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			var brokerageService = IoC.Get<IBrokerageService>();
 			this.PoolWorkerNames = brokerageService.WorkerNames;
 			brokerageService.WorkerCountChanged += this.BrokerageService_WorkerCountChanged;
-		}
 
+			this.InitiatorProcess = new BuildInitiatorProcessViewModel(processId);
+		}
 
 		public BuildSessionViewModel()
 			: this(DateTime.Now, null, null)
@@ -71,7 +73,6 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			: this(e.Time, e.ProcessId, e.LogVersion)
 		{
 		}
-
 
 		public void OnStopped(StopBuildEventArgs e)
 		{

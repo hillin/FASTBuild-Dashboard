@@ -21,14 +21,16 @@ namespace FastBuild.Dashboard.ViewModels.Build
 		public string FilePath { get; }
 		public int LineNumber { get; }
 		public string ErrorMessage { get; }
+		public BuildInitiatorProcessViewModel InitiatorProcess { get; }
 		public ICommand OpenFileCommand { get; }
 
 
-		public BuildErrorInfo(string filePath, int lineNumber, string errorMessage)
+		public BuildErrorInfo(string filePath, int lineNumber, string errorMessage, BuildInitiatorProcessViewModel initiatorProcess)
 		{
 			this.FilePath = filePath;
 			this.LineNumber = lineNumber;
 			this.ErrorMessage = errorMessage;
+			this.InitiatorProcess = initiatorProcess;
 			this.OpenFileCommand = new SimpleCommand(this.ExecuteOpenFile, this.CanExecuteOpenFile);
 		}
 
@@ -37,7 +39,7 @@ namespace FastBuild.Dashboard.ViewModels.Build
 
 		private void ExecuteOpenFile(object obj)
 		{
-			if (!IoC.Get<IExternalSourceEditorService>().OpenFile(this.FilePath, this.LineNumber))
+			if (!IoC.Get<IExternalSourceEditorService>().OpenFile(this.FilePath, this.LineNumber, this.InitiatorProcess.InitiatorProcessId))
 			{
 				MessageBox.Show(
 					"Failed to open source file. Please go to the Settings page and check if the selected source editor is correctly configured.",

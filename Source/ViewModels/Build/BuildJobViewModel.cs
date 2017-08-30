@@ -259,7 +259,8 @@ namespace FastBuild.Dashboard.ViewModels.Build
 						.Select(m => new BuildErrorInfo(
 							m.Groups[1].Value,
 							int.Parse(m.Groups[2].Value, CultureInfo.InvariantCulture),
-							m.Groups[3].Value))
+							m.Groups[3].Value,
+							this.OwnerCore.OwnerWorker.OwnerSession.InitiatorProcess))
 						.GroupBy(i => i.FilePath, (file, group) => new BuildErrorGroup(file, group))
 						.ToArray();
 

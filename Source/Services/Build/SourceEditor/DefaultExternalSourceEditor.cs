@@ -18,7 +18,7 @@ namespace FastBuild.Dashboard.Services.Build.SourceEditor
 	{
 		public bool IsAvailable => true;
 
-		public bool OpenFile(string file, int lineNumber)
+		public bool OpenFile(string file, int lineNumber, int initiatorProcessId)
 		{
 			try
 			{

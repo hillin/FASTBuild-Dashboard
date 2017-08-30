@@ -21,7 +21,7 @@ namespace FastBuild.Dashboard.Services.Build.SourceEditor
 		public override bool IsAvailable
 			=> !string.IsNullOrEmpty(ExternalSourceEditorBase.GetEditorExecutable(ExecutablePath));
 
-		public override bool OpenFile(string file, int lineNumber)
+		public override bool OpenFile(string file, int lineNumber, int initiatorProcessId)
 		{
 			var executable = ExternalSourceEditorBase.GetEditorExecutable(ExecutablePath);
 			if (executable == null)

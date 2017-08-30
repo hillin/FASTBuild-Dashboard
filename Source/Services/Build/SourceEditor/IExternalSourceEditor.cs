@@ -3,6 +3,6 @@
 	internal interface IExternalSourceEditor
 	{
 		bool IsAvailable { get; }
-		bool OpenFile(string file, int lineNumber);
+		bool OpenFile(string file, int lineNumber, int initiatorProcessId);
 	}
 }

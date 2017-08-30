@@ -61,8 +61,8 @@ namespace FastBuild.Dashboard.Services.Build.SourceEditor
 		public bool IsSelectedEditorAvailable
 			=> ExternalSourceEditorService.CreateEditorInstance(this.SelectedEditor).IsAvailable;
 
-		public bool OpenFile(string file, int lineNumber)
-			=> ExternalSourceEditorService.CreateEditorInstance(this.SelectedEditor).OpenFile(file, lineNumber);
+		public bool OpenFile(string file, int lineNumber, int initiatorProcessId)
+			=> ExternalSourceEditorService.CreateEditorInstance(this.SelectedEditor).OpenFile(file, lineNumber, initiatorProcessId);
 
 	}
 }

@@ -20,7 +20,7 @@ namespace FastBuild.Dashboard.Services.Build.SourceEditor
 		public override bool IsAvailable =>
 			!string.IsNullOrEmpty(AppSettings.Default.ExternalSourceEditorPath)
 			&& File.Exists(AppSettings.Default.ExternalSourceEditorPath);
-		public override bool OpenFile(string file, int lineNumber)
+		public override bool OpenFile(string file, int lineNumber, int initiatorProcessId)
 		{
 			if (!this.IsAvailable)
 			{

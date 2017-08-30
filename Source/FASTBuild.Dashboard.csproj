@@ -159,6 +159,8 @@
     <Compile Include="ViewModels\About\AboutViewModel.cs" />
     <Compile Include="ViewModels\Build\BuildErrorGroup.cs" />
     <Compile Include="ViewModels\Build\BuildErrorInfo.cs" />
+    <Compile Include="ViewModels\Build\BuildInitiatorProcessViewModel.cs" />
+    <Compile Include="ViewModels\Build\BuildInitiatorProcessViewModel.win32.cs" />
     <Compile Include="ViewModels\Build\BuildSessionViewModel.Status.cs">
       <DependentUpon>BuildSessionViewModel.xaml</DependentUpon>
     </Compile>

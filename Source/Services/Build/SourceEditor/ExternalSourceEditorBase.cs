@@ -35,6 +35,6 @@ namespace FastBuild.Dashboard.Services.Build.SourceEditor
 		}
 
 		public abstract bool IsAvailable { get; }
-		public abstract bool OpenFile(string file, int lineNumber);
+		public abstract bool OpenFile(string file, int lineNumber, int initiatorProcessId);
 	}
 }
