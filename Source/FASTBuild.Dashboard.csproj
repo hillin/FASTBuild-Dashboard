@@ -135,6 +135,9 @@
     <Compile Include="Services\Build\SourceEditor\IExternalSourceEditorService.cs" />
     <Compile Include="Services\Build\SourceEditor\NotepadPlusPlus.cs" />
     <Compile Include="Services\Build\SourceEditor\VisualStudio.cs" />
+    <Compile Include="Services\Build\SourceEditor\VisualStudio.win32.cs" >
+      <DependentUpon>VisualStudio.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\Build\SourceEditor\VisualStudioCode.cs" />
     <Compile Include="Support\MathEx.cs" />
     <Compile Include="Support\SingleInstance.cs" />

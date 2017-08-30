@@ -16,23 +16,14 @@ namespace FastBuild.Dashboard.Services.Build.SourceEditor
 		AllowOverridePath = false,
 		AllowSpecifyAdditionalArgs = false,
 		AllowSpecifyArgs = false)]
-	internal class VisualStudio : IExternalSourceEditor
+	internal partial class VisualStudio : IExternalSourceEditor
 	{
-		[DllImport("ole32.dll")]
-		private static extern void CreateBindCtx(int reserved, out IBindCtx ppbc);
-
-		[DllImport("ole32.dll")]
-		private static extern int GetRunningObjectTable(int reserved, out IRunningObjectTable prot);
-
-		[DllImport("user32.dll", SetLastError = true)]
-		private static extern IntPtr SetActiveWindow(IntPtr hWnd);
-
-
+		
 		public bool IsAvailable => true;
 
 		public bool OpenFile(string file, int lineNumber, int initiatorProcessId)
 		{
-			var retVal = VisualStudio.GetRunningObjectTable(0, out IRunningObjectTable rot);
+			var retVal = WinAPI.GetRunningObjectTable(0, out IRunningObjectTable rot);
 
 			if (retVal == 0)
 			{
@@ -43,7 +34,7 @@ namespace FastBuild.Dashboard.Services.Build.SourceEditor
 				while (enumMoniker.Next(1, monikers, fetched) == 0)
 				{
 					var moniker = monikers[0];
-					VisualStudio.CreateBindCtx(0, out IBindCtx bindCtx);
+					WinAPI.CreateBindCtx(0, out IBindCtx bindCtx);
 					moniker.GetDisplayName(bindCtx, null, out string displayName);
 					moniker.GetClassID(out var _);
 					if (displayName.StartsWith("!VisualStudio.DTE"))
@@ -74,16 +65,21 @@ namespace FastBuild.Dashboard.Services.Build.SourceEditor
 
 							if (lineNumber > 0)
 							{
-								// workaround: when the DTE window is brought to front, the Deactivated
-								// event won't be fired for Application, thus the tooltip won't hide
-								App.Current.RaiseOnDeactivated();
-
-								window.Activate();
-								window.Document.Activate();
-
 								var selection = window.Document.Selection;
 								selection.GotoLine(lineNumber, true);
 							}
+
+							// workaround: when the DTE window is brought to front, the Deactivated
+							// event won't be fired for Application, thus the tooltip won't hide
+							App.Current.RaiseOnDeactivated();
+
+							window.Activate();
+							window.Document.Activate();
+
+							// we should use window's hWnd, however seems it is always zero
+							var dteHwnd = (IntPtr)dte.MainWindow.HWnd;
+							WinAPI.FlashWindow(dteHwnd, false);
+							WinAPI.SetForegroundWindow(dteHwnd);
 
 							return true;
 						}
