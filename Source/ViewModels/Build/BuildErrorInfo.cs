@@ -7,21 +7,16 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
+using FastBuild.Dashboard.Services.Build.SourceEditor;
 using FastBuild.Dashboard.Support;
 
 namespace FastBuild.Dashboard.ViewModels.Build
 {
 	internal class BuildErrorInfo
 	{
-		[DllImport("ole32.dll")]
-		private static extern void CreateBindCtx(int reserved, out IBindCtx ppbc);
-
-		[DllImport("ole32.dll")]
-		private static extern int GetRunningObjectTable(int reserved, out IRunningObjectTable prot);
-
-		[DllImport("user32.dll", SetLastError = true)]
-		private static extern IntPtr SetActiveWindow(IntPtr hWnd);
 
 		public string FilePath { get; }
 		public int LineNumber { get; }
@@ -42,60 +37,15 @@ namespace FastBuild.Dashboard.ViewModels.Build
 
 		private void ExecuteOpenFile(object obj)
 		{
-			if (!this.TryOpenWithVisualStudio())
+			if (!IoC.Get<IExternalSourceEditorService>().OpenFile(this.FilePath, this.LineNumber))
 			{
-				Process.Start(this.FilePath);
+				MessageBox.Show(
+					"Failed to open source file. Please go to the Settings page and check if the selected source editor is correctly configured.",
+					"Open Source File",
+					MessageBoxButton.OK,
+					MessageBoxImage.Exclamation);
 			}
 		}
-
-		private bool TryOpenWithVisualStudio()
-		{
-			var retVal = BuildErrorInfo.GetRunningObjectTable(0, out IRunningObjectTable rot);
-
-			if (retVal == 0)
-			{
-				rot.EnumRunning(out IEnumMoniker enumMoniker);
-
-				var fetched = IntPtr.Zero;
-				var monikers = new IMoniker[1];
-				while (enumMoniker.Next(1, monikers, fetched) == 0)
-				{
-					var moniker = monikers[0];
-					BuildErrorInfo.CreateBindCtx(0, out IBindCtx bindCtx);
-					moniker.GetDisplayName(bindCtx, null, out string displayName);
-					moniker.GetClassID(out var _);
-					if (displayName.StartsWith("!VisualStudio.DTE"))
-					{
-						try
-						{
-							rot.GetObject(monikers[0], out dynamic dte);
-							var window = dte.ItemOperations.OpenFile(this.FilePath);
-							if (window == null)
-							{
-								continue;
-							}
-
-							// workaround: when the DTE window is brought to front, the Deactivated
-							// event won't be fired for Application, thus the tooltip won't hide
-							App.Current.RaiseOnDeactivated();
-
-							window.Activate();
-							window.Document.Activate();
-
-							var selection = window.Document.Selection;
-							selection.GotoLine(this.LineNumber, true);
-
-							return true;
-						}
-						catch (COMException)
-						{
-							// the debugger might not be ready at this time
-						}
-					}
-				}
-			}
-
-			return false;
-		}
+		
 	}
 }

@@ -55,7 +55,6 @@ namespace FastBuild.Dashboard.Views.Build
 			this.CloseTooltip();
 		}
 
-
 		private void CreateTooltipPopup()
 		{
 			_tooltipPopup = new Popup

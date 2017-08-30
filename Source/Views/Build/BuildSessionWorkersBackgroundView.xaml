@@ -6,6 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:build="clr-namespace:FastBuild.Dashboard.ViewModels.Build"
              xmlns:services="clr-namespace:FastBuild.Dashboard.Services"
+             xmlns:services1="clr-namespace:FastBuild.Dashboard.Services.Build"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -21,7 +22,7 @@
                     <materialDesign:Card.Style>
                         <Style TargetType="{x:Type materialDesign:Card}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                <DataTrigger Binding="{Binding Source={x:Static services1:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
                                              Value="Compact">
                                     <Setter Property="Padding" Value="{StaticResource BuildWorkerRowPaddingCompact}" />
                                     <Setter Property="Margin" Value="{StaticResource BuildWorkerCardMarginCompact}" />
@@ -40,7 +41,7 @@
                         <ItemsControl.ItemContainerStyle>
                             <Style TargetType="{x:Type ContentPresenter}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                    <DataTrigger Binding="{Binding Source={x:Static services1:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
                                                  Value="Compact">
                                         <Setter Property="Height" Value="{StaticResource BuildCoreRowHeightCompact}" />
                                         <Setter Property="Margin" Value="{StaticResource BuildCoreRowMarginCompact}" />

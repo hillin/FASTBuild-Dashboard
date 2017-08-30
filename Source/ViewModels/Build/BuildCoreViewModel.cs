@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Caliburn.Micro;
 using FastBuild.Dashboard.Communication.Events;
 using FastBuild.Dashboard.Services;
+using FastBuild.Dashboard.Services.Build;
 
 namespace FastBuild.Dashboard.ViewModels.Build
 {

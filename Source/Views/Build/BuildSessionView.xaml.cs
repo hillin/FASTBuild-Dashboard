@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using FastBuild.Dashboard.Services;
+using FastBuild.Dashboard.Services.Build;
 
 namespace FastBuild.Dashboard.Views.Build
 {

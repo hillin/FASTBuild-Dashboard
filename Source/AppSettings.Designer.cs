@@ -58,5 +58,53 @@ namespace FastBuild.Dashboard {
                 this["StartWithWindows"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ExternalSourceEditorPath {
+            get {
+                return ((string)(this["ExternalSourceEditorPath"]));
+            }
+            set {
+                this["ExternalSourceEditorPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ExternalSourceEditorArgs {
+            get {
+                return ((string)(this["ExternalSourceEditorArgs"]));
+            }
+            set {
+                this["ExternalSourceEditorArgs"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ExternalSourceEditorAdditionalArgs {
+            get {
+                return ((string)(this["ExternalSourceEditorAdditionalArgs"]));
+            }
+            set {
+                this["ExternalSourceEditorAdditionalArgs"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("visual-studio")]
+        public string ExternalSourceEditor {
+            get {
+                return ((string)(this["ExternalSourceEditor"]));
+            }
+            set {
+                this["ExternalSourceEditor"] = value;
+            }
+        }
     }
 }

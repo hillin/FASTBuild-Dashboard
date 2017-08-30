@@ -63,6 +63,9 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.3.0.823, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.2.3.0.823\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
+      <HintPath>packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -119,9 +122,20 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Profile.settings</DependentUpon>
     </Compile>
-    <Compile Include="Services\BuildJobDisplayMode.cs" />
-    <Compile Include="Services\BuildViewportServiceXamlSupport.cs" />
-    <Compile Include="Services\IBuildViewportService.cs" />
+    <Compile Include="Services\Build\BuildJobDisplayMode.cs" />
+    <Compile Include="Services\Build\BuildViewportServiceXamlSupport.cs" />
+    <Compile Include="Services\Build\SourceEditor\CustomExternalSourceEditor.cs" />
+    <Compile Include="Services\Build\SourceEditor\DefaultExternalSourceEditor.cs" />
+    <Compile Include="Services\Build\SourceEditor\ExternalSourceEditorAttribute.cs" />
+    <Compile Include="Services\Build\SourceEditor\ExternalSourceEditorBase.cs" />
+    <Compile Include="Services\Build\SourceEditor\ExternalSourceEditorMetadata.cs" />
+    <Compile Include="Services\Build\SourceEditor\ExternalSourceEditorService.cs" />
+    <Compile Include="Services\Build\SourceEditor\IExternalSourceEditor.cs" />
+    <Compile Include="Services\Build\IBuildViewportService.cs" />
+    <Compile Include="Services\Build\SourceEditor\IExternalSourceEditorService.cs" />
+    <Compile Include="Services\Build\SourceEditor\NotepadPlusPlus.cs" />
+    <Compile Include="Services\Build\SourceEditor\VisualStudio.cs" />
+    <Compile Include="Services\Build\SourceEditor\VisualStudioCode.cs" />
     <Compile Include="Support\MathEx.cs" />
     <Compile Include="Support\SingleInstance.cs" />
     <Compile Include="Services\Worker\ExternalWorkerAgent.cs" />
@@ -130,7 +144,7 @@
     <Compile Include="Services\Worker\IWorkerAgent.cs" />
     <Compile Include="Services\Worker\IWorkerAgentService.cs" />
     <Compile Include="Services\IBrokerageService.cs" />
-    <Compile Include="Services\BuildViewportService.cs" />
+    <Compile Include="Services\Build\BuildViewportService.cs" />
     <Compile Include="Services\Worker\WorkerAgentService.cs" />
     <Compile Include="Services\Worker\WorkerCoreState.cs" />
     <Compile Include="Services\Worker\WorkerCoreStatus.cs" />
@@ -155,6 +169,7 @@
     <Compile Include="ViewModels\Build\BuildSessionJobManager.cs" />
     <Compile Include="ViewModels\Settings\SettingsValidator.cs" />
     <Compile Include="ViewModels\Settings\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\Settings\SettingsViewModel.ExternalSourceEditor.cs" />
     <Compile Include="ViewModels\Worker\WorkerCoreStatusViewModel.cs" />
     <Compile Include="ViewModels\Worker\WorkerViewModel.cs" />
     <Compile Include="Views\About\AboutView.xaml.cs">

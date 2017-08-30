@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace FastBuild.Dashboard.Services
+namespace FastBuild.Dashboard.Services.Build
 {
 	internal class BuildViewportService : IBuildViewportService
 	{

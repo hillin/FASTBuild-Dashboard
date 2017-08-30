@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sourceEditor="clr-namespace:FastBuild.Dashboard.Services.Build.SourceEditor"
+             xmlns:support="clr-namespace:FastBuild.Dashboard.Support"
              mc:Ignorable="d"
              d:DesignHeight="800" d:DesignWidth="600">
     <UserControl.Resources>
@@ -30,8 +32,16 @@
             <Style TargetType="TextBlock"
                    x:Key="OptionTitle"
                    BasedOn="{StaticResource MaterialDesignBody2TextBlock}">
-                <Setter Property="Width" Value="160" />
+                <Setter Property="Width" Value="200" />
                 <Setter Property="Margin" Value="16,0,0,0" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+
+            <Style TargetType="TextBlock"
+                   x:Key="IndentedOptionTitle"
+                   BasedOn="{StaticResource MaterialDesignBody2TextBlock}">
+                <Setter Property="Width" Value="168" />
+                <Setter Property="Margin" Value="48,0,0,0" />
                 <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
 
@@ -46,6 +56,20 @@
                 <Setter Property="Margin" Value="0 16 0 8" />
                 <Setter Property="BorderThickness" Value="0 1 0 0 " />
                 <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}" />
+            </Style>
+
+            <Style TargetType="FrameworkElement"
+                   x:Key="OptionRightIcon">
+                <Setter Property="Margin" Value="4,0,0,0" />
+                <Setter Property="MinWidth" Value="48" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="Button"
+                   x:Key="OptionRightButton"
+                   BasedOn="{StaticResource MaterialDesignFlatButton}">
+                <Setter Property="Margin" Value="4,0,0,0" />
+                <Setter Property="MinWidth" Value="48" />
+                <Setter Property="VerticalAlignment" Value="Center" />
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -80,20 +104,12 @@
 
                         <DockPanel Style="{StaticResource OptionContent}">
                             <!-- todo -->
-                            <!--<Button DockPanel.Dock="Right"
-                                    Margin="8,0,0,0"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource MaterialDesignFlatButton}"
-                                    Content="Browse" />-->
+                            <Button x:Name="BrowseBrokeragePath"
+                                    DockPanel.Dock="Right"
+                                    Style="{StaticResource OptionRightButton}">
+                                <materialDesign:PackIcon Kind="FolderOutline" />
+                            </Button>
 
-                            <Grid IsHitTestVisible="True"
-                                  Background="{DynamicResource MaterialDesignBackground}"
-                                  DockPanel.Dock="Right"
-                                  VerticalAlignment="Center"
-                                  Margin="4,0,0,0"
-                                  ToolTip="Might not take effect until you restart your computer" >
-                                <materialDesign:PackIcon Kind="AlertOutline" />
-                            </Grid>
                             <TextBox x:Name="BrokeragePath" 
                                      VerticalAlignment="Center" />
                         </DockPanel>
@@ -101,13 +117,25 @@
 
                     <StackPanel Style="{StaticResource OptionContainer}">
                         <TextBlock Style="{StaticResource OptionTitle}"
-                                   Text="" /> <!-- placeholder -->
-                        <materialDesign:PackIcon Kind="ServerNetwork"
-                                                 VerticalAlignment="Center" />
-                        <TextBlock x:Name="DisplayWorkersInPool"
-                                   VerticalAlignment="Center"
-                                   Margin="4,0,0,0"
-                                   Text="16 workers in pool" />
+                                   Text="" />   <!-- placeholder -->
+                            <DockPanel Style="{StaticResource OptionContent}">
+
+                            <Grid IsHitTestVisible="True"
+                                  Background="Transparent"
+                                  DockPanel.Dock="Right"
+                                  Style="{StaticResource OptionRightIcon}"
+                                  ToolTip="Might not take effect until you restart your computer">
+                                <materialDesign:PackIcon Kind="InformationOutline"
+                                                         HorizontalAlignment="Center"/>
+                            </Grid>
+
+                            <materialDesign:PackIcon Kind="ServerNetwork"
+                                                     VerticalAlignment="Center" />
+                            <TextBlock x:Name="DisplayWorkersInPool"
+                                       VerticalAlignment="Center"
+                                       Margin="4,0,0,0"
+                                       Text="16 workers in pool" />
+                        </DockPanel>
                     </StackPanel>
 
                     <Border Style="{StaticResource Separator}" />
@@ -161,6 +189,67 @@
                         <Grid Style="{StaticResource OptionContent}">
                             <ToggleButton x:Name="StartWithWindows"
                                           HorizontalAlignment="Left"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Style="{StaticResource OptionContainer}">
+                        <TextBlock Style="{StaticResource OptionTitle}"
+                                   Text="External Source Editor" />
+
+                        <Grid Style="{StaticResource OptionContent}">
+                            <ComboBox x:Name="ExternalSourceEditors">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type sourceEditor:ExternalSourceEditorMetadata}">
+                                        <TextBlock Text="{Binding Name}"
+                                                   ToolTip="{Binding Description}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Style="{StaticResource OptionContainer}"
+                                Visibility="{Binding SelectedExternalSourceEditor.AllowOverridePath, Converter={support:BoolToVisibilityConverter}}">
+                        <TextBlock Style="{StaticResource IndentedOptionTitle}"
+                                   Text="Path" />
+
+                        <DockPanel Style="{StaticResource OptionContent}">
+                            <Button x:Name="BrowseExternalSourceEditor" 
+                                    DockPanel.Dock="Right"
+                                    Style="{StaticResource OptionRightButton}">
+                                <materialDesign:PackIcon Kind="FolderOutline" />
+                            </Button>
+                            <TextBox x:Name="ExternalSourceEditorPath" />
+                        </DockPanel>
+                    </StackPanel>
+
+                    <StackPanel Style="{StaticResource OptionContainer}"
+                                Visibility="{Binding SelectedExternalSourceEditor.AllowSpecifyArgs, Converter={support:BoolToVisibilityConverter}}">
+                        <TextBlock Style="{StaticResource IndentedOptionTitle}"
+                                   Text="Arguments" />
+
+                        <Grid Style="{StaticResource OptionContent}">
+                            <DockPanel>
+                                <Grid IsHitTestVisible="True"
+                                      Background="Transparent"
+                                      DockPanel.Dock="Right"
+                                      Style="{StaticResource OptionRightIcon}"
+                                      ToolTip="Use {filename} for source file name, {linenumber} for line number" >
+                                    <materialDesign:PackIcon Kind="InformationOutline"
+                                                             HorizontalAlignment="Center" />
+                                </Grid>
+                                <TextBox x:Name="ExternalSourceEditorArguments" />
+                            </DockPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Style="{StaticResource OptionContainer}"
+                                Visibility="{Binding SelectedExternalSourceEditor.AllowSpecifyAdditionalArgs, Converter={support:BoolToVisibilityConverter}}">
+                        <TextBlock Style="{StaticResource IndentedOptionTitle}"
+                                   Text="Additional Args." />
+
+                        <Grid Style="{StaticResource OptionContent}">
+                            <TextBox x:Name="ExternalSourceEditorAdditionalArguments" />
                         </Grid>
                     </StackPanel>
 

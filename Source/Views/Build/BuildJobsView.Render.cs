@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using FastBuild.Dashboard.Services;
+using FastBuild.Dashboard.Services.Build;
 using FastBuild.Dashboard.Support;
 using FastBuild.Dashboard.ViewModels.Build;
 

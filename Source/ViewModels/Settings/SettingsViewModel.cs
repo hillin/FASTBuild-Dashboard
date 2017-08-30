@@ -6,10 +6,11 @@ using Caliburn.Micro;
 using Caliburn.Micro.Validation;
 using FastBuild.Dashboard.Services;
 using FastBuild.Dashboard.Services.Worker;
+using Ookii.Dialogs.Wpf;
 
 namespace FastBuild.Dashboard.ViewModels.Settings
 {
-	internal sealed class SettingsViewModel : ValidatingScreen<SettingsViewModel>, IMainPage
+	internal sealed partial class SettingsViewModel : ValidatingScreen<SettingsViewModel>, IMainPage
 	{
 		[CustomValidation(typeof(SettingsValidator), "ValidateBrokeragePath")]
 		public string BrokeragePath
@@ -93,6 +94,21 @@ namespace FastBuild.Dashboard.ViewModels.Settings
 		private void BrokerageService_WorkerCountChanged(object sender, EventArgs e)
 		{
 			this.NotifyOfPropertyChange(nameof(this.DisplayWorkersInPool));
+		}
+
+		public void BrowseBrokeragePath()
+		{
+			var dialog = new VistaFolderBrowserDialog
+			{
+				Description = "Browse Brokerage Path",
+				SelectedPath = this.BrokeragePath,
+				ShowNewFolderButton = false
+			};
+
+			if (dialog.ShowDialog(App.Current.MainWindow) == true)
+			{
+				this.BrokeragePath = dialog.SelectedPath;
+			}
 		}
 	}
 }

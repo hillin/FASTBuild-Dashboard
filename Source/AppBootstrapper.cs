@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
 using FastBuild.Dashboard.Services;
+using FastBuild.Dashboard.Services.Build;
+using FastBuild.Dashboard.Services.Build.SourceEditor;
 using FastBuild.Dashboard.Services.Worker;
 using FastBuild.Dashboard.Support;
 using FastBuild.Dashboard.ViewModels;
@@ -32,6 +34,7 @@ namespace FastBuild.Dashboard
 			_container.Singleton<IBuildViewportService, BuildViewportService>();
 			_container.Singleton<IBrokerageService, BrokerageService>();
 			_container.Singleton<IWorkerAgentService, WorkerAgentService>();
+			_container.Singleton<IExternalSourceEditorService, ExternalSourceEditorService>();
 		}
 
 		protected override void OnStartup(object sender, StartupEventArgs e)

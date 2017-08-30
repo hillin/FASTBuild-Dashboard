@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FastBuild.Dashboard.Services
+namespace FastBuild.Dashboard.Services.Build
 {
 	internal interface IBuildViewportService
 	{

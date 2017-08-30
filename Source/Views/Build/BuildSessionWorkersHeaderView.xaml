@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:build="clr-namespace:FastBuild.Dashboard.ViewModels.Build"
              xmlns:services="clr-namespace:FastBuild.Dashboard.Services"
+             xmlns:services1="clr-namespace:FastBuild.Dashboard.Services.Build"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
@@ -21,7 +22,7 @@
                     <Grid.Style>
                         <Style TargetType="Grid">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                <DataTrigger Binding="{Binding Source={x:Static services1:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
                                              Value="Compact">
                                     <Setter Property="Margin" Value="{StaticResource BuildWorkerRowMarginCompact}" />
                                 </DataTrigger>
@@ -35,7 +36,7 @@
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                    <DataTrigger Binding="{Binding Source={x:Static services1:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
                                                  Value="Compact">
                                         <Setter Property="Margin" Value="{StaticResource BuildWorkerRowPaddingCompact}" />
                                     </DataTrigger>
@@ -55,7 +56,7 @@
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                        <DataTrigger Binding="{Binding Source={x:Static services1:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
                                                      Value="Compact">
                                             <Setter Property="Height" Value="{StaticResource BuildCoreRowHeightCompact}" />
                                         </DataTrigger>
@@ -81,7 +82,7 @@
                                         <Grid.Style>
                                             <Style TargetType="Grid">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                                    <DataTrigger Binding="{Binding Source={x:Static services1:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
                                                                  Value="Compact">
                                                         <Setter Property="Height" Value="{StaticResource BuildCoreRowHeightCompact}" />
                                                         <Setter Property="Width" Value="{StaticResource BuildCoreRowHeightCompact}" />
@@ -99,7 +100,7 @@
                                             <Grid.Style>
                                                 <Style TargetType="Grid">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
+                                                        <DataTrigger Binding="{Binding Source={x:Static services1:BuildViewportServiceXamlSupport.Instance}, Path=JobDisplayMode }"
                                                                      Value="Compact">
                                                             <Setter Property="Visibility" Value="Collapsed" />
                                                         </DataTrigger>

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Caliburn.Micro;
 using FastBuild.Dashboard.Services;
+using FastBuild.Dashboard.Services.Build;
 using FastBuild.Dashboard.ViewModels.Build;
 
 namespace FastBuild.Dashboard.Views.Build

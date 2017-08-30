@@ -1,7 +1,7 @@
 ﻿using System;
 using Caliburn.Micro;
 
-namespace FastBuild.Dashboard.Services
+namespace FastBuild.Dashboard.Services.Build
 {
 	internal class BuildViewportServiceXamlSupport : PropertyChangedBase
 	{

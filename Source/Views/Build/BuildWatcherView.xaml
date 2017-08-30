@@ -6,6 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:build="clr-namespace:FastBuild.Dashboard.ViewModels.Build"
              xmlns:services="clr-namespace:FastBuild.Dashboard.Services"
+             xmlns:services1="clr-namespace:FastBuild.Dashboard.Services.Build"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
 
@@ -56,7 +57,7 @@
                                              Width="24"
                                              Height="24"
                                              VerticalAlignment="Center"/>
-                    <ToggleButton IsChecked="{Binding Source={x:Static services:BuildViewportServiceXamlSupport.Instance}, Path=IsCompactDisplayMode }"
+                    <ToggleButton IsChecked="{Binding Source={x:Static services1:BuildViewportServiceXamlSupport.Instance}, Path=IsCompactDisplayMode }"
                                   Margin="8,0"/>
 
                     <materialDesign:PackIcon Kind="ViewHeadline"
