@@ -139,8 +139,12 @@
     <Compile Include="Support\MathEx.cs" />
     <Compile Include="Support\SingleInstance.cs" />
     <Compile Include="Services\Worker\ExternalWorkerAgent.cs" />
-    <Compile Include="Services\Worker\ExternalWorkerAgent.interop.cs" />
-    <Compile Include="Services\Worker\ExternalWorkerAgent.win32.cs" />
+    <Compile Include="Services\Worker\ExternalWorkerAgent.interop.cs">
+      <DependentUpon>ExternalWorkerAgent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Services\Worker\ExternalWorkerAgent.win32.cs">
+      <DependentUpon>ExternalWorkerAgent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\Worker\IWorkerAgent.cs" />
     <Compile Include="Services\Worker\IWorkerAgentService.cs" />
     <Compile Include="Services\IBrokerageService.cs" />
@@ -160,7 +164,9 @@
     <Compile Include="ViewModels\Build\BuildErrorGroup.cs" />
     <Compile Include="ViewModels\Build\BuildErrorInfo.cs" />
     <Compile Include="ViewModels\Build\BuildInitiatorProcessViewModel.cs" />
-    <Compile Include="ViewModels\Build\BuildInitiatorProcessViewModel.win32.cs" />
+    <Compile Include="ViewModels\Build\BuildInitiatorProcessViewModel.win32.cs">
+      <DependentUpon>BuildInitiatorProcessViewModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Build\BuildSessionViewModel.Status.cs">
       <DependentUpon>BuildSessionViewModel.xaml</DependentUpon>
     </Compile>
@@ -171,7 +177,9 @@
     <Compile Include="ViewModels\Build\BuildSessionJobManager.cs" />
     <Compile Include="ViewModels\Settings\SettingsValidator.cs" />
     <Compile Include="ViewModels\Settings\SettingsViewModel.cs" />
-    <Compile Include="ViewModels\Settings\SettingsViewModel.ExternalSourceEditor.cs" />
+    <Compile Include="ViewModels\Settings\SettingsViewModel.ExternalSourceEditor.cs">
+      <DependentUpon>SettingsViewModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\Worker\WorkerCoreStatusViewModel.cs" />
     <Compile Include="ViewModels\Worker\WorkerViewModel.cs" />
     <Compile Include="Views\About\AboutView.xaml.cs">
