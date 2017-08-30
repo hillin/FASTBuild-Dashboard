@@ -252,7 +252,7 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			if (e.Message != null)
 			{
 				var message = e.Message.TrimEnd().Replace('\f', '\n');
-				var matches = Regex.Matches(message, @"^(.+)\((\d+)\)\: (.+)$", RegexOptions.Multiline);
+				var matches = Regex.Matches(message, @"^(.+)\((\d+)\)\s*\: (.+)$", RegexOptions.Multiline);
 				if (matches.Count > 0)
 				{
 					this.ErrorGroups = matches.Cast<Match>()
