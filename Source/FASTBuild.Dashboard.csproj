@@ -135,7 +135,7 @@
     <Compile Include="Services\Build\SourceEditor\IExternalSourceEditorService.cs" />
     <Compile Include="Services\Build\SourceEditor\NotepadPlusPlus.cs" />
     <Compile Include="Services\Build\SourceEditor\VisualStudio.cs" />
-    <Compile Include="Services\Build\SourceEditor\VisualStudio.win32.cs" >
+    <Compile Include="Services\Build\SourceEditor\VisualStudio.win32.cs">
       <DependentUpon>VisualStudio.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\Build\SourceEditor\VisualStudioCode.cs" />
@@ -188,6 +188,10 @@
     <Compile Include="Views\About\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Build\BuildHistogramView.cs" />
+    <Compile Include="Views\Build\BuildHistogramView.Frame.cs" />
+    <Compile Include="Views\Build\BuildHistogramView.Sample.cs" />
+    <Compile Include="Views\Build\BuildSessionCustomRenderingControlBase.cs" />
     <Compile Include="Views\Build\BuildSessionStatusView.xaml.cs">
       <DependentUpon>BuildSessionStatusView.xaml</DependentUpon>
     </Compile>

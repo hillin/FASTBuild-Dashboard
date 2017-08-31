@@ -36,10 +36,10 @@ namespace FastBuild.Dashboard.Views.Build
 		private void InitializeLayoutPart()
 		{
 			this.UpdateLayoutParameters();
-			_buildViewportService.BuildJobDisplayModeChanged += this.OnBuildJobDisplayModeChanged;
-			_buildViewportService.ScalingChanged += this.OnScalingChanged;
-			_buildViewportService.ViewTimeRangeChanged += this.OnViewTimeRangeChanged;
-			_buildViewportService.VerticalViewRangeChanged += this.OnVerticalViewRangeChanged;
+			this.ViewportService.BuildJobDisplayModeChanged += this.OnBuildJobDisplayModeChanged;
+			this.ViewportService.ScalingChanged += this.OnScalingChanged;
+			this.ViewportService.ViewTimeRangeChanged += this.OnViewTimeRangeChanged;
+			this.ViewportService.VerticalViewRangeChanged += this.OnVerticalViewRangeChanged;
 		}
 
 		private void OnBuildJobDisplayModeChanged(object sender, EventArgs e)
@@ -47,7 +47,7 @@ namespace FastBuild.Dashboard.Views.Build
 
 		private void UpdateLayoutParameters()
 		{
-			_jobDisplayMode = _buildViewportService.BuildJobDisplayMode;
+			_jobDisplayMode = this.ViewportService.BuildJobDisplayMode;
 			var postFix = _jobDisplayMode.ToString();
 
 			// queried resources are defined in /Theme/Layout.xaml
@@ -76,7 +76,7 @@ namespace FastBuild.Dashboard.Views.Build
 
 			_coreTopMap.Clear();
 
-			foreach (var worker in _sessionViewModel.Workers)
+			foreach (var worker in this.SessionViewModel.Workers)
 			{
 				top += _workerRowTopMargin;
 
@@ -109,7 +109,7 @@ namespace FastBuild.Dashboard.Views.Build
 				var top = pair.Value;
 				var bottom = top + _coreRowHeight;
 
-				if (top <= _buildViewportService.ViewBottom && bottom >= _buildViewportService.ViewTop)
+				if (top <= this.ViewportService.ViewBottom && bottom >= this.ViewportService.ViewTop)
 				{
 					_visibleCores.Add(pair.Key);
 				}
@@ -152,14 +152,14 @@ namespace FastBuild.Dashboard.Views.Build
 		}
 
 		protected override Size MeasureOverride(Size constraint)
-			=> _sessionViewModel == null
+			=> this.SessionViewModel == null
 				? new Size(0, 0)
-				: new Size(_sessionViewModel.ElapsedTime.TotalSeconds * _buildViewportService.Scaling + _headerViewWidth * 2,
+				: new Size(this.SessionViewModel.ElapsedTime.TotalSeconds * this.ViewportService.Scaling + _headerViewWidth * 2,
 					constraint.Height);
 
 		protected override Size ArrangeOverride(Size arrangeBounds)
 		{
-			if (_sessionViewModel != null)
+			if (this.SessionViewModel != null)
 			{
 				if (_coresInvalidated)
 				{

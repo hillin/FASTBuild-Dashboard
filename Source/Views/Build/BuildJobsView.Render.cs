@@ -106,16 +106,16 @@ namespace FastBuild.Dashboard.Views.Build
 
 			dc.DrawRectangle(this.Background, null, LayoutInformation.GetLayoutSlot(this));
 
-			var scaling = _buildViewportService.Scaling;
+			var scaling = this.ViewportService.Scaling;
 
-			var minimumLeft = scaling * _startTimeOffset;
-			var maxWidth = scaling * (_endTimeOffset - _startTimeOffset) + 16;
+			var minimumLeft = scaling * this.StartTimeOffset;
+			var maxWidth = scaling * (this.EndTimeOffset - this.StartTimeOffset) + 16;
 			var showText = _jobDisplayMode == BuildJobDisplayMode.Standard;
 
 			foreach (var job in _activeJobs)
 			{
 				var left = Math.Max(minimumLeft, job.StartTimeOffset * scaling);
-				var acceptedStartTimeOffset = Math.Max(_startTimeOffset, job.StartTimeOffset);
+				var acceptedStartTimeOffset = Math.Max(this.StartTimeOffset, job.StartTimeOffset);
 				var width = MathEx.Clamp((job.EndTimeOffset - acceptedStartTimeOffset) * scaling, 0, maxWidth);
 
 				if (width < ShortJobWidthThreshold)

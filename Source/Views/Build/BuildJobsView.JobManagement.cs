@@ -13,13 +13,13 @@ namespace FastBuild.Dashboard.Views.Build
 		private readonly HashSet<BuildJobViewModel> _activeJobs
 			= new HashSet<BuildJobViewModel>();
 
-		private void Clear()
+		protected override void Clear()
 		{
 			_activeJobs.Clear();
 			_visibleCores.Clear();
 			_coreTopMap.Clear();
 
-			this.InvalidateVisual();
+			base.Clear();
 		}
 
 		private void TryAddJob(BuildJobViewModel job)
@@ -31,13 +31,13 @@ namespace FastBuild.Dashboard.Views.Build
 		{
 			var buildViewportService = IoC.Get<IBuildViewportService>();
 
-			_startTimeOffset = buildViewportService.ViewStartTimeOffsetSeconds
+			this.StartTimeOffset = buildViewportService.ViewStartTimeOffsetSeconds
 							   + (_headerViewWidth - 8) / buildViewportService.Scaling; // minus 8px to make the jobs looks like being covered under the header panel
 
-			_endTimeOffset = buildViewportService.ViewEndTimeOffsetSeconds;
-			_wasNowInTimeFrame = _endTimeOffset >= _currentTimeOffset && _startTimeOffset <= _currentTimeOffset;
+			this.EndTimeOffset = buildViewportService.ViewEndTimeOffsetSeconds;
+			_wasNowInTimeFrame = this.EndTimeOffset >= this.CurrentTimeOffset && this.StartTimeOffset <= this.CurrentTimeOffset;
 
-			var jobs = new HashSet<BuildJobViewModel>(_jobManager.EnumerateJobs(_startTimeOffset, _endTimeOffset, _visibleCores));
+			var jobs = new HashSet<BuildJobViewModel>(this.JobManager.EnumerateJobs(this.StartTimeOffset, this.EndTimeOffset, _visibleCores));
 
 			// remove job that are no longer existed in current time frame
 			var jobsToRemove = _activeJobs.Where(job => !jobs.Contains(job)).ToList();
