@@ -60,19 +60,22 @@
                                                         ToolTip="Click to open source file">
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition MinWidth="32"
+                                                            <ColumnDefinition Width="16" />
+                                                            <ColumnDefinition MinWidth="72"
                                                                               Width="auto"
                                                                               SharedSizeGroup="KeyColumn" />
                                                             <ColumnDefinition Width="*" />
                                                         </Grid.ColumnDefinitions>
-                                                        <StackPanel Orientation="Horizontal"
-                                                                    Margin="16,0">
-                                                            <TextBlock>
-                                                                #<Run Text="{Binding LineNumber, Mode=OneWay}" />
-                                                            </TextBlock>
-                                                        </StackPanel>
+
+                                                        <materialDesign:PackIcon Kind="CloseOctagonOutline" />
+                                                        
+                                                        <TextBlock Grid.Column="1"
+                                                                   Margin="8,0,0,0">
+                                                            #<Run Text="{Binding LineNumber, Mode=OneWay}" />
+                                                        </TextBlock>
+
                                                         <TextBlock Text="{Binding ErrorMessage}"
-                                                                   Grid.Column="1" />
+                                                                   Grid.Column="2" />
                                                     </Grid>
                                                 </Button>
                                             </DataTemplate>
