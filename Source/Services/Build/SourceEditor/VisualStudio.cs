@@ -25,74 +25,75 @@ namespace FastBuild.Dashboard.Services.Build.SourceEditor
 		{
 			var retVal = WinAPI.GetRunningObjectTable(0, out IRunningObjectTable rot);
 
-			if (retVal == 0)
+			if (retVal != 0)
 			{
-				rot.EnumRunning(out IEnumMoniker enumMoniker);
+				return false;
+			}
 
-				var fetched = IntPtr.Zero;
-				var monikers = new IMoniker[1];
-				while (enumMoniker.Next(1, monikers, fetched) == 0)
+			rot.EnumRunning(out IEnumMoniker enumMoniker);
+
+			var monikers = new IMoniker[1];
+			while (enumMoniker.Next(1, monikers, IntPtr.Zero) == 0)
+			{
+				WinAPI.CreateBindCtx(0, out var bindCtx);
+				monikers[0].GetDisplayName(bindCtx, null, out var displayName);
+				if (!displayName.StartsWith("!VisualStudio.DTE"))
 				{
-					var moniker = monikers[0];
-					WinAPI.CreateBindCtx(0, out IBindCtx bindCtx);
-					moniker.GetDisplayName(bindCtx, null, out string displayName);
-					moniker.GetClassID(out var _);
-					if (displayName.StartsWith("!VisualStudio.DTE"))
+					continue;
+				}
+
+				if (initiatorProcessId > 0)
+				{
+					// DTE's process id is appended in its moniker name after a colon
+					var colonIndex = displayName.LastIndexOf(':');
+					if (colonIndex < 0)
 					{
-						if (initiatorProcessId > 0)
-						{
-							// DTE's process id is appended in its moniker name after a colon
-							var colonIndex = displayName.LastIndexOf(':');
-							if (colonIndex < 0)
-							{
-								continue;
-							}
+						continue;
+					}
 
-							if (displayName.Substring(colonIndex + 1) != initiatorProcessId.ToString())
-							{
-								continue;
-							}
-						}
+					if (displayName.Substring(colonIndex + 1) != initiatorProcessId.ToString())
+					{
+						continue;
+					}
+				}
 
-						try
-						{
-							rot.GetObject(monikers[0], out dynamic dte);
-							var window = dte.ItemOperations.OpenFile(file);
-							if (window == null)
-							{
-								continue;
-							}
+				try
+				{
+					rot.GetObject(monikers[0], out dynamic dte);
+					var window = dte.ItemOperations.OpenFile(file);
+					if (window == null)
+					{
+						continue;
+					}
 
-							if (lineNumber > 0)
-							{
-								var selection = window.Document.Selection;
-								selection.GotoLine(lineNumber, true);
-							}
+					if (lineNumber > 0)
+					{
+						var selection = window.Document.Selection;
+						selection.GotoLine(lineNumber, true);
+					}
 
-							// workaround: when the DTE window is brought to front, the Deactivated
-							// event won't be fired for Application, thus the tooltip won't hide
-							App.Current.RaiseOnDeactivated();
+					// workaround: when the DTE window is brought to front, the Deactivated
+					// event won't be fired for Application, thus the tooltip won't hide
+					App.Current.RaiseOnDeactivated();
 
-							window.Activate();
-							window.Document.Activate();
+					window.Activate();
+					window.Document.Activate();
 
-							// we should use window's hWnd, however seems it is always zero
-							var dteHwnd = (IntPtr)dte.MainWindow.HWnd;
-							WinAPI.FlashWindow(dteHwnd, false);
-							WinAPI.SetForegroundWindow(dteHwnd);
+					// we should use window's hWnd, however seems it is always zero
+					var dteHwnd = (IntPtr)dte.MainWindow.HWnd;
+					WinAPI.FlashWindow(dteHwnd, false);
+					WinAPI.SetForegroundWindow(dteHwnd);
 
-							return true;
-						}
-						catch (COMException)
-						{
-							// DTE might not be ready at this time
+					return true;
+				}
+				catch (COMException)
+				{
+					// DTE might not be ready at this time
 
-							if (initiatorProcessId > 0)
-							{
-								// skip other DTE instances if distinct id is specified
-								return false;
-							}
-						}
+					if (initiatorProcessId > 0)
+					{
+						// skip other DTE instances if distinct id is specified
+						return false;
 					}
 				}
 			}
