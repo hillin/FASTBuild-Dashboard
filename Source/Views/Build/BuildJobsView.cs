@@ -69,6 +69,8 @@ namespace FastBuild.Dashboard.Views.Build
 			_jobManager.OnJobStarted += this.JobManager_OnJobStarted;
 			_jobManager.OnJobFinished += this.JobManager_OnJobFinished;
 
+			this.UpdateTimeFrame();
+
 			this.InvalidateCores();
 			this.InvalidateJobs();
 		}

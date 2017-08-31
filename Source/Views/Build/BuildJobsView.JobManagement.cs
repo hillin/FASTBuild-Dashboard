@@ -29,13 +29,7 @@ namespace FastBuild.Dashboard.Views.Build
 
 		private void UpdateJobs()
 		{
-			var buildViewportService = IoC.Get<IBuildViewportService>();
-
-			_startTimeOffset = buildViewportService.ViewStartTimeOffsetSeconds
-							   + (_headerViewWidth - 8) / buildViewportService.Scaling; // minus 8px to make the jobs looks like being covered under the header panel
-
-			_endTimeOffset = buildViewportService.ViewEndTimeOffsetSeconds;
-			_wasNowInTimeFrame = _endTimeOffset >= _currentTimeOffset && _startTimeOffset <= _currentTimeOffset;
+			this.UpdateTimeFrame();
 
 			var jobs = new HashSet<BuildJobViewModel>(_jobManager.EnumerateJobs(_startTimeOffset, _endTimeOffset, _visibleCores));
 
@@ -59,5 +53,16 @@ namespace FastBuild.Dashboard.Views.Build
 			this.InvalidateVisual();
 		}
 
+		private void UpdateTimeFrame()
+		{
+			_startTimeOffset = _buildViewportService.ViewStartTimeOffsetSeconds
+			                   +
+			                   (_headerViewWidth - 8) /
+			                   _buildViewportService
+				                   .Scaling; // minus 8px to make the jobs looks like being covered under the header panel
+
+			_endTimeOffset = _buildViewportService.ViewEndTimeOffsetSeconds;
+			_wasNowInTimeFrame = _endTimeOffset >= _currentTimeOffset && _startTimeOffset <= _currentTimeOffset;
+		}
 	}
 }
