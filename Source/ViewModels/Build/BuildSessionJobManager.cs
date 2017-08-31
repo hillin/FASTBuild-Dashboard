@@ -67,8 +67,8 @@ namespace FastBuild.Dashboard.ViewModels.Build
 		public void NotifyJobFinished(BuildJobViewModel job)
 		{
 			this.OnJobFinished?.Invoke(this, job);
-			
-			_activeRemoteJobMap.Remove(job.EventName);	// simply remove, doesn't matter if not existed
+
+			_activeRemoteJobMap.Remove(job.EventName);  // simply remove, doesn't matter if not existed
 		}
 
 		public BuildJobViewModel GetJobPotentiallyWonByLocalRace(BuildJobViewModel job)
@@ -92,13 +92,13 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			return _coreMappedStartTimeSortedJobs.Values.SelectMany(j => j);
 		}
 
-		public IEnumerable<BuildJobViewModel> EnumerateJobs(double startTimeOffset, double endTimeOffset, HashSet<BuildCoreViewModel> cores)
+		public IEnumerable<BuildJobViewModel> EnumerateJobs(double startTimeOffset, double endTimeOffset, HashSet<BuildCoreViewModel> cores = null)
 		{
 			var isTimeFrameAfterNow = startTimeOffset > _currentTimeOffset;
 
 			foreach (var pair in _coreMappedStartTimeSortedJobs)
 			{
-				if (!cores.Contains(pair.Key))
+				if (cores != null && !cores.Contains(pair.Key))
 				{
 					continue;
 				}

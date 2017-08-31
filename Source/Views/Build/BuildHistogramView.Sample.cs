@@ -11,14 +11,14 @@ namespace FastBuild.Dashboard.Views.Build
 	{
 		private class Sample
 		{
-			public double Value { get; }
+			public int Value { get;  }
 			public Brush Background { get; }
-			public Brush Border { get; }
-			public Sample(double value, Brush background, Brush border)
+			public Pen Border { get; }
+			public Sample(int value, Brush background, Pen border)
 			{
-				this.Value = value;
 				this.Background = background;
 				this.Border = border;
+				this.Value = value;
 			}
 		}
 	}

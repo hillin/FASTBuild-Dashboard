@@ -28,87 +28,93 @@
         <Grid>
 
             <Border x:Name="IsSessionViewVisible">
-                <Grid>
+                <DockPanel>
 
-                    <ScrollViewer x:Name="BackgroundScrollViewer" 
-                                  IsEnabled="False"
-                                  IsHitTestVisible="False"
-                                  Margin="0,0,17,17"
-                                  HorizontalScrollBarVisibility="Hidden"
-                                  VerticalScrollBarVisibility="Hidden">
-                        <DockPanel>
-                            <Grid Height="{Binding ElementName=TimeRuler, Path=ActualHeight}" 
-                                  DockPanel.Dock="Bottom" /> <!-- leave blank for time ruler -->
+                    <build:BuildHistogramView DockPanel.Dock="Bottom"
+                                              Height="32"/>
+
+                    <Grid>
+
+                        <ScrollViewer x:Name="BackgroundScrollViewer" 
+                                      IsEnabled="False"
+                                      IsHitTestVisible="False"
+                                      Margin="0,0,17,17"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden">
+                            <DockPanel>
+                                <Grid Height="{Binding ElementName=TimeRuler, Path=ActualHeight}" 
+                                      DockPanel.Dock="Bottom" /> <!-- leave blank for time ruler -->
                             
-                            <build:BuildSessionWorkersBackgroundView x:Name="WorkersBackground"
-                                                                     HorizontalAlignment="Stretch" />
-                        </DockPanel>
-                    </ScrollViewer>
+                                <build:BuildSessionWorkersBackgroundView x:Name="WorkersBackground"
+                                                                         HorizontalAlignment="Stretch" />
+                            </DockPanel>
+                        </ScrollViewer>
 
-                    <support:DragScrollViewer x:Name="ContentScrollViewer" 
-                                  HorizontalScrollBarVisibility="Visible"
-                                  VerticalScrollBarVisibility="Visible"
-                                  ScrollChanged="ContentScrollViewer_ScrollChanged">
-                        <DockPanel>
-                            <Grid Height="{Binding ElementName=TimeRuler, Path=ActualHeight}" 
-                                  DockPanel.Dock="Bottom" />   <!-- leave blank for time ruler -->
+                        <support:DragScrollViewer x:Name="ContentScrollViewer" 
+                                      HorizontalScrollBarVisibility="Visible"
+                                      VerticalScrollBarVisibility="Visible"
+                                      ScrollChanged="ContentScrollViewer_ScrollChanged">
+                            <DockPanel>
+                                <Grid Height="{Binding ElementName=TimeRuler, Path=ActualHeight}" 
+                                      DockPanel.Dock="Bottom" />   <!-- leave blank for time ruler -->
 
-                            <build:BuildJobsView x:Name="BuildJobsView"
-                                                 SizeChanged="BuildJobsView_SizeChanged"
-                                                 JobTextStyle="{DynamicResource MaterialDesignBody1TextBlock}"
-                                                 Height="{Binding ElementName=WorkersHeader, Path=ActualHeight}"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Top" />
-                        </DockPanel>
-                    </support:DragScrollViewer>
+                                <build:BuildJobsView x:Name="BuildJobsView"
+                                                     SizeChanged="BuildJobsView_SizeChanged"
+                                                     JobTextStyle="{DynamicResource MaterialDesignBody1TextBlock}"
+                                                     Height="{Binding ElementName=WorkersHeader, Path=ActualHeight}"
+                                                     HorizontalAlignment="Left"
+                                                     VerticalAlignment="Top" />
+                            </DockPanel>
+                        </support:DragScrollViewer>
 
-                    <ScrollViewer x:Name="HeaderScrollViewer"
-                                  IsEnabled="False"
-                                  IsHitTestVisible="False"
-                                  Margin="0,0,17,17"
-                                  HorizontalAlignment="Left"
-                                  HorizontalScrollBarVisibility="Hidden"
-                                  VerticalScrollBarVisibility="Hidden">
-                        <DockPanel>
-                            <Grid Height="{Binding ElementName=TimeRuler, Path=ActualHeight}"
-                                  DockPanel.Dock="Bottom" /> <!-- leave blank for time ruler -->
+                        <ScrollViewer x:Name="HeaderScrollViewer"
+                                      IsEnabled="False"
+                                      IsHitTestVisible="False"
+                                      Margin="0,0,17,17"
+                                      HorizontalAlignment="Left"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden">
+                            <DockPanel>
+                                <Grid Height="{Binding ElementName=TimeRuler, Path=ActualHeight}"
+                                      DockPanel.Dock="Bottom" /> <!-- leave blank for time ruler -->
 
-                            <build:BuildSessionWorkersHeaderView x:Name="WorkersHeader"
-                                                                 Height="{Binding ElementName=WorkersBackground, Path=ActualHeight}"
-                                                                 HorizontalAlignment="Left" />
-                        </DockPanel>
-                    </ScrollViewer>
+                                <build:BuildSessionWorkersHeaderView x:Name="WorkersHeader"
+                                                                     Height="{Binding ElementName=WorkersBackground, Path=ActualHeight}"
+                                                                     HorizontalAlignment="Left" />
+                            </DockPanel>
+                        </ScrollViewer>
 
-                    <!--<build:TimeRulerView x:Name="TimeRuler" 
-                                         Margin="0,0,17,16.5"
-                                         VerticalAlignment="Bottom"
-                                         Height="24" />-->
+                        <!--<build:TimeRulerView x:Name="TimeRuler" 
+                                             Margin="0,0,17,16.5"
+                                             VerticalAlignment="Bottom"
+                                             Height="24" />-->
 
-                    <Grid Margin="0,0,17,16.5"
-                          VerticalAlignment="Bottom" 
-                          Background="{DynamicResource MaterialDesignBackground}"
-                          Height="24">
+                        <Grid Margin="0,0,17,16.5"
+                              VerticalAlignment="Bottom" 
+                              Background="{DynamicResource MaterialDesignBackground}"
+                              Height="24">
 
-                        <build:TimeRulerView x:Name="TimeRuler"
-                                                 MinorTickBrush="{DynamicResource MaterialDesignBodyLight}"
-                                                 MajorTickBrush="{DynamicResource MaterialDesignBody}">
-                            <build:TimeRulerView.TimeLabelStyle>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody2TextBlock}">
-                                    <Setter Property="FontSize" Value="10" />
-                                </Style>
-                            </build:TimeRulerView.TimeLabelStyle>
-                        </build:TimeRulerView>
+                            <build:TimeRulerView x:Name="TimeRuler"
+                                                     MinorTickBrush="{DynamicResource MaterialDesignBodyLight}"
+                                                     MajorTickBrush="{DynamicResource MaterialDesignBody}">
+                                <build:TimeRulerView.TimeLabelStyle>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody2TextBlock}">
+                                        <Setter Property="FontSize" Value="10" />
+                                    </Style>
+                                </build:TimeRulerView.TimeLabelStyle>
+                            </build:TimeRulerView>
 
-                        <build:BuildWorkerStatusView HorizontalAlignment="Left"
-                                                     Background="{DynamicResource MaterialDesignBackground}"
-                                                     Width="{StaticResource HeaderViewWidth}" />
+                            <build:BuildWorkerStatusView HorizontalAlignment="Left"
+                                                         Background="{DynamicResource MaterialDesignBackground}"
+                                                         Width="{StaticResource HeaderViewWidth}" />
 
-                        <GridSplitter Height="1"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Top" />
+                            <GridSplitter Height="1"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Top" />
+                        </Grid>
+
                     </Grid>
-
-                </Grid>
+                </DockPanel>
             </Border>
 
             <Border Background="#E0FFFFFF"

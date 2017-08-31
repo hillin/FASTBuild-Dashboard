@@ -35,6 +35,8 @@ namespace FastBuild.Dashboard.Views.Build
 		protected override void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
 			base.OnDataContextChanged(sender, e);
+			this.UpdateTimeFrame();
+
 			this.InvalidateCores();
 			this.InvalidateJobs();
 		}
