@@ -79,7 +79,7 @@ namespace FastBuild.Dashboard
 		private static void SpawnShadowProcess(StartupEventArgs e, string assemblyLocation)
 		{
 			var shadowAssemblyName = $"{Path.GetFileNameWithoutExtension(assemblyLocation)}.shadow.exe";
-			var shadowPath = Path.Combine(Path.GetTempPath(), shadowAssemblyName);
+			var shadowPath = Path.Combine(Path.GetTempPath(), "FBDashboard", shadowAssemblyName);
 			try
 			{
 				if (File.Exists(shadowPath))
@@ -88,7 +88,21 @@ namespace FastBuild.Dashboard
 				}
 
 				Debug.Assert(assemblyLocation != null, "assemblyLocation != null");
+				Directory.CreateDirectory(Path.GetDirectoryName(shadowPath));
 				File.Copy(assemblyLocation, shadowPath);
+
+				// Copy FBuild folder with worker if exists.
+				var workerFolder = Path.Combine(Path.GetDirectoryName(assemblyLocation), "FBuild");
+				var workerTargetFolder = Path.Combine(Path.GetDirectoryName(shadowPath), "FBuild");
+				if (Directory.Exists(workerFolder))
+				{
+					Directory.CreateDirectory(workerTargetFolder);
+					// Copy all worker files.
+					foreach (string newPath in Directory.GetFiles(workerFolder, "*.*", SearchOption.TopDirectoryOnly))
+					{
+						File.Copy(newPath, newPath.Replace(workerFolder, workerTargetFolder), true);
+					}
+				}
 			}
 			catch (UnauthorizedAccessException)
 			{

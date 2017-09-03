@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows;
 
 namespace FastBuild.Dashboard.Services.Worker
@@ -211,13 +212,21 @@ namespace FastBuild.Dashboard.Services.Worker
 
 		private void StartNewWorker()
 		{
-			if (!File.Exists(WorkerExecutablePath))
+			var executablePath = WorkerExecutablePath;
+
+			if (!File.Exists(executablePath))
 			{
-				this.OnWorkerErrorOccurred($"Worker executable not found at {WorkerExecutablePath}");
-				return;
+				// If worker isn't found in working directory, try it relative to running binary.
+				executablePath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), WorkerExecutablePath);
+
+				if (!File.Exists(executablePath))
+				{
+					this.OnWorkerErrorOccurred($"Worker executable not found at {WorkerExecutablePath}");
+					return;
+				}
 			}
 
-			var startInfo = new ProcessStartInfo(WorkerExecutablePath)
+			var startInfo = new ProcessStartInfo(executablePath)
 			{
 				Arguments = "-nosubprocess",
 				CreateNoWindow = true
