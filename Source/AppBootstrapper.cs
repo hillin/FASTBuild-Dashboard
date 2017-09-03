@@ -39,8 +39,8 @@ namespace FastBuild.Dashboard
 
 		protected override void OnStartup(object sender, StartupEventArgs e)
 		{
-			App.Current.SetStartupWithWindows(AppSettings.Default.StartWithWindows);
 			App.Current.ProcessArgs(e.Args);
+			App.Current.SetStartupWithWindows(AppSettings.Default.StartWithWindows);
 
 #if DEBUG && !DEBUG_SINGLE_INSTANCE
 			this.DisplayRootViewFor<MainWindowViewModel>();
@@ -86,7 +86,7 @@ namespace FastBuild.Dashboard
 				Process.Start(new ProcessStartInfo
 				{
 					FileName = shadowPath,
-					Arguments = string.Join(" ", e.Args.Concat(new[] { "-no-shadow" }))
+					Arguments = string.Join(" ", e.Args.Concat(new[] { $"-no-shadow -parent=\"{assemblyLocation}\"" }))
 				});
 
 				Environment.Exit(0);
