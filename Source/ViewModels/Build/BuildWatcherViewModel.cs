@@ -160,7 +160,7 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			this.EnsureCurrentSession();
 			this.CurrentSession.ReportProgress(e);
 			this.TaskbarProgressState = TaskbarItemProgressState.Normal;
-			this.TaskbarProgressValue = e.Progress;
+			this.TaskbarProgressValue = e.Progress / 100.0;
 		}
 
 		private void Watcher_ReportCounter(object sender, ReportCounterEventArgs e)
