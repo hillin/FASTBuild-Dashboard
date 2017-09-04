@@ -39,8 +39,8 @@ namespace FastBuild.Dashboard
 
 		protected override void OnStartup(object sender, StartupEventArgs e)
 		{
-			App.Current.SetStartupWithWindows(AppSettings.Default.StartWithWindows);
 			App.Current.ProcessArgs(e.Args);
+			App.Current.SetStartupWithWindows(AppSettings.Default.StartWithWindows);
 
 #if DEBUG && !DEBUG_SINGLE_INSTANCE
 			this.DisplayRootViewFor<MainWindowViewModel>();
@@ -61,7 +61,7 @@ namespace FastBuild.Dashboard
 			else
 			{
 				var shadowAssemblyName = $"{Path.GetFileNameWithoutExtension(assemblyLocation)}.shadow.exe";
-				var shadowPath = Path.Combine(Path.GetTempPath(), shadowAssemblyName);
+				var shadowPath = Path.Combine(Path.GetTempPath(), "FBDashboard", shadowAssemblyName);
 				try
 				{
 					if (File.Exists(shadowPath))
@@ -70,7 +70,21 @@ namespace FastBuild.Dashboard
 					}
 
 					Debug.Assert(assemblyLocation != null, "assemblyLocation != null");
+					Directory.CreateDirectory(Path.GetDirectoryName(shadowPath));
 					File.Copy(assemblyLocation, shadowPath);
+
+					// Copy FBuild folder with worker if exists.
+					var workerFolder = Path.Combine(Path.GetDirectoryName(assemblyLocation), "FBuild");
+					var workerTargetFolder = Path.Combine(Path.GetDirectoryName(shadowPath), "FBuild");
+					if (Directory.Exists(workerFolder))
+					{
+						Directory.CreateDirectory(workerTargetFolder);
+						// Copy all worker files.
+						foreach (string newPath in Directory.GetFiles(workerFolder, "*.*", SearchOption.TopDirectoryOnly))
+						{
+							File.Copy(newPath, newPath.Replace(workerFolder, workerTargetFolder), true);
+						}
+					}
 				}
 				catch (UnauthorizedAccessException)
 				{
@@ -86,7 +100,7 @@ namespace FastBuild.Dashboard
 				Process.Start(new ProcessStartInfo
 				{
 					FileName = shadowPath,
-					Arguments = string.Join(" ", e.Args.Concat(new[] { "-no-shadow" }))
+					Arguments = string.Join(" ", e.Args.Concat(new[] { $"-no-shadow -parent=\"{assemblyLocation}\"" }))
 				});
 
 				Environment.Exit(0);

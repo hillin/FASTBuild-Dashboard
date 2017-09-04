@@ -42,6 +42,8 @@ namespace FastBuild.Dashboard
 #endif
 		public bool StartMinimized { get; private set; }
 
+		public string LocationOverride { get; private set; }
+
 		public App()
 		{
 			this.InitializeComponent();
@@ -70,6 +72,10 @@ namespace FastBuild.Dashboard
 				if (startUp)
 				{
 					var location = entryAssembly.Location;
+					if (!string.IsNullOrEmpty(this.LocationOverride))
+					{
+						location = this.LocationOverride;
+					}
 					Debug.Assert(location != null, "location != null");
 					if (location.EndsWith(".shadow.exe", System.StringComparison.InvariantCultureIgnoreCase))
 					{
@@ -92,6 +98,14 @@ namespace FastBuild.Dashboard
 		public void ProcessArgs(string[] args)
 		{
 			this.StartMinimized = args.Contains("-minimized");
+
+			foreach (string argument in args)
+			{
+				if (argument.Contains("-parent="))
+				{
+					this.LocationOverride = argument.Substring("-parent=".Length, argument.Length - "-parent=".Length).Replace("\"", "");
+				}
+			}
 		}
 	}
 }
