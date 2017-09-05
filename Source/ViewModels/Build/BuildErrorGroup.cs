@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using FastBuild.Dashboard.Support;
-using Microsoft.CSharp.RuntimeBinder;
+﻿using System.Collections.Generic;
 
 namespace FastBuild.Dashboard.ViewModels.Build
 {

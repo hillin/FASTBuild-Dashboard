@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Caliburn.Micro;
-using FastBuild.Dashboard.Services;
 using FastBuild.Dashboard.Services.Build;
 using FastBuild.Dashboard.ViewModels.Build;
 using Action = System.Action;

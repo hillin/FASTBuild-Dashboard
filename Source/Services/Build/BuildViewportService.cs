@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using FastBuild.Dashboard.Configuration;
 
 namespace FastBuild.Dashboard.Services.Build
 {
@@ -37,7 +38,7 @@ namespace FastBuild.Dashboard.Services.Build
 			get => (BuildJobDisplayMode)Profile.Default.BuildJobDisplayMode;
 			private set
 			{
-				Profile.Default.BuildJobDisplayMode = (int) value;
+				Profile.Default.BuildJobDisplayMode = (int)value;
 				Profile.Default.Save();
 			}
 		}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
+using FastBuild.Dashboard.Configuration;
 using FastBuild.Dashboard.ViewModels;
 
 namespace FastBuild.Dashboard.Views

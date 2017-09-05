@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Media;
 using Caliburn.Micro;
 using Caliburn.Micro.Validation;
+using FastBuild.Dashboard.Configuration;
 using FastBuild.Dashboard.Services;
 using FastBuild.Dashboard.Services.Worker;
 using Ookii.Dialogs.Wpf;

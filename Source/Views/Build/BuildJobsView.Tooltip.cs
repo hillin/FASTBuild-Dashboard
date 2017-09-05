@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
-using FastBuild.Dashboard.Support;
 using FastBuild.Dashboard.ViewModels.Build;
 
 namespace FastBuild.Dashboard.Views.Build

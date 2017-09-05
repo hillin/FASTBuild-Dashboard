@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using FastBuild.Dashboard.Configuration;
 using FastBuild.Dashboard.Support;
 using Microsoft.Win32;
 
@@ -25,7 +26,7 @@ namespace FastBuild.Dashboard
 					return default(T);
 				}
 #endif
-				
+
 				if (!CachedResources.TryGetValue(key, out var resource))
 				{
 					resource = (T)App.Current.FindResource(key);
@@ -41,11 +42,21 @@ namespace FastBuild.Dashboard
 		public static bool IsInDesignTime { get; } = DesignerProperties.GetIsInDesignMode(new DependencyObject());
 #endif
 		public bool StartMinimized { get; private set; }
+		public bool DoNotSpawnShadowExecutable { get; private set; }
+		public bool IsShadowProcess { get; private set; }
+		public ShadowContext ShadowContext { get; private set; }
 
 		public App()
 		{
 			this.InitializeComponent();
 			App.Current = this;
+		}
+
+		protected override void OnStartup(StartupEventArgs e)
+		{
+			this.ProcessArgs(e.Args);
+			SettingsBase.Initialize();
+			base.OnStartup(e);
 		}
 
 		internal void RaiseOnDeactivated()
@@ -71,10 +82,6 @@ namespace FastBuild.Dashboard
 				{
 					var location = entryAssembly.Location;
 					Debug.Assert(location != null, "location != null");
-					if (location.EndsWith(".shadow.exe", System.StringComparison.InvariantCultureIgnoreCase))
-					{
-						location = location.Substring(0, location.Length - ".shadow.exe".Length) + ".exe";
-					}
 
 					key.SetValue(entryAssembly.GetName().Name, $"\"{location}\" -minimized");
 				}
@@ -91,7 +98,38 @@ namespace FastBuild.Dashboard
 
 		public void ProcessArgs(string[] args)
 		{
-			this.StartMinimized = args.Contains("-minimized");
+			this.IsShadowProcess = args.Contains(AppArguments.ShadowProc);
+
+#if DEBUG_SHADOW_PROCESS
+			// start debugger as early as possible
+			if (App.Current.IsShadowProcess)
+			{
+				Debugger.Launch();
+			}
+#endif
+
+			this.StartMinimized = args.Contains(AppArguments.StartMinimized);
+			this.DoNotSpawnShadowExecutable = args.Contains(AppArguments.NoShadow);
+			if (this.IsShadowProcess)
+			{
+				this.LoadShadowContext();
+			}
 		}
+
+		private void LoadShadowContext()
+		{
+			try
+			{
+				this.ShadowContext = ShadowContext.Load();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Failed to start FASTBuild Dashboard: error spawn shadow process.\n\n {ex.Message}",
+					"FASTBuild Dashboard", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+				Environment.Exit(-1);
+			}
+		}
+
+		
 	}
 }

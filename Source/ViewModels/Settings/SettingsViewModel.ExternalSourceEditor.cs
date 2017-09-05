@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Caliburn.Micro;
+using FastBuild.Dashboard.Configuration;
 using FastBuild.Dashboard.Services.Build.SourceEditor;
-using Microsoft.Win32;
 using Ookii.Dialogs.Wpf;
 
 namespace FastBuild.Dashboard.ViewModels.Settings

@@ -1,16 +1,15 @@
 ﻿using System;
+using FastBuild.Dashboard.Configuration;
 
 namespace FastBuild.Dashboard.Services.Worker
 {
 	internal class WorkerAgentService : IWorkerAgentService
 	{
-		private AppSettings CurrentAppSettings => AppSettings.Default;
-
 		public int WorkerCores
 		{
 			get
 			{
-				var cores = this.CurrentAppSettings.WorkerCores;
+				var cores = AppSettings.Default.WorkerCores;
 				if (cores <= 0)
 				{
 					cores = Environment.ProcessorCount / 2;
@@ -20,8 +19,8 @@ namespace FastBuild.Dashboard.Services.Worker
 			}
 			set
 			{
-				this.CurrentAppSettings.WorkerCores = value;
-				this.CurrentAppSettings.Save();
+				AppSettings.Default.WorkerCores = value;
+				AppSettings.Default.Save();
 
 				if (_workerAgent.IsRunning)
 				{
@@ -32,11 +31,11 @@ namespace FastBuild.Dashboard.Services.Worker
 
 		public WorkerMode WorkerMode
 		{
-			get => (WorkerMode)this.CurrentAppSettings.WorkerMode;
+			get => (WorkerMode)AppSettings.Default.WorkerMode;
 			set
 			{
-				this.CurrentAppSettings.WorkerMode = (int)value;
-				this.CurrentAppSettings.Save();
+				AppSettings.Default.WorkerMode = (int)value;
+				AppSettings.Default.Save();
 
 				if (_workerAgent.IsRunning)
 				{
