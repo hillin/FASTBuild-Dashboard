@@ -238,7 +238,7 @@
                                     <materialDesign:PackIcon Kind="InformationOutline"
                                                              HorizontalAlignment="Center" />
                                 </Grid>
-                                <TextBox x:Name="ExternalSourceEditorArguments" />
+                                <TextBox x:Name="ExternalSourceEditorArgs" />
                             </DockPanel>
                         </Grid>
                     </StackPanel>
@@ -249,7 +249,7 @@
                                    Text="Additional Args." />
 
                         <Grid Style="{StaticResource OptionContent}">
-                            <TextBox x:Name="ExternalSourceEditorAdditionalArguments" />
+                            <TextBox x:Name="ExternalSourceEditorAdditionalArgs" />
                         </Grid>
                     </StackPanel>
 
