@@ -124,6 +124,20 @@
                                     <ListItem Margin="0,4,0,0">
                                         <Paragraph>
                                             <Hyperlink
+                                                NavigateUri="https://www.newtonsoft.com/json">
+                                                Json.NET
+                                            </Hyperlink>
+                                            Copyright (c) 2007 James Newton-King, licenced under the
+                                            <Hyperlink
+                                                NavigateUri="https://github.com/JamesNK/Newtonsoft.Json/blob/master/LICENSE.md">
+                                                MIT License
+                                            </Hyperlink>
+                                        </Paragraph>
+                                    </ListItem>
+
+                                    <ListItem Margin="0,4,0,0">
+                                        <Paragraph>
+                                            <Hyperlink
                                                 NavigateUri="https://github.com/ButchersBoy/MaterialDesignInXamlToolkit">
                                                 Material Design in XAML Toolkit
                                             </Hyperlink>
