@@ -24,11 +24,14 @@ namespace FastBuild.Dashboard.Configuration
 			}
 			else
 			{
+				// System.Configuration.ClientConfigPaths is an internal class. Here we retrieve the standard local
+				// user setting location with reflection
+
 				var clientConfigPathsType = typeof(ConfigurationManager).Assembly.GetType("System.Configuration.ClientConfigPaths");
 				var currentProperty = clientConfigPathsType.GetProperty("Current", BindingFlags.Static | BindingFlags.NonPublic);
 				Debug.Assert(currentProperty != null, "currentProperty != null");
 				var currentClientConfigPaths = currentProperty.GetValue(null);
-
+				Debug.Assert(currentClientConfigPaths != null, "currentClientConfigPaths != null");
 				var localConfigDirectoryProperty =
 					clientConfigPathsType.GetProperty("LocalConfigDirectory", BindingFlags.NonPublic | BindingFlags.Instance);
 				Debug.Assert(localConfigDirectoryProperty != null, "localConfigDirectoryField != null");
