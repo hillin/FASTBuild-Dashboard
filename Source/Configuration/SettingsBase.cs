@@ -3,7 +3,6 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -74,7 +73,7 @@ namespace FastBuild.Dashboard.Configuration
 			}
 
 			var settings = new T();
-			var previousVersion = SettingsBase.LoadPreviousVersion<T>(domain);
+			var previousVersion = SettingsBase.LoadPreviousVersion(domain);
 			if (previousVersion != null)
 			{
 				settings.Upgrade(previousVersion);
@@ -83,11 +82,9 @@ namespace FastBuild.Dashboard.Configuration
 			settings.Save();
 
 			return settings;
-
 		}
 
-		private static T LoadPreviousVersion<T>(string domain)
-			where T : SettingsBase
+		private static JObject LoadPreviousVersion(string domain)
 		{
 			var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
 			var parentDirectory = Path.GetDirectoryName(SettingsBase.StorageDirectory);
@@ -125,7 +122,7 @@ namespace FastBuild.Dashboard.Configuration
 
 			try
 			{
-				return JObject.Parse(File.ReadAllText(previousVersionFile)).ToObject<T>();
+				return JObject.Parse(File.ReadAllText(previousVersionFile));
 			}
 			catch (JsonException)
 			{
@@ -143,9 +140,10 @@ namespace FastBuild.Dashboard.Configuration
 			this.Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}
 
-		protected virtual void Upgrade(SettingsBase previousVersion)
+		protected virtual void Upgrade(JObject previousVersion)
 		{
-			var properties = previousVersion.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+			var properties = this.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+			var data = previousVersion.ToObject(this.GetType());
 
 			foreach (var property in properties)
 			{
@@ -157,7 +155,7 @@ namespace FastBuild.Dashboard.Configuration
 					continue;
 				}
 
-				property.SetValue(this, property.GetValue(previousVersion));
+				property.SetValue(this, property.GetValue(data));
 			}
 		}
 	}
