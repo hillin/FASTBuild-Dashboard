@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;DEBUG_TEST_LOG, NO_DEBUG_SINGLE_INSTANCE, DEBUG_SHADOW_PROCESS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -121,6 +121,7 @@
     <Compile Include="Configuration\SettingsBase.cs" />
     <Compile Include="Configuration\SettingsExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Properties\Debug.cs" />
     <Compile Include="Services\Build\BuildJobDisplayMode.cs" />
     <Compile Include="Services\Build\BuildViewportServiceXamlSupport.cs" />
     <Compile Include="Services\Build\SourceEditor\CustomExternalSourceEditor.cs" />
