@@ -20,10 +20,10 @@ namespace FastBuild.Dashboard.Configuration
 
 		public int WindowLeft { get; set; }
 		public int WindowTop { get; set; }
-		public int WindowWidth { get; set; }
-		public int WindowHeight { get; set; }
+		public int WindowWidth { get; set; } = 800;
+		public int WindowHeight { get; set; } = 600;
 		public bool IsFirstRun { get; set; } = true;
-		public WindowState WindowState { get; set; }
+		public WindowState WindowState { get; set; } = WindowState.Normal;
 		public int BuildJobDisplayMode { get; set; } = (int)Services.Build.BuildJobDisplayMode.Standard;
 	}
 }
