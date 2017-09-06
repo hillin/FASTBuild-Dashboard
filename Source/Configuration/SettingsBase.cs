@@ -61,6 +61,13 @@ namespace FastBuild.Dashboard.Configuration
 		public static T Load<T>(string domain)
 			where T : SettingsBase, new()
 		{
+#if DEBUG
+			if (App.IsInDesignTime)
+			{
+				return new T();
+			}
+#endif
+
 			var path = SettingsBase.GetSettingsFilePath(domain);
 
 			if (File.Exists(path))
