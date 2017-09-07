@@ -65,6 +65,19 @@ namespace FastBuild.Dashboard.ViewModels.Build
 				[DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
 				private static extern bool CloseHandle(IntPtr handle);
 			}
+
+			[Flags]
+			public enum ProcessAccessFlags : uint
+			{
+				QueryInformation = 0x00000400,
+			}
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			public static extern IntPtr OpenProcess(
+				ProcessAccessFlags processAccess,
+				bool bInheritHandle,
+				int processId
+			);
 		}
 
 		private static class WinAPIUtils
