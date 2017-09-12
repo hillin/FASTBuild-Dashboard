@@ -31,6 +31,17 @@ namespace FastBuild.Dashboard.Communication.Events
 			};
 		}
 
+		public static FinishJobEventArgs MakeStopped(DateTime time, string hostName, string eventName)
+		{
+			return new FinishJobEventArgs
+			{
+				Time = time,
+				EventName = eventName,
+				HostName = hostName,
+				Result = BuildJobStatus.Stopped
+			};
+		}
+
 		private static BuildJobStatus ParseBuildJobResult(string result)
 		{
 			switch (result)

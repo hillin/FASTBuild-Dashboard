@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Timers;
 using Caliburn.Micro;
 using FastBuild.Dashboard.Communication;
 using FastBuild.Dashboard.Communication.Events;
@@ -31,6 +34,7 @@ namespace FastBuild.Dashboard.ViewModels.Build
 		}
 
 		public int? ProcessId { get; }
+		private Process _fbuildProcess;
 		public int? LogVersion { get; }
 
 		private readonly Dictionary<string, BuildWorkerViewModel> _workerMap = new Dictionary<string, BuildWorkerViewModel>();
@@ -62,6 +66,8 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			brokerageService.WorkerCountChanged += this.BrokerageService_WorkerCountChanged;
 
 			this.InitiatorProcess = new BuildInitiatorProcessViewModel(processId);
+
+			this.WatchBuildProcess();
 		}
 
 		public BuildSessionViewModel()
@@ -73,6 +79,61 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			: this(e.Time, e.ProcessId, e.LogVersion)
 		{
 		}
+
+
+		private void WatchBuildProcess()
+		{
+			if (this.ProcessId == null)
+			{
+				return;
+			}
+
+			if (!BuildInitiatorProcessViewModel.GetIsProcessAccessible(this.ProcessId.Value))
+			{
+				// process not accessible, it's either exited (historical build)
+				// or running by an account with higher privilege
+				return;
+			}
+
+			try
+			{
+				var process = Process.GetProcessById(this.ProcessId.Value);
+
+				if (process.StartTime > this.StartTime)
+				{
+					// fbuild process already terminated, this is a fake one with its ID reused
+					return;
+				}
+
+				_fbuildProcess = process;
+			}
+			catch (ArgumentException)
+			{
+				// process already terminated, may be a historical build
+				return;
+			}
+
+			var timer = new Timer(100);
+
+			void TimerTick(object sender, ElapsedEventArgs e)
+			{
+				if (_fbuildProcess.HasExited)
+				{
+					_fbuildProcess = null;
+					this.OnStopped(DateTime.Now);
+					// ReSharper disable AccessToDisposedClosure
+					timer.Elapsed -= TimerTick;
+					timer.Stop();
+					timer.Dispose();
+					// ReSharper restore AccessToDisposedClosure
+				}
+			}
+
+			timer.Elapsed += TimerTick;
+			timer.Start();
+
+		}
+
 
 		public void OnStopped(StopBuildEventArgs e)
 		{
@@ -164,6 +225,14 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			var job = this.EnsureWorker(e.HostName).OnJobStarted(e, this.StartTime);
 			this.JobManager.Add(job);
 			++this.InProgressJobCount;
+
+			if (!this.IsRunning)
+			{
+				// because of the async nature, this could happen even after the build process 
+				// is terminated
+				var finishJobEventArgs = FinishJobEventArgs.MakeStopped(_currentTime, e.HostName, e.EventName);
+				this.OnJobFinished(finishJobEventArgs);
+			}
 
 			this.UpdateActiveWorkerAndCoreCount();
 		}

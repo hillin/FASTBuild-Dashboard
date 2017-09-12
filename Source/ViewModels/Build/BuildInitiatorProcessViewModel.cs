@@ -16,7 +16,7 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			AccessDenied
 		}
 
-		private static bool GetIsProcessAccessible(int processId)
+		internal static bool GetIsProcessAccessible(int processId)
 		{
 			return WinAPI.OpenProcess(WinAPI.ProcessAccessFlags.QueryInformation, false, processId) != IntPtr.Zero;
 		}
