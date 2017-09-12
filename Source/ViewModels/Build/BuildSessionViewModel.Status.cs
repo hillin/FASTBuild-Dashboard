@@ -40,6 +40,8 @@ namespace FastBuild.Dashboard.ViewModels.Build
 					this.NotifyOfPropertyChange(nameof(this.CacheHitCount));
 					this.NotifyOfPropertyChange(nameof(this.InProgressJobCount));
 					this.NotifyOfPropertyChange(nameof(this.FailedJobCount));
+
+					this.DetectDebris();
 				}
 			}
 		}

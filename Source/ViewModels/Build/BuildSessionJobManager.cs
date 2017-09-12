@@ -124,5 +124,13 @@ namespace FastBuild.Dashboard.ViewModels.Build
 				}
 			}
 		}
+
+		public void NotifySessionStopped()
+		{
+			foreach (var job in this.GetAllJobs().Where(j => !j.IsFinished))
+			{
+				this.NotifyJobFinished(job);
+			}
+		}
 	}
 }

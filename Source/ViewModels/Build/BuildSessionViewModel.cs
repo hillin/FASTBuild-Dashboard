@@ -30,6 +30,9 @@ namespace FastBuild.Dashboard.ViewModels.Build
 
 				_currentTime = value;
 				this.NotifyOfPropertyChange();
+
+				this.NotifyOfPropertyChange(nameof(this.ElapsedTime));
+				this.NotifyOfPropertyChange(nameof(this.DisplayElapsedTime));
 			}
 		}
 
@@ -143,10 +146,15 @@ namespace FastBuild.Dashboard.ViewModels.Build
 		public void OnStopped(DateTime time)
 		{
 			// give components a last chance to tick
+			// we don't do UpdateTimeFromEvent here because Tick will do the same thing
 			this.Tick(time);
 			this.IsRunning = false;
 
 			var currentTimeOffset = this.ElapsedTime.TotalSeconds;
+
+			// do this before notifying workers, so give JobManager a chance to raise
+			// job finish events
+			this.JobManager.NotifySessionStopped();
 
 			foreach (var worker in this.Workers)
 			{
@@ -160,12 +168,14 @@ namespace FastBuild.Dashboard.ViewModels.Build
 
 		public void ReportProgress(ReportProgressEventArgs e)
 		{
+			this.UpdateTimeFromEvent(e);
+
 			this.Progress = e.Progress;
 		}
 
 		public void ReportCounter(ReportCounterEventArgs e)
 		{
-
+			this.UpdateTimeFromEvent(e);
 		}
 
 		private BuildWorkerViewModel EnsureWorker(string hostName)
@@ -187,6 +197,8 @@ namespace FastBuild.Dashboard.ViewModels.Build
 
 		public void OnJobFinished(FinishJobEventArgs e)
 		{
+			this.UpdateTimeFromEvent(e);
+
 			var job = this.EnsureWorker(e.HostName).OnJobFinished(e);
 
 			if (job != null)
@@ -222,6 +234,8 @@ namespace FastBuild.Dashboard.ViewModels.Build
 
 		public void OnJobStarted(StartJobEventArgs e)
 		{
+			this.UpdateTimeFromEvent(e);
+
 			var job = this.EnsureWorker(e.HostName).OnJobStarted(e, this.StartTime);
 			this.JobManager.Add(job);
 			++this.InProgressJobCount;
@@ -237,16 +251,21 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			this.UpdateActiveWorkerAndCoreCount();
 		}
 
+
+		private void UpdateTimeFromEvent(BuildEventArgs e)
+		{
+			// this is important for history restoring to keep track of time
+			this.CurrentTime = e.Time;
+		}
+
 		public void Tick(DateTime now)
 		{
-			if (!this.IsRunning)
+			if (!this.IsRunning || this.IsRestoringHistory)
 			{
 				return;
 			}
 
 			this.CurrentTime = now;
-			this.NotifyOfPropertyChange(nameof(this.ElapsedTime));
-			this.NotifyOfPropertyChange(nameof(this.DisplayElapsedTime));
 
 			var timeOffset = this.ElapsedTime.TotalSeconds;
 
@@ -262,6 +281,22 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			}
 
 			this.Ticked?.Invoke(this, timeOffset);
+		}
+
+		private void DetectDebris()
+		{
+			// historical build could be interrupted (due to unexpected termination of fbuild process)
+			// so no StopBuild event will be triggered. we detect this kind of 'debris' here.
+
+			// note there could be a rare corner case: if our program starts when a build is already 
+			// in progress, and in a happenstance that when we finished catching up with the history, 
+			// a very long job (> 1 hour here) is in progress. this way we can have the build shown 
+			// as stopped incorrectly.
+
+			if ((DateTime.Now - this.CurrentTime).TotalSeconds > 10)
+			{
+				this.OnStopped(this.CurrentTime);
+			}
 		}
 	}
 }
