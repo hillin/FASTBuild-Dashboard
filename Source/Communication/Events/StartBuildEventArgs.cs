@@ -2,6 +2,7 @@
 {
 	internal class StartBuildEventArgs : BuildEventArgs
 	{
+		public const string StartBuildEventName = "START_BUILD";
 		public static StartBuildEventArgs Parse(string[] tokens)
 		{
 			var args = new StartBuildEventArgs();

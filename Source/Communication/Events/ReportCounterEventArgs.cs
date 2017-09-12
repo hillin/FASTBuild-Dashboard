@@ -4,6 +4,8 @@ namespace FastBuild.Dashboard.Communication.Events
 {
 	class ReportCounterEventArgs : BuildEventArgs
 	{
+		public const string ReportCounterEventName = "GRAPH";
+
 		public static ReportCounterEventArgs Parse(string[] tokens)
 		{
 			var args = new ReportCounterEventArgs();

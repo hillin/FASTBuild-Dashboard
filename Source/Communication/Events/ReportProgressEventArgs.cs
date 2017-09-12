@@ -4,6 +4,8 @@ namespace FastBuild.Dashboard.Communication.Events
 {
 	internal class ReportProgressEventArgs : BuildEventArgs
 	{
+		public const string ReportProgressEventName = "PROGRESS_STATUS";
+
 		public static ReportProgressEventArgs Parse(string[] tokens)
 		{
 			var args = new ReportProgressEventArgs();

@@ -2,6 +2,7 @@
 {
 	internal class StartJobEventArgs : BuildEventArgs
 	{
+		public const string StartJobEventName = "START_JOB";
 		public static StartJobEventArgs Parse(string[] tokens)
 		{
 			var args = new StartJobEventArgs();

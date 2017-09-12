@@ -4,6 +4,8 @@ namespace FastBuild.Dashboard.Communication.Events
 {
 	internal class FinishJobEventArgs : BuildEventArgs
 	{
+		public const string FinishJobEventName = "FINISH_JOB";
+
 		public static FinishJobEventArgs Parse(string[] tokens)
 		{
 			var args = new FinishJobEventArgs();

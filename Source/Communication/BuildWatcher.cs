@@ -105,22 +105,22 @@ namespace FastBuild.Dashboard.Communication
 			{
 				switch (tokens[BuildEventArgs.EventTypeArgIndex])
 				{
-					case "START_BUILD":
+					case StartBuildEventArgs.StartBuildEventName:
 						this.SessionStarted?.Invoke(this, this.ReceiveEvent<StartBuildEventArgs>(tokens));
 						break;
-					case "STOP_BUILD":
+					case StopBuildEventArgs.StopBuildEventName:
 						this.SessionStopped?.Invoke(this, this.ReceiveEvent<StopBuildEventArgs>(tokens));
 						break;
-					case "START_JOB":
+					case StartJobEventArgs.StartJobEventName:
 						this.JobStarted?.Invoke(this, this.ReceiveEvent<StartJobEventArgs>(tokens));
 						break;
-					case "FINISH_JOB":
+					case FinishJobEventArgs.FinishJobEventName:
 						this.JobFinished?.Invoke(this, this.ReceiveEvent<FinishJobEventArgs>(tokens));
 						break;
-					case "PROGRESS_STATUS":
+					case ReportProgressEventArgs.ReportProgressEventName:
 						this.ReportProgress?.Invoke(this, this.ReceiveEvent<ReportProgressEventArgs>(tokens));
 						break;
-					case "GRAPH":
+					case ReportCounterEventArgs.ReportCounterEventName:
 						this.ReportCounter?.Invoke(this, this.ReceiveEvent<ReportCounterEventArgs>(tokens));
 						break;
 					default:
