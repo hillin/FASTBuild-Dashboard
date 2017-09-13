@@ -288,10 +288,8 @@ namespace FastBuild.Dashboard.ViewModels.Build
 			// historical build could be interrupted (due to unexpected termination of fbuild process)
 			// so no StopBuild event will be triggered. we detect this kind of 'debris' here.
 
-			// note there could be a rare corner case: if our program starts when a build is already 
-			// in progress, and in a happenstance that when we finished catching up with the history, 
-			// a very long job (> 1 hour here) is in progress. this way we can have the build shown 
-			// as stopped incorrectly.
+			// because fbuild will output build state routinely (500ms IIRC), so we won't need to worry
+			// about long jobs being mishandled in this situation.
 
 			if ((DateTime.Now - this.CurrentTime).TotalSeconds > 10)
 			{
