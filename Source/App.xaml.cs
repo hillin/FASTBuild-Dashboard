@@ -81,6 +81,10 @@ namespace FastBuild.Dashboard
 				if (startUp)
 				{
 					var location = entryAssembly.Location;
+					if (this.ShadowContext != null && !string.IsNullOrEmpty(this.ShadowContext.OriginalLocation))
+					{
+						location = this.ShadowContext.OriginalLocation;
+					}
 					Debug.Assert(location != null, "location != null");
 
 					key.SetValue(entryAssembly.GetName().Name, $"\"{location}\" -minimized");
