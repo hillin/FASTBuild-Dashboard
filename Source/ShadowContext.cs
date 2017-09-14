@@ -24,10 +24,12 @@ namespace FastBuild.Dashboard
 
 		
 		public string StorageDirectory { get; set; }
+		public string OriginalLocation { get; set; }
 
 		public ShadowContext()
 		{
 			this.StorageDirectory = SettingsBase.StorageDirectory;
+			this.OriginalLocation = Assembly.GetEntryAssembly().Location;
 		}
 
 		public void Save(string shadowPath)
