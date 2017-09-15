@@ -110,9 +110,9 @@ namespace FastBuild.Dashboard.Views.Build
 							this.TryAddJob(job);
 						}
 					}
-
-					this.InvalidateMeasure();
 				}
+
+				this.InvalidateMeasure();
 
 				_wasNowInTimeFrame = isNowInTimeFrame;
 			}));
