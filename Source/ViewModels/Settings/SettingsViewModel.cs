@@ -13,6 +13,8 @@ namespace FastBuild.Dashboard.ViewModels.Settings
 {
 	internal sealed partial class SettingsViewModel : ValidatingScreen<SettingsViewModel>, IMainPage
 	{
+		public event EventHandler<WorkerMode> WorkerModeChanged;
+
 		[CustomValidation(typeof(SettingsValidator), "ValidateBrokeragePath")]
 		public string BrokeragePath
 		{
@@ -47,6 +49,7 @@ namespace FastBuild.Dashboard.ViewModels.Settings
 			set
 			{
 				IoC.Get<IWorkerAgentService>().WorkerMode = (WorkerMode)value;
+				this.WorkerModeChanged?.Invoke(this, (WorkerMode)value);
 				this.NotifyOfPropertyChange();
 			}
 		}
