@@ -13,6 +13,7 @@ namespace FastBuild.Dashboard.Views
 		private DispatcherTimer _delayUpdateProfileTimer;
 		private readonly TrayNotifier _trayNotifier;
 		private bool _isWorking;
+		private MainWindowViewModel _viewModel;
 
 		public MainWindowView()
 		{
@@ -49,6 +50,7 @@ namespace FastBuild.Dashboard.Views
 
 			vm.BuildWatcherPage.WorkingStateChanged += this.BuildWatcherPage_WorkingStateChanged;
 			vm.SettingsPage.WorkerModeChanged += this.SettingsPage_WorkerModeChanged;
+			_viewModel = vm;
 		}
 
 		private void BuildWatcherPage_WorkingStateChanged(object sender, bool isWorking)
@@ -155,6 +157,14 @@ namespace FastBuild.Dashboard.Views
 			}
 
 			this.Activate();
+		}
+
+		public void ChangeWorkerMode(int workerMode)
+		{
+			if (_viewModel != null)
+			{
+				_viewModel.SettingsPage.WorkerMode = workerMode;
+			}
 		}
 
 		private bool IsWorkerEnabled()
