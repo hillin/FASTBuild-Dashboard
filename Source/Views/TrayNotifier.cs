@@ -28,13 +28,6 @@ namespace FastBuild.Dashboard.Views
 
 			_workingIconTimer.Tick += this.WorkingIconTimer_Tick;
 
-			_trayNotifier.ContextMenuStrip = new WinForms.ContextMenuStrip();
-			_trayNotifier.ContextMenuStrip.Items.Add("Show", GetImage("/Resources/Icons/tray_normal_16.ico"), this.TrayNotifier_DoubleClick);
-			_trayNotifier.ContextMenuStrip.Items.Add(new WinForms.ToolStripSeparator());
-			_trayNotifier.ContextMenuStrip.Items.Add("Work Always", GetImage("/Resources/Icons/tray_working_all_16.ico"), (sender, args) => MenuChangeWorkerMode(2));
-			_trayNotifier.ContextMenuStrip.Items.Add("Work when Idle", GetImage("/Resources/Icons/tray_normal_16.ico"), (sender, args) => MenuChangeWorkerMode(1));
-			_trayNotifier.ContextMenuStrip.Items.Add("Disabled", GetImage("/Resources/Icons/tray_disabled_16.ico"), (sender, args) => MenuChangeWorkerMode(0));
-
 			this.UseNormalIcon();
 		}
 
@@ -65,19 +58,6 @@ namespace FastBuild.Dashboard.Views
 			_workingIconStage = (_workingIconStage + 1) % 3;
 		}
 
-		private System.Drawing.Image GetImage(string resourcePath)
-		{
-			var iconInfo = Application.GetResourceStream(new Uri(resourcePath, UriKind.Relative));
-			if (iconInfo != null)
-			{
-				using (var iconStream = iconInfo.Stream)
-				{
-					return System.Drawing.Image.FromStream(iconStream);
-				}
-			}
-			return null;
-		}
-
 		private void SetTrayIcon(string resourcePath)
 		{
 			var iconInfo = Application.GetResourceStream(new Uri(resourcePath, UriKind.Relative));
@@ -94,11 +74,6 @@ namespace FastBuild.Dashboard.Views
 		{
 			_trayNotifier.Visible = false;
 			_trayNotifier.Dispose();
-		}
-
-		private void MenuChangeWorkerMode(int workerMode)
-		{
-			_owner.ChangeWorkerMode(workerMode);
 		}
 	}
 }
