@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
-using Caliburn.Micro;
 using FastBuild.Dashboard.Configuration;
 using FastBuild.Dashboard.ViewModels;
-using FastBuild.Dashboard.Services.Worker;
 
 namespace FastBuild.Dashboard.Views
 {
@@ -12,14 +10,12 @@ namespace FastBuild.Dashboard.Views
 	{
 		private DispatcherTimer _delayUpdateProfileTimer;
 		private readonly TrayNotifier _trayNotifier;
-		private bool _isWorking;
 
 		public MainWindowView()
 		{
 			this.InitializeComponent();
 			this.InitializeWindowDimensions();
 			_trayNotifier = new TrayNotifier(this);
-			this.UpdateTrayIcon();
 
 			this.DataContextChanged += this.OnDataContextChanged;
 			this.Loaded += this.OnLoaded;
@@ -48,18 +44,18 @@ namespace FastBuild.Dashboard.Views
 			}
 
 			vm.BuildWatcherPage.WorkingStateChanged += this.BuildWatcherPage_WorkingStateChanged;
-			vm.SettingsPage.WorkerModeChanged += this.SettingsPage_WorkerModeChanged;
 		}
 
 		private void BuildWatcherPage_WorkingStateChanged(object sender, bool isWorking)
 		{
-			_isWorking = isWorking;
-			UpdateTrayIcon();
-		}
-
-		private void SettingsPage_WorkerModeChanged(object sender, WorkerMode mode)
-		{
-			UpdateTrayIcon();
+			if (isWorking)
+			{
+				_trayNotifier.UseWorkingIcon();
+			}
+			else
+			{
+				_trayNotifier.UseNormalIcon();
+			}
 		}
 
 		private void InitializeWindowDimensions()
@@ -155,32 +151,6 @@ namespace FastBuild.Dashboard.Views
 			}
 
 			this.Activate();
-		}
-
-		private bool IsWorkerEnabled()
-		{
-			if (IoC.Get<IWorkerAgentService>().WorkerMode == WorkerMode.Disabled)
-				return false;
-			return true;
-		}
-
-		private void UpdateTrayIcon()
-		{
-			if (_isWorking)
-			{
-				_trayNotifier.UseWorkingIcon();
-			}
-			else
-			{
-				if (this.IsWorkerEnabled())
-				{
-					_trayNotifier.UseNormalIcon();
-				}
-				else
-				{
-					_trayNotifier.UseDisabledIcon();
-				}
-			}
 		}
 	}
 }

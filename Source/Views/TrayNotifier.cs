@@ -40,12 +40,6 @@ namespace FastBuild.Dashboard.Views
 			this.SetTrayIcon("/Resources/Icons/tray_normal_16.ico");
 		}
 
-		public void UseDisabledIcon()
-		{
-			_workingIconTimer.Stop();
-			this.SetTrayIcon("/Resources/Icons/tray_disabled_16.ico");
-		}
-
 		public void UseWorkingIcon()
 		{
 			this.ShiftWorkingIcon();
