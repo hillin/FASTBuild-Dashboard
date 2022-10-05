@@ -218,15 +218,40 @@ namespace FastBuild.Dashboard.Services.Worker
 			{
 				// If worker isn't found in working directory, try it relative to running binary.
 				executablePath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), WorkerExecutablePath);
-
-				if (!File.Exists(executablePath))
-				{
-					this.OnWorkerErrorOccurred($"Worker executable not found at {WorkerExecutablePath}");
-					return;
-				}
 			}
 
-			var startInfo = new ProcessStartInfo(executablePath)
+            if (!File.Exists(executablePath))
+			{
+                // Search the path for it
+                string PathVariable = Environment.GetEnvironmentVariable("PATH");
+                if (PathVariable != null)
+                {
+                    foreach (string SearchPath in PathVariable.Split(Path.PathSeparator))
+                    {
+                        try
+                        {
+                            string PotentialPath = Path.Combine(SearchPath, "FBuildWorker.exe");
+                            if (File.Exists(PotentialPath))
+                            {
+                                executablePath = PotentialPath;
+								break;
+                            }
+                        }
+                        catch (ArgumentException)
+                        {
+                            // PATH variable may contain illegal characters; just ignore them.
+                        }
+                    }
+                }
+            }
+
+			if (!File.Exists(executablePath))
+            {
+                this.OnWorkerErrorOccurred($"Worker executable not found. Try place worker executable in {WorkerExecutablePath}, or in PATH, or as env variable FASTBUILD_EXECUTABLE_PATH");
+                return;
+            }
+
+            var startInfo = new ProcessStartInfo(executablePath)
 			{
 				Arguments = "-nosubprocess",
 				CreateNoWindow = true

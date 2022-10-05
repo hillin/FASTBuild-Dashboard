@@ -34,7 +34,7 @@ namespace FastBuild.Dashboard.ViewModels.Settings
 				switch (workerCount)
 				{
 					case 0:
-						return "no workers in pool";
+						return "No workers in pool";
 					case 1:
 						return "1 worker in pool";
 					default:
