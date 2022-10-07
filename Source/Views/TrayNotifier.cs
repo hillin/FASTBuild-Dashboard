@@ -34,8 +34,18 @@ namespace FastBuild.Dashboard.Views
 			_trayNotifier.ContextMenuStrip.Items.Add("Work Always", GetImage("/Resources/Icons/tray_working_all_16.ico"), (sender, args) => MenuChangeWorkerMode(2));
 			_trayNotifier.ContextMenuStrip.Items.Add("Work when Idle", GetImage("/Resources/Icons/tray_normal_16.ico"), (sender, args) => MenuChangeWorkerMode(1));
 			_trayNotifier.ContextMenuStrip.Items.Add("Disabled", GetImage("/Resources/Icons/tray_disabled_16.ico"), (sender, args) => MenuChangeWorkerMode(0));
+			
+			// Add Exit Context Option since we override the "Window Close Button" to behavior like window minimize
+			_trayNotifier.ContextMenuStrip.Items.Add(new WinForms.ToolStripSeparator());
+			_trayNotifier.ContextMenuStrip.Items.Add("Exit", GetImage("/Resources/Icons/tray_normal_16.ico"), this.TrayNotifier_Exit);
 
 			this.UseNormalIcon();
+		}
+
+		private void TrayNotifier_Exit(object sender, EventArgs e)
+		{
+			_owner.bCloseIgnoreCancel = true;
+			_owner.Close();
 		}
 
 		private void TrayNotifier_DoubleClick(object sender, EventArgs e) => _owner.ShowAndActivate();

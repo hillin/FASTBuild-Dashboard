@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
@@ -10,6 +11,8 @@ namespace FastBuild.Dashboard.Views
 {
 	public partial class MainWindowView
 	{
+		public bool bCloseIgnoreCancel = false;
+		
 		private DispatcherTimer _delayUpdateProfileTimer;
 		private readonly TrayNotifier _trayNotifier;
 		private bool _isWorking;
@@ -30,6 +33,20 @@ namespace FastBuild.Dashboard.Views
 		{
 			if (App.Current.StartMinimized)
 			{
+				this.Hide();
+			}
+		}
+
+		protected override void OnClosing(CancelEventArgs e)
+		{
+			if (bCloseIgnoreCancel)
+			{
+				base.OnClosing(e);
+			}
+			else
+			{
+				// Override closing event events & hide window instead
+				e.Cancel = true;
 				this.Hide();
 			}
 		}
